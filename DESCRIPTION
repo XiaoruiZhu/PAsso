@@ -1,13 +1,45 @@
 Package: parasol
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Assessing the Partial Association between Ordinal Variables
+Description: An R package of a unified framework for assessing 
+    **Par**rtial **As**sociation between **O**rdina**l** variables. 
+    It includes quantification, visualization, and hypothesis testing.
+    All the products are based on the paper [Dungang, Shaobo, Yan (2019)]() 
+    and the approach described in 
+    [Dungang and Zhang (2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20).
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+  person("Xiaorui", "Zhu",
+         email = "zhuxiaorui1989@gmail.com",
+         role = c("aut", "cre")),
+  person("Dungang", "Liu",
+         email = "dungang.liu@uc.edu",
+         role = c("ctb"))
+  )
+Maintainer: Xiaorui(Jeremy) Zhu <zhuxiaorui1989@gmail.com>
+Depends:
+  R (>= 3.5.3)
+License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 1.0.1)
+Imports: 
+  Rcpp (>= 1.0.1),
+  ggplot2 (>= 2.2.1),
+  goftest,
+  gridExtra,
+  stats,
+	multinomRob, 
+	faraway, 
+	truncdist
+Suggests:
+  MASS,
+  ordinal,
+  rms,
+  testthat,
+  VGAM,
+  mgcv,
+  PResiduals,
+  knitr,
+  rmarkdown
 LinkingTo: Rcpp
+RoxygenNote: 6.1.1
