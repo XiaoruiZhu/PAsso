@@ -351,7 +351,13 @@ getFittedProbs.polr <- function(object) {
 
 #' @keywords internal
 getFittedProbs.vglm <- function(object) {
-  object@fitted.values
+  # if (object@family@vfamily == "acat") {
+    # If family of vglm is "acat": Adjacent Categories Probabilities
+    # Use following function to obtain probabilities
+
+  # } else { # If family of vglm is not used as "acat", pull fitted.values directly
+    object@fitted.values
+  # }
 }
 
 
@@ -659,12 +665,19 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
 
 
 #' @keywords internal
-generate_residuals <- function(object, method = c("latent", "jitter"),
-                               jitter.scale = c("response", "probability"),
-                               boot_id = NULL) {
+generate_residuals <-
+  function(object, method = c("latent", "jitter", "Sign", "General", "Deviance"),
+           jitter.scale = c("response", "probability"),
+           boot_id = NULL) {
 
   # Match arguments
   method <- match.arg(method)
+
+  # Pull "y" and "boot_id" for all methods
+  y <- getResponseValues(object)
+  if (is.null(boot_id)) {
+    boot_id <- seq_along(y)
+  }
 
   # Generate surrogate response values
   r <- if (method == "latent") {  # latent variable approach
@@ -675,10 +688,6 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
     # Simulate surrogate response values from the appropriate truncated
     # distribution
     if (distribution %in% c("norm", "logis", "cauchy", "gumbel", "Gumbel")) {
-      y <- getResponseValues(object)
-      if (is.null(boot_id)) {
-        boot_id <- seq_along(y)
-      }
       mean_response <- getMeanResponse(object)  # mean response values
       s <-       if (!inherits(object, what = "lrm") &&
                      inherits(object, what = "glm")) {
@@ -698,12 +707,9 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
       stop("Distribution not supported.", call. = FALSE)
     }
     s - mean_response[boot_id]  # surrogate residuals
-  } else {  # jittering approach
+  } else if (method == "jitter") {  # jittering approach
     jitter.scale <- match.arg(jitter.scale)
-    y <- getResponseValues(object)
-    if (is.null(boot_id)) {
-      boot_id <- seq_along(y)
-    }
+
     y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
     if (jitter.scale == "response") {  # jittering on the response scale
@@ -715,6 +721,37 @@ generate_residuals <- function(object, method = c("latent", "jitter"),
       .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
       runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
     }
+  } else if (method == "Sign") { # Sign-based residuals
+    n <- length(y)
+    y <- y[boot_id]
+    prob <- getFittedProbs(object)[boot_id, ]
+
+    # calculate probability based residual based on fitted value (prbabilities)
+    pyej <- prob[cbind(1:n, y)]
+    pysj <- sapply(1:n, function(x) sum(prob[x,1:y[x]])) - pyej
+    PR <- -1 + 2*pysj + pyej
+    PR
+  } else if (method == "General") { # Generalized residuals
+    n <- length(y); y <- y[boot_id]
+    prob <- getFittedProbs(object)[boot_id, ]
+
+    y <- as.integer(y)
+    F_acat <- t(apply(prob, 1, cumsum))
+    F_acat <- cbind(0, F_acat)
+
+    Pj <- sapply(1:n, function(x) prob[x,y[x]])
+    Fj <- sapply(1:n, function(x) F_acat[x,y[x]+1])
+    Fj_1 <- sapply(1:n, function(x) F_acat[x,y[x]])
+
+    fj <- dnorm(qnorm(Fj))
+    fj_1 <- dnorm(qnorm(Fj_1))
+    (fj_1-fj)/Pj # Return Generalized residuals
+
+  } else { # Deviance residuals (-2*loglik)
+    n <- length(y); y <- y[boot_id]
+    prob <- getFittedProbs(object)[boot_id, ]
+
+    -2*log(prob[cbind(1:n, y)])
   }
 
   # Return results

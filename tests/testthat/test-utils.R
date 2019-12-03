@@ -11,31 +11,31 @@ test_that("utility functions work for \"clm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit.logit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
-  fit.probit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
-  fit.loglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "loglog")
-  fit.cloglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cloglog")
-  fit.cauchit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
+  fit_logit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
+  fit_probit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
+  fit_loglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "loglog")
+  fit_cloglog <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cloglog")
+  fit_cauchit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
 
   # Expectations
-  expect_equal(length(getBounds(fit.logit)), 5)
-  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
-  expect_equal(ncat(fit.logit), 4)
-  expect_equal(getDistributionFunction(fit.logit), plogis)
-  expect_equal(getDistributionFunction(fit.probit), pnorm)
-  expect_equal(getDistributionFunction(fit.loglog), pgumbel)
-  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
-  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
-  expect_equal(getDistributionName(fit.logit), "logis")
-  expect_equal(getDistributionName(fit.probit), "norm")
-  expect_equal(getDistributionName(fit.loglog), "gumbel")
-  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
-  expect_equal(getDistributionName(fit.cauchit), "cauchy")
-  expect_equal(getQuantileFunction(fit.logit), qlogis)
-  expect_equal(getQuantileFunction(fit.probit), qnorm)
-  expect_equal(getQuantileFunction(fit.loglog), qgumbel)
-  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
-  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
+  expect_equal(length(getBounds(fit_logit)), 5)
+  expect_identical(getResponseValues(fit_logit), as.integer(df1$y))
+  expect_equal(ncat(fit_logit), 4)
+  expect_equal(getDistributionFunction(fit_logit), plogis)
+  expect_equal(getDistributionFunction(fit_probit), pnorm)
+  expect_equal(getDistributionFunction(fit_loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit_cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit_cauchit), pcauchy)
+  expect_equal(getDistributionName(fit_logit), "logis")
+  expect_equal(getDistributionName(fit_probit), "norm")
+  expect_equal(getDistributionName(fit_loglog), "gumbel")
+  expect_equal(getDistributionName(fit_cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit_cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit_logit), qlogis)
+  expect_equal(getQuantileFunction(fit_probit), qnorm)
+  expect_equal(getQuantileFunction(fit_loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit_cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit_cauchit), qcauchy)
 
 })
 
@@ -101,31 +101,31 @@ test_that("utility functions work for \"orm\" objects", {
   fit <- rms::orm(y ~ x, data = df1, family = probit)
 
   # Fit cumulative link models
-  fit.logit <- rms::orm(y ~ x, data = df1, family = logistic)
-  fit.probit <- rms::orm(y ~ x, data = df1, family = probit)
-  fit.loglog <- rms::orm(y ~ x, data = df1, family = loglog)
-  fit.cloglog <- rms::orm(y ~ x, data = df1, family = cloglog)
-  fit.cauchit <- rms::orm(y ~ x, data = df1, family = cauchit)
+  fit_logit <- rms::orm(y ~ x, data = df1, family = logistic)
+  fit_probit <- rms::orm(y ~ x, data = df1, family = probit)
+  fit_loglog <- rms::orm(y ~ x, data = df1, family = loglog)
+  fit_cloglog <- rms::orm(y ~ x, data = df1, family = cloglog)
+  fit_cauchit <- rms::orm(y ~ x, data = df1, family = cauchit)
 
   # Expectations
-  expect_equal(length(getBounds(fit.logit)), 5)
-  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
-  expect_equal(ncat(fit.logit), 4)
-  expect_equal(getDistributionFunction(fit.logit), plogis)
-  expect_equal(getDistributionFunction(fit.probit), pnorm)
-  expect_equal(getDistributionFunction(fit.loglog), pgumbel)
-  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
-  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
-  expect_equal(getDistributionName(fit.logit), "logis")
-  expect_equal(getDistributionName(fit.probit), "norm")
-  expect_equal(getDistributionName(fit.loglog), "gumbel")
-  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
-  expect_equal(getDistributionName(fit.cauchit), "cauchy")
-  expect_equal(getQuantileFunction(fit.logit), qlogis)
-  expect_equal(getQuantileFunction(fit.probit), qnorm)
-  expect_equal(getQuantileFunction(fit.loglog), qgumbel)
-  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
-  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
+  expect_equal(length(getBounds(fit_logit)), 5)
+  expect_identical(getResponseValues(fit_logit), as.integer(df1$y))
+  expect_equal(ncat(fit_logit), 4)
+  expect_equal(getDistributionFunction(fit_logit), plogis)
+  expect_equal(getDistributionFunction(fit_probit), pnorm)
+  expect_equal(getDistributionFunction(fit_loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit_cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit_cauchit), pcauchy)
+  expect_equal(getDistributionName(fit_logit), "logis")
+  expect_equal(getDistributionName(fit_probit), "norm")
+  expect_equal(getDistributionName(fit_loglog), "gumbel")
+  expect_equal(getDistributionName(fit_cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit_cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit_logit), qlogis)
+  expect_equal(getQuantileFunction(fit_probit), qnorm)
+  expect_equal(getQuantileFunction(fit_loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit_cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit_cauchit), qcauchy)
 
 })
 
@@ -140,31 +140,31 @@ test_that("utility functions work for \"polr\" objects", {
   data(df1)
 
   # Fit cumulative link models
-  fit.logit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
-  fit.probit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "probit")
-  fit.loglog <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "loglog")
-  fit.cloglog <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "cloglog")
-  fit.cauchit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "cauchit")
+  fit_logit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
+  fit_probit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "probit")
+  fit_loglog <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "loglog")
+  fit_cloglog <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "cloglog")
+  fit_cauchit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "cauchit")
 
   # Expectations
-  expect_equal(length(getBounds(fit.logit)), 5)
-  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
-  expect_equal(ncat(fit.logit), 4)
-  expect_equal(getDistributionFunction(fit.logit), plogis)
-  expect_equal(getDistributionFunction(fit.probit), pnorm)
-  expect_equal(getDistributionFunction(fit.loglog), pgumbel)
-  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
-  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
-  expect_equal(getDistributionName(fit.logit), "logis")
-  expect_equal(getDistributionName(fit.probit), "norm")
-  expect_equal(getDistributionName(fit.loglog), "gumbel")
-  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
-  expect_equal(getDistributionName(fit.cauchit), "cauchy")
-  expect_equal(getQuantileFunction(fit.logit), qlogis)
-  expect_equal(getQuantileFunction(fit.probit), qnorm)
-  expect_equal(getQuantileFunction(fit.loglog), qgumbel)
-  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
-  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
+  expect_equal(length(getBounds(fit_logit)), 5)
+  expect_identical(getResponseValues(fit_logit), as.integer(df1$y))
+  expect_equal(ncat(fit_logit), 4)
+  expect_equal(getDistributionFunction(fit_logit), plogis)
+  expect_equal(getDistributionFunction(fit_probit), pnorm)
+  expect_equal(getDistributionFunction(fit_loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit_cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit_cauchit), pcauchy)
+  expect_equal(getDistributionName(fit_logit), "logis")
+  expect_equal(getDistributionName(fit_probit), "norm")
+  expect_equal(getDistributionName(fit_loglog), "gumbel")
+  expect_equal(getDistributionName(fit_cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit_cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit_logit), qlogis)
+  expect_equal(getQuantileFunction(fit_probit), qnorm)
+  expect_equal(getQuantileFunction(fit_loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit_cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit_cauchit), qcauchy)
 
 })
 
@@ -180,48 +180,123 @@ test_that("utility functions work for \"vglm\" objects", {
 
   # Fit cumulative link models
   suppressWarnings(
-    fit.logit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+    fit_logit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
                             family = VGAM::cumulative(link = "logit",
                                                       parallel = TRUE))
   )
   suppressWarnings(
-    fit.probit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+    fit_probit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
                              family = VGAM::cumulative(link = "probit",
                                                        parallel = TRUE))
   )
-  # fit.loglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+  # fit_loglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
   #                          family = VGAM::cumulative(link = "loglog",
   #                                                    parallel = TRUE))
   suppressWarnings(
-    fit.cloglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+    fit_cloglog <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
                               family = VGAM::cumulative(link = "cloglog",
                                                         parallel = TRUE))
   )
   suppressWarnings(
-    fit.cauchit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+    fit_cauchit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
                               family = VGAM::cumulative(link = "cauchit",
                                                         parallel = TRUE))
   )
 
+  # Fit an adjacent categories regression model
+  suppressWarnings(
+    fit_acat <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                            family = VGAM::acat(reverse=TRUE, parallel=TRUE))
+  )
+
   # Expectations
-  expect_equal(length(getBounds(fit.logit)), 5)
-  expect_identical(getResponseValues(fit.logit), as.integer(df1$y))
-  expect_equal(ncat(fit.logit), 4)
-  expect_equal(getDistributionFunction(fit.logit), plogis)
-  expect_equal(getDistributionFunction(fit.probit), pnorm)
-  # expect_equal(getDistributionFunction(fit.loglog), pgumbel)
-  expect_equal(getDistributionFunction(fit.cloglog), pGumbel)
-  expect_equal(getDistributionFunction(fit.cauchit), pcauchy)
-  expect_equal(getDistributionName(fit.logit), "logis")
-  expect_equal(getDistributionName(fit.probit), "norm")
-  # expect_equal(getDistributionName(fit.loglog), "gumbel")
-  expect_equal(getDistributionName(fit.cloglog), "Gumbel")
-  expect_equal(getDistributionName(fit.cauchit), "cauchy")
-  expect_equal(getQuantileFunction(fit.logit), qlogis)
-  expect_equal(getQuantileFunction(fit.probit), qnorm)
-  # expect_equal(getQuantileFunction(fit.loglog), qgumbel)
-  expect_equal(getQuantileFunction(fit.cloglog), qGumbel)
-  expect_equal(getQuantileFunction(fit.cauchit), qcauchy)
+  expect_equal(length(getBounds(fit_logit)), 5)
+  expect_identical(getResponseValues(fit_logit), as.integer(df1$y))
+  expect_equal(ncat(fit_logit), 4)
+  expect_equal(getDistributionFunction(fit_logit), plogis)
+  expect_equal(getDistributionFunction(fit_probit), pnorm)
+  # expect_equal(getDistributionFunction(fit_loglog), pgumbel)
+  expect_equal(getDistributionFunction(fit_cloglog), pGumbel)
+  expect_equal(getDistributionFunction(fit_cauchit), pcauchy)
+  expect_equal(getDistributionName(fit_logit), "logis")
+  expect_equal(getDistributionName(fit_probit), "norm")
+  # expect_equal(getDistributionName(fit_loglog), "gumbel")
+  expect_equal(getDistributionName(fit_cloglog), "Gumbel")
+  expect_equal(getDistributionName(fit_cauchit), "cauchy")
+  expect_equal(getQuantileFunction(fit_logit), qlogis)
+  expect_equal(getQuantileFunction(fit_probit), qnorm)
+  # expect_equal(getQuantileFunction(fit_loglog), qgumbel)
+  expect_equal(getQuantileFunction(fit_cloglog), qGumbel)
+  expect_equal(getQuantileFunction(fit_cauchit), qcauchy)
+
+})
+
+
+test_that("generate_residuals function works for different methods", {
+
+  # Skips
+  skip_on_cran()
+
+  # Load data
+  data(df1)
+
+  # Fit cumulative link models
+  suppressWarnings(
+    fit_clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
+  )
+  suppressWarnings(
+    resids_clm <- generate_residuals(fit_clm, method = "Sign", boot_id = NULL)
+  )
+  suppressWarnings(
+    resids_clm_boot <-
+      generate_residuals(fit_clm, method = "Sign",
+                         boot_id = sample(nobs(fit_clm), replace = TRUE))
+  )
+
+
+  fit_polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
+  resids_polr <- generate_residuals(fit_polr, method = "Sign", boot_id = NULL)
+  resids_polr_boot <-
+    generate_residuals(fit_polr, method = "Sign",
+                       boot_id = sample(nobs(fit_polr), replace = TRUE))
+
+  fit_lrm <- rms::lrm(y ~ x, data = df1)
+  resids_lrm <- generate_residuals(fit_lrm, method = "Sign", boot_id = NULL)
+  resids_lrm_boot <-
+    generate_residuals(fit_lrm, method = "Sign",
+                       boot_id = sample(nobs(fit_lrm), replace = TRUE))
+
+  fit_orm <- rms::orm(y ~ x, data = df1, family = logistic)
+  resids_orm <- generate_residuals(fit_orm, method = "Sign", boot_id = NULL)
+  resids_orm_boot <-
+    generate_residuals(fit_orm, method = "Sign",
+                       boot_id = sample(nobs(fit_orm), replace = TRUE))
+
+  fit_vglm <- VGAM::vglm(y ~ x, data = df1,
+                         family = VGAM::cumulative(link = "logit",
+                                                   parallel = TRUE))
+  resids_vglm <- generate_residuals(fit_vglm, method = "Sign", boot_id = NULL)
+  resids_vglm_boot <-
+    generate_residuals(fit_vglm, method = "Sign",
+                       boot_id = sample(nobs(fit_vglm), replace = TRUE))
+
+
+  # Expectations
+  expect_equal(length(resids_clm), nrow(df1))
+  expect_equal(length(resids_clm_boot), nrow(df1))
+  expect_equal(length(resids_polr), nrow(df1))
+  expect_equal(length(resids_polr_boot), nrow(df1))
+  expect_equal(length(resids_lrm), nrow(df1))
+  expect_equal(length(resids_lrm_boot), nrow(df1))
+  expect_equal(length(resids_orm), nrow(df1))
+  expect_equal(length(resids_orm_boot), nrow(df1))
+  expect_equal(length(resids_vglm), nrow(df1))
+  expect_equal(length(resids_vglm_boot), nrow(df1))
+
+  expect_null(attr(resids_clm, "boot_reps"))
+  expect_null(attr(resids_clm, "boot_id"))
+  expect_null(attr(resids_vglm_boot, "boot_reps"))
+  expect_null(attr(resids_vglm_boot, "boot_id"))
 
 })
 
@@ -239,27 +314,27 @@ test_that("getMeanResponse works", {
   data(df1)
 
   # Fit cumulative link models
-  fit.clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
-  fit.polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
-  fit.lrm <- rms::lrm(y ~ x, data = df1)
-  fit.orm <- rms::orm(y ~ x, data = df1, family = logistic)
-  fit.vglm <- VGAM::vglm(y ~ x, data = df1,
+  fit_clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
+  fit_polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
+  fit_lrm <- rms::lrm(y ~ x, data = df1)
+  fit_orm <- rms::orm(y ~ x, data = df1, family = logistic)
+  fit_vglm <- VGAM::vglm(y ~ x, data = df1,
                          family = VGAM::cumulative(link = "logit",
                                                    parallel = TRUE))
 
   # Mean response
   mr <- cbind(
-    "clm" = getMeanResponse(fit.clm),
-    "polr" = getMeanResponse(fit.polr),
-    "lrm" = getMeanResponse(fit.lrm),
-    "orm" = getMeanResponse(fit.orm),
-    "vglm" = getMeanResponse(fit.vglm)
+    "clm" = getMeanResponse(fit_clm),
+    "polr" = getMeanResponse(fit_polr),
+    "lrm" = getMeanResponse(fit_lrm),
+    "orm" = getMeanResponse(fit_orm),
+    "vglm" = getMeanResponse(fit_vglm)
   )
 
   # Compute maximum pairwise difference per row
-  max.diff <- apply(mr, MARGIN = 1, FUN = function(x) max(as.numeric(dist(x))))
+  max_diff <- apply(mr, MARGIN = 1, FUN = function(x) max(as.numeric(dist(x))))
 
   # Expectations
-  expect_true(max(max.diff) < 1e-05)
+  expect_true(max(max_diff) < 1e-05)
 
 })
