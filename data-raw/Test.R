@@ -1,9 +1,5 @@
 # various internal functions
 
-################################
-
-load(file = "data/df_ParA.RData")
-summary(df_ParA$data)
 
 ##### function to obtain probability matrix of adjacent-categorical model ####
 p_adj_cate<- function(Z){
@@ -26,17 +22,18 @@ p_adj_cate<- function(Z){
 #### surrogate residual ####
 
 SR.acat<- function(y, X, alpha, beta, ndraw=1){
-  # y <- Y1; X <- X; alpha <- alpha1; beta <- beta1; ndraw <- 1
+  y <- Y1; X <- X; alpha <- alpha1; beta <- beta1; ndraw <- 1
+
   y <- as.integer(y)
-  n<- length(y)
-  z<- sapply(alpha[2:(length(alpha)-1)], function(a) a+as.matrix(X)%*%beta)
+  n <- length(y)
+  z <- sapply(alpha[2:(length(alpha)-1)], function(a) a+as.matrix(X)%*%beta)
   p.acat<- p_adj_cate(z)
   F.acat<- t(apply(p.acat, 1, cumsum))
   F.acat<- cbind(0, F.acat)
   if(min(y)==0){
-    S<- sapply(1:n, function(k) runif(ndraw, F.acat[k,y[k]+1], F.acat[k,y[k]+2]))
+    S <- sapply(1:n, function(k) runif(ndraw, F.acat[k,y[k]+1], F.acat[k,y[k]+2]))
   }else{
-    S<- sapply(1:n, function(k) runif(ndraw, F.acat[k,y[k]], F.acat[k,y[k]+1]))
+    S <- sapply(1:n, function(k) runif(ndraw, F.acat[k,y[k]], F.acat[k,y[k]+1]))
   }
   S-1/2
 }
@@ -88,39 +85,43 @@ DR.acat<- function(y, X, alpha, beta){
 
 # Running models ----------------------------------------------------------
 library(VGAM)
+
+load(file = "data/df_ParA.RData")
+summary(df_ParA$data)
+
 Y1 <- df_ParA$data$Y1; Y2 <- df_ParA$data$Y2
 X <- df_ParA$data$X
 
 # fit.adj1<- vglm(Y1~X, family=acat(link = "logitlink", reverse=TRUE, parallel=TRUE))
 
-fit.adj1<- vglm(Y1~X, family=acat(reverse=TRUE, parallel=TRUE))
+fit.adj1 <- vglm(Y1~X, family=acat(reverse=TRUE, parallel=TRUE))
+
 
 fit1 <- VGAM::vglm(Y1 ~ X,
-                  family = VGAM::cumulative(link = "logit",reverse=TRUE,
-                                            parallel = TRUE))
+                  family =
+                    VGAM::cumulative(
+                      link = "logit",reverse=TRUE,
+                      parallel = TRUE))
 fit.adj2<- vglm(Y2~X, family=acat(reverse=TRUE, parallel=TRUE))
+
+fit1@family@vfamily[1]
+fit1@misc$reverse
+head(fit.adj1@x[,-1])
+head(fit.adj1@fitted.values)
+
+head(t(apply(fit.adj1@fitted.values, 1, cumsum)))
+
+head(class(as.matrix(fit.adj1@x)[,-1]))
+
+summary(Y1)
 
 rbind(coef(fit.adj1), coef(fit1),
       c(df_ParA$alpha1[c(-1, -7)], df_ParA$beta1))
 # rbind(coef(fit.adj1), coef(fit1)[-length(coef(fit1))],
 #       c(df_ParA$alpha1[c(-1, -7)], df_ParA$beta1))
-+ I(X ^ 2)
+# + I(X ^ 2)
 rbind(coef(fit.adj2), c(df_ParA$alpha2[c(-1, -5)], df_ParA$beta2))
 
-
-##### based on true model obtain residuals #####
-## obtain Surrogate residuals
-source("R/resids.R")
-source("R/utils.R")
-data(df1)
-fit1 <- VGAM::vglm(df1$y ~ df1$x,
-                   family = acat(reverse=TRUE, parallel=TRUE))
-summary(fit1)
-fit1@family@vfamily[1]
-
-res1 <- resids(fit1)
-
-# res2 <- resids(fit, nsim = 10)
 
 SR1<- SR.acat(Y1, X, alpha = alpha1, beta = beta1)
 SR2<- SR.acat(Y2, X, alpha = alpha2, beta = beta2)
@@ -136,6 +137,48 @@ GR2<- GR.acat(Y2, X, alpha = alpha2, beta = beta2)
 ## obtain deviance residuals
 DR1<- DR.acat(Y1, X, alpha = alpha1, beta = beta1)
 DR2<- DR.acat(Y2, X, alpha = alpha2, beta = beta2)
+
+
+# Use generate_residuals  -------------------------------------------------
+# Fit cumulative link models
+
+load(file = "data/df_ParA.RData")
+summary(df_ParA$data)
+
+fit_clm1 <- VGAM::vglm(Y1 ~ X, data = df_ParA$data, family =
+                         VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE))
+fit_clm2 <- VGAM::vglm(Y2 ~ X, data = df_ParA$data, family =
+                         VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE))
+coef(fit_clm1)
+
+# fit_clm1 <- VGAM::vglm(Y1 ~ X, data = df_ParA$data, family =
+#                          VGAM::acat(reverse=TRUE, parallel=TRUE))
+# fit_clm2 <- VGAM::vglm(Y2 ~ X, data = df_ParA$data, family =
+#                          VGAM::acat(reverse=TRUE, parallel=TRUE))
+# coef(fit_clm1)
+# fit_clm1@family@infos()$link
+
+# SR1 <- generate_residuals(fit_clm1, method = "latent",boot_id = NULL)
+# SR2 <- generate_residuals(fit_clm2, method = "latent", boot_id = NULL)
+
+SR1 <- generate_residuals(fit_clm1, method = c("jitter"),
+                          jitter.scale = c("response"),
+                          boot_id = NULL)
+SR2 <- generate_residuals(fit_clm2, method = c("jitter"),
+                          jitter.scale = c("response"),
+                          boot_id = NULL)
+
+## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
+PR1 <- generate_residuals(fit_clm1, method = "Sign", boot_id = NULL)
+PR2 <- generate_residuals(fit_clm2, method = "Sign", boot_id = NULL)
+
+## obtain generalized residuals (Franses and Paap 2001 book)
+GR1 <- generate_residuals(fit_clm1, method = "General", boot_id = NULL)
+GR2 <- generate_residuals(fit_clm2, method = "General", boot_id = NULL)
+
+## obtain deviance residuals
+DR1 <- generate_residuals(fit_clm1, method = "Deviance", boot_id = NULL)
+DR2 <- generate_residuals(fit_clm2, method = "Deviance", boot_id = NULL)
 
 
 ## visualize residual vs. residual
@@ -156,3 +199,5 @@ plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
      xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
 axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
 axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+
+

@@ -2,48 +2,50 @@
 % Please edit documentation in R/Pcor_SR.R
 \name{Pcor_SR}
 \alias{Pcor_SR}
-\title{Pcor_SR
-function to obtain \eqn{hat{phi}}}
+\title{Pcor_SR}
 \usage{
-Pcor_SR(y1, y2, x, model1, model2, alpha1 = NULL, beta1 = NULL,
-  alpha2 = NULL, beta2 = NULL, link1 = "probit", link2 = "probit",
-  n.avg = 100, method = "kendall")
+Pcor_SR(models, asso_type = c("PartialAsso", "Marginal"),
+  cor_method = c("kendall", "pearson", "wolfsigma"), rep_num = 10,
+  S.E = FALSE, boot_S.E = 100, ...)
 }
 \arguments{
-\item{y1}{ordinal response 1}
+\item{models}{a list contains all the models (S3 objects) you want to
+assess for the partial association between ordinal responses after adjusting
+for a set of covariates covariates.
+They all should be applied to same dataset, having same covariates, same sample size etc.
+The models in this list can be an object of class \code{\link[ordinal]{clm}},
+\code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
+\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
-\item{y2}{ordinal response 2}
+\item{asso_type}{a character string indicating whether the partial association coefficient
+\code{"PartialAsso"} (default) or the marginal correlation \code{"Marginal"} is to be
+computed. They can be abbreviated.}
 
-\item{x}{covariates}
+\item{cor_method}{correlation coefficient method}
 
-\item{model1}{The model 1 between ordinal response 1 and covariates}
+\item{rep_num}{the repeat times for getting the average as estimator of partial
+association pho. It is the \code{"nsim"} in \code{"resids()"} function}
 
-\item{model2}{The model 2 between ordinal response 1 and covariates}
+\item{S.E}{a logical argument indicates whether conduct bootstrap for standard error.
+It can be very slow so a double-check question should be answered before move on.}
 
-\item{alpha1}{Alpha of model 1}
+\item{boot_S.E}{the bootstrap times for calculating the standard error of the partial
+association pho.}
 
-\item{beta1}{Betas of model 1}
-
-\item{alpha2}{Alpha of model 2}
-
-\item{beta2}{Betas of model 2}
-
-\item{link1}{link function of ordinal response 1}
-
-\item{link2}{link function of ordinal response 2}
-
-\item{n.avg}{The number of simulation for generate residuals}
-
-\item{method}{The method to calculate correlation}
+\item{...}{Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
+in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)}
 }
 \value{
 A list contains ...
 \itemize{
- \item{"parameter 1"}{Stuff}
- \item{"parameter 2"}{Stuff}
+ \item{"Mcor_phi"}{a correlation matrix of all responses in these models}
+ \item{"SRs"}{a matrix contains all surrogate residuals of each model}
+ \item{"Mboot_phi"}{Stuff}
+ \item{"boot_SRs"}{an array contains all bootstrap surrogate residuals of each model.
+ First dimension is sample size, second is bootstrap times, third is number of models.}
 }
 }
 \description{
-Pcor_SR
-function to obtain \eqn{hat{phi}}
+A function to obtain partial associations between several ordinal variables
+after adjusting for a set of covariates.
 }

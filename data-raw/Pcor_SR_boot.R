@@ -13,6 +13,7 @@
 #' @import MASS
 #' @return A list contains ...
 #' @export
+#'
 Pcor_SR_boot<- function(y1, y2, x, B=2000, link1="probit", link2="probit", n.avg=100, method="kendall", H0=0){
 
   pcor.est<- rep(NA, B)

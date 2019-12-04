@@ -5,8 +5,9 @@ Description: An R package of a unified framework for assessing
     **Par**rtial **As**sociation between **O**rdina**l** variables. 
     It includes quantification, visualization, and hypothesis testing.
     All the products are based on the paper [Dungang, Shaobo, Yan (2019)]() 
-    and the approach described in 
-    [Dungang and Zhang (2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20).
+    and the approach described in Liu 
+  and Zhang (2017, <doi:https://doi.org/10.1080/01621459.2017.1292915>) and Greenwell et al. 
+  (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
 Version: 0.1.0
 Authors@R: c(
   person("Xiaorui", "Zhu",
@@ -25,14 +26,16 @@ LazyData: true
 Imports: 
   Rcpp (>= 1.0.1),
   ggplot2 (>= 2.2.1),
+  GGally,
   goftest,
   gridExtra,
   stats,
 	multinomRob, 
 	faraway, 
-	truncdist
+	MASS,
+	truncdist, 
+	copBasic
 Suggests:
-  MASS,
   ordinal,
   rms,
   testthat,

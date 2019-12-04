@@ -90,7 +90,7 @@ scatter.smooth(x, y = resids(fm2),
 abline(h = 0, lty = 2, col = "blue2")
 
 #
-# Another Example to compare different residuals
+# Another Adjacent Categories Regression Model Example to compare different residuals
 #
 
 load(file = "data/df_ParA.RData")

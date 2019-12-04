@@ -758,3 +758,7 @@ generate_residuals <-
   r
 
 }
+
+.onUnload <- function (libpath) {
+  library.dynam.unload("parasol", libpath)
+}

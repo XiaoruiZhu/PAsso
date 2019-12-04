@@ -49,6 +49,7 @@ test_that("utility functions work for \"glm\" objects", {
   data(df1)
 
   # Fit binary probit model
+  # BUG? only works for binary? But the response has 4 levels
   suppressWarnings(
     fit <- stats::glm(y ~ x + I(x ^ 2), data = df1,
                       family = binomial(link = "probit"))
