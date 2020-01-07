@@ -13,6 +13,9 @@ Authors@R: c(
   person("Xiaorui", "Zhu",
          email = "zhuxiaorui1989@gmail.com",
          role = c("aut", "cre")),
+  person("Shaobo", "Li",
+         email = "shaobo.li@ku.edu",
+         role = c("aut")),
   person("Dungang", "Liu",
          email = "dungang.liu@uc.edu",
          role = c("ctb"))

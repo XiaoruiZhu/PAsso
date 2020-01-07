@@ -152,7 +152,8 @@ NULL
 #' Ordinal Response with Adjacent Categories Probabilities
 #'
 #' Data simulated from an adjacent categories regression model
-#' with an ordered (preferably) factor response.
+#' with an ordered (preferably) factor response. beta1 = 1, beta2 = -1,
+#' alpha1 = (-Inf, -3, -2, 0, 2, 3, Inf), alpha2 = (-Inf, -2, 0, 2, Inf)
 #'
 #' @docType data
 #'
@@ -183,8 +184,8 @@ NULL
 
 #' US 1996 national election study
 #'
-#' A data with 10 variable subset of the 1996 American National
-#' Election Study.
+#' A data with 13 variables subset of the 1996 American National Election Study.
+#' The data has been cleaned, and a few numeric variables are added.
 #'
 #' @docType data
 #'
@@ -218,6 +219,8 @@ NULL
 #'   recode(educ, 'MS'=8, 'HSdrop'=11, 'HS'=12, 'Coll'=14, 'CCdeg'=15,
 #'   'BAdeg'=17, 'MAdeg'=19).
 #'
+#'   \item \code{income} Respondent's family income
+#'
 #'   \item \code{income.num} Respondent's family income: an ordered
 #'   factor with levels: income.num=recode(income, '$3Kminus'=3, '$3K-$5K'=4,
 #'   '$5K-$7K'=6, '$7K-$9K'=8, '$9K-$10K'=9.5, '$10K-$11K'=10.5,
@@ -229,16 +232,17 @@ NULL
 #'
 #'   \item \code{vote} Expected vote in 1996 presidential election:
 #'   a factor with levels \code{Clinton} and \code{Dole}.
-#'   vote.num=recode(vote, 'Clinton'=0, 'Dole'=1),
+#'
+#'   \item \code{vote.num} recode(vote, 'Clinton'=0, 'Dole'=1),
 #' }
 #'
 #' @references
 #'
-#' @name nes96clean
+#' @name nes96
 #'
 #' @usage
-#' data(nes96clean)
+#' data(nes96)
 #'
 #' @examples
-#' head(nes96clean)
+#' head(nes96)
 NULL

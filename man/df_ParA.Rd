@@ -15,7 +15,8 @@ data(df_ParA)
 }
 \description{
 Data simulated from an adjacent categories regression model
-with an ordered (preferably) factor response.
+with an ordered (preferably) factor response. beta1 = 1, beta2 = -1,
+alpha1 = (-Inf, -3, -2, 0, 2, 3, Inf), alpha2 = (-Inf, -2, 0, 2, Inf)
 }
 \examples{
 head(df_ParA)
