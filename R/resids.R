@@ -155,7 +155,9 @@ resids <- function(object, nsim = 1L,
   if (nsim > 1L) {  # bootstrap
     boot_reps <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
     for(i in seq_len(nsim)) {
-      boot_id[, i] <- sample(nobs(object), replace = TRUE)
+      # boot_id[, i] <- sample(nobs(object), replace = TRUE)
+      # BUG FIXED: Above original code is not correct! Replicate to get many draws of bootstrap residuals!
+      boot_id[, i] <- seq_along(getResponseValues(object))
       boot_reps[, i] <-
         generate_residuals(object, method = method, jitter.scale = jitter.scale,
                            boot_id = boot_id[, i, drop = TRUE])
