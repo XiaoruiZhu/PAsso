@@ -8,7 +8,7 @@ Description: An R package of a unified framework for assessing
     and the approach described in Liu 
   and Zhang (2017, <doi:https://doi.org/10.1080/01621459.2017.1292915>) and Greenwell et al. 
   (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
   person("Xiaorui", "Zhu",
          email = "zhuxiaorui1989@gmail.com",
@@ -34,7 +34,8 @@ Imports:
   gridExtra,
   stats,
 	multinomRob, 
-	faraway, 
+	faraway,
+	Rfast,
 	MASS,
 	truncdist, 
 	copBasic

@@ -1,16 +1,20 @@
 
 library(MASS)
-library(faraway)
+# library(faraway)
 library(parcor)
-library(parasol); library(tidyverse)
+# library(parasol);
+library(tidyverse)
+library(Rfast)
+# library(matrixStats)
 # import data -------------------------------------------------------------
-data(nes96clean)
+data(nes96)
+# parasol::nes96
+summary(nes96)
 
-# parasol::nes96clean
 # Bivariate analysis of VOTE and PID (Kendall's tao) ----------------------
-y1<- nes96clean$vote.num
-y2<- nes96clean$PID
-X<- as.matrix(nes96clean[c("income.num", "age", "edu.year")])
+y1<- nes96$vote.num
+y2<- nes96$PID
+X<- as.matrix(nes96[c("income.num", "age", "edu.year")])
 
 # marginal association (Kendall's tau)
 tau <- cor(y1, y2, method = "kendall")
@@ -21,8 +25,8 @@ tau.sd.boot <- sd(sapply(1:2000, function(b){
 }))
 tau; tau.sd.boot
 
-# Test "Pcor_SR" function: Partial Association by surrogate residuals ------------------------------
-# regression models
+# "Pcor_SR" function: The First way (Advanced), input a few models directly ------------------------------
+# Test "Pcor_SR" function: Partial Association by surrogate residuals regression models
 fit.vote<- glm(y1 ~ X, family = binomial(link ="probit"))
 fit.PID<- polr(as.factor(y2)~ X, method="probit")
 
@@ -32,6 +36,22 @@ Pcor_test1 <- Pcor_SR(models=list(fit.vote, fit.PID),
 
 # Partial association coefficients (Parts of Table 7 in paper)
 Pcor_test1$Mcor_phi
+
+
+# Pcor_SR.def function: The simple way, input response and confounders only ----------------------------
+Pcor_test2 <- Pcor_SR.def(var=c("vote.num", "PID"),
+                          confounder=c("income.num", "age", "edu.year"),
+                          data=nes96, links=c("probit", "probit"),
+                          asso_type = c("PartialAsso"),
+                          cor_method = c("kendall"),
+                          rep_num=10)
+tau; tau.sd.boot
+Pcor_test1$Mcor_phi; Pcor_test1$Mboot_phi
+Pcor_test2$MatCor;
+
+# Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
+
+Pcor_SR_test1 <- Pcor_SR.test(object = Pcor_test2, boot_SE=100, H0=0, parallel=FALSE)
 
 # multivariate analysis (5 variables) --------------------------------------------------------------------
 y3<- nes96clean$selfLR
