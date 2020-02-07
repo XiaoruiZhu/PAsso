@@ -39,10 +39,10 @@
 #'
 #' @importFrom stats qunif runif
 #'
+#' @importFrom Rcpp sourceCpp
+#'
 #' @docType package
 #'
 #' @name parasol
 #' @useDynLib parasol
-#' @importFrom Rcpp sourceCpp
-#'
 NULL
