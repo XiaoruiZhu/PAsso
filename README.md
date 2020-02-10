@@ -1,11 +1,13 @@
 # parasol
 
 <!-- badges: start -->
-`r badge_cran("badger", "orange")`
-`r badge_cran_download("badger", "grand-total", "blue")`
-`r badge_cran_download("badger", "last-month", "green")`
-`r badge_cran_download("badger", "last-week", "yellow")`
-`r badge_travis("XiaoruiZhu/parasol")`
+
+[![CRAN checks](https://cranchecks.info/badges/summary/parasol)](https://cran.r-project.org/web/checks/check_results_parasol.html)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/parasol?color=blue)](https://cran.r-project.org/package=parasol)
+[![](http://cranlogs.r-pkg.org/badges/last-month/parasol?color=green)](https://cran.r-project.org/package=parasol)
+[![](http://cranlogs.r-pkg.org/badges/last-week/parasol?color=yellow)](https://cran.r-project.org/package=parasol)
+[![](https://travis-ci.org/XiaoruiZhu/parasol.svg?branch=master)](https://travis-ci.org/XiaoruiZhu/parasol)
+
 <!-- badges: end -->
 
 The goal of parasol is to assess the Partial Association between Ordinal variables.
