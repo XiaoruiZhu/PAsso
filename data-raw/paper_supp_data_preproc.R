@@ -27,5 +27,5 @@ nes.clean<- function(){
 # data pre-processing
 nes96 <- nes.clean()
 
-save(nes96, file = "data/nes96.RData")
+save(nes96, file = "data/nes96.rda", compress='xz')
 

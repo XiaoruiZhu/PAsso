@@ -112,11 +112,11 @@ df5 <- simInteractionData(n = 2000)
 pairs(df5)
 
 # Save data sets
-save(df1, file = "data/df1.RData")
-save(df2, file = "data/df2.RData")
-save(df3, file = "data/df3.RData")
-save(df4, file = "data/df4.RData")
-save(df5, file = "data/df5.RData")
+save(df1, file = "data/df1.rda", compress='xz')
+save(df2, file = "data/df2.rda", compress='xz')
+save(df3, file = "data/df3.rda", compress='xz')
+save(df4, file = "data/df4.rda", compress='xz')
+save(df5, file = "data/df5.rda", compress='xz')
 
 # Data Generating Process for Partial Association --------------------------
 library(multinomRob)
@@ -158,7 +158,7 @@ Y2 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p2.mat[x,])==1)))
 df_ParA <- list(data=data.frame(Y1=Y1, Y2=Y2, X=X, Z1=Z1, Z2=Z2),
                 alpha1=alpha1, alpha2=alpha2, beta1=beta1, beta2=beta2)
 
-save(df_ParA, file = "data/df_ParA.RData")
+save(df_ParA, file = "data/df_ParA.rda", compress='xz')
 
 library(VGAM)
 fit.adj1<- vglm(Y1~X, family=acat(reverse=TRUE, parallel=TRUE))

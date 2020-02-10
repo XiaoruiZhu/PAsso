@@ -11,9 +11,6 @@ data(nes96)
 summary(nes96)
 
 # Bivariate analysis of VOTE and PID (Kendall's tao) ----------------------
-y1 <- nes96$vote.num
-y2 <- nes96$PID
-X <- as.matrix(nes96[c("income.num", "age", "edu.year")])
 
 # marginal association (Kendall's tau)
 tau <- cor(nes96[,c("vote.num", "PID")],method = "kendall")
@@ -26,8 +23,10 @@ tau; tau.sd.boot
 
 # "corr" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
 # Test "corr" function: Partial Association by surrogate residuals regression models
-fit.vote<- glm(y1 ~ X, family = binomial(link = "probit"))
-fit.PID<- polr(as.factor(y2)~ X, method="probit")
+fit.vote<- glm(vote.num ~ income.num+ age + edu.year, data = nes96,
+               family = binomial(link = "probit"))
+fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes96,
+               method="probit")
 
 PAsso_adv1 <- corr(fitted.models=list(fit.vote, fit.PID),
                    association = c("partial"),
@@ -36,7 +35,7 @@ PAsso_adv1 <- corr(fitted.models=list(fit.vote, fit.PID),
 
 # Partial association coefficients (Parts of Table 7 in paper)
 PAsso_adv1$corr
-print(PAsso_adv1, digits = 3)
+print(PAsso_adv1, digits = 5)
 summary(PAsso_adv1)
 
 # "corr" function: The simple way, input response and confounders only ----------------------------
@@ -72,23 +71,29 @@ PAsso_1$corr;
 PAsso_2
 
 # Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
+library(progress)
 
 system.time(Pcor_SR_test1 <- corr.test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
 Pcor_SR_test1$corr; Pcor_SR_test1$corr_stat; Pcor_SR_test1$corr_p.value; Pcor_SR_test1$CI_95
-
+print(Pcor_SR_test1,3)
 # Pcor_SR.test function: Test by parallel ----------------------------
 
-library(parallel); library(doSNOW); library(progress)
+library(doParallel); library(progress)
 
-system.time(Pcor_SR_test2 <- corr.test(object = PAsso_1, boot_SE=20, H0=0, parallel=TRUE))
-Pcor_SR_test2$corr; Pcor_SR_test2$corr_stat; Pcor_SR_test2$corr_p.value; Pcor_SR_test2$CI_95
+numCores <- detectCores()  # Not too aggressive!
+cl <- makeCluster(numCores)
+# registerDoSNOW(cl) # on Mac or Linux
+registerDoParallel(cl) # Win
+
+system.time(Pcor_SR_test2 <- corr.test(object = PAsso_2, boot_SE=40, H0=0, parallel=TRUE))
+Pcor_SR_test2$sd_MatCor; Pcor_SR_test2$corr; Pcor_SR_test2$corr_stat; Pcor_SR_test2$corr_p.value; Pcor_SR_test2$CI_95
+print(Pcor_SR_test2,3)
+
+stopCluster(cl)
 
 # multivariate analysis (5 variables) --------------------------------------------------------------------
-y3<- nes96clean$selfLR
-y4<- nes96clean$ClinLR
-y5<- nes96clean$DoleLR
 # marginal correlation
-dta <- dplyr::select(nes96clean, vote.num, PID, selfLR, ClinLR, DoleLR,
+dta <- dplyr::select(nes96, vote.num, PID, selfLR, ClinLR, DoleLR,
                      income.num, age, edu.year) %>%
   dplyr::mutate(vote.num=as.factor(vote.num), PID=as.factor(PID),
                 selfLR=as.factor(selfLR), ClinLR=as.factor(ClinLR), DoleLR=as.factor(DoleLR))
@@ -96,10 +101,11 @@ head(dta)
 
 # Marginal association matrix (Left part of Table 7 in paper)
 Mcor_tau <- cor(
-  dplyr::select(nes96clean, vote.num,
+  dplyr::select(nes96, vote.num,
                 PID, selfLR, ClinLR, DoleLR),
   method = "kendall")
-Mcor_tau
+Mcor_tau[lower.tri(Mcor_tau)] <- NA
+print(Mcor_tau, na.print="")
 
 # regression model
 fit.selfLR<- polr(selfLR ~ income.num + age + edu.year,
@@ -110,19 +116,32 @@ fit.DoleLR<- polr(DoleLR ~ income.num + age + edu.year,
                   data = dta, method="probit")
 
 # surrogate residual
-PAsso_5v <- corr(
+PAsso_adv_5v <- corr(
   fitted.models = list(fit.vote, fit.PID, fit.selfLR, fit.ClinLR, fit.DoleLR),
   association = c("partial"),
   method = c("kendall"), resids.method = "latent", rep_num=30)
 
-PAsso_5v$corr # (Right part of Table 7 in paper)
+PAsso_adv_5v # (Right part of Table 7 in paper)
+summary(PAsso_adv_5v)
+
+PAsso_5v <- corr(responses = c("vote.num", "PID", "selfLR", "ClinLR", "DoleLR"),
+                 adjustments = c("income.num", "age", "edu.year"),
+                 data = nes96,
+                 association = c("partial"),
+                 method = c("kendall"), resids.method = "latent", rep_num=30)
+
+PAsso_5v # (Right part of Table 7 in paper)
 summary(PAsso_5v)
 
-# Partial Regression plot matrix ------------------------------------------
-dim(PAsso_5v$rep_SRs[,1,])
+system.time(PAsso_5v_test <- corr.test(object = PAsso_5v, boot_SE=20, H0=0, parallel=TRUE))
+PAsso_5v_test$sd_MatCor; PAsso_5v_test$corr;
+PAsso_5v_test$corr_stat; PAsso_5v_test$corr_p.value; PAsso_5v_test$CI_95
+print(PAsso_5v_test, 3)
 
+# Partial Regression plot matrix ------------------------------------------
 ggpairs.PAsso(object = PAsso_1, colour="blue")
 ggpairs.PAsso(object = PAsso_adv1, colour="blue")
 ggpairs.PAsso(object = PAsso_2, colour="blue")
 ggpairs.PAsso(object = PAsso_5v, colour="blue")
+# ggpairs.PAsso(object = PAsso_5v_test, colour="blue")
 

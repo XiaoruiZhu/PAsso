@@ -58,7 +58,4 @@ The data has been cleaned, and a few numeric variables are added.
 \examples{
 head(nes96)
 }
-\references{
-
-}
 \keyword{datasets}

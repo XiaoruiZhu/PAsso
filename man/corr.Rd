@@ -2,7 +2,7 @@
 % Please edit documentation in R/corr.R
 \name{corr}
 \alias{corr}
-\title{Correlation coefficients and partial correlation coefficients between
+\title{The Correlation and partial correlation coefficients between
 ordinal responses after adjusting for a set of covariates.}
 \usage{
 corr(responses, adjustments, data, association = c("partial",
@@ -75,29 +75,90 @@ The list contains:
 }
 }
 \description{
-This function is mainly designed to conduct partial association analysis
-partial association analysis bewteen two or more ordinal response variables
-after adjusting for a set of covariates. It can conduct marginal correlation
-analyses without adjusting covariates. It generates an object that has
-correlation coefficients matrix, and some attributes ("arguments" saves
-c(association, method, resids.method)). The attribute "responses" contains
-the response variables.
+This function is mainly designed for conducting the partial association analysis
+bewteen two or more ordinal response variables after adjusting for a set of
+covariates. It can also conduct marginal correlation analyses without adjusting
+covariates. It generates an object that has correlation coefficients matrix,
+and some attributes ("arguments" saves c(association, method, resids.method)).
+The attribute "responses" contains the names of response variables.
 }
 \examples{
-# import data
+#
+# Adjacent Categories Regression Model Example to compare different residuals
+#
+
+data("df_ParA")
+summary(df_ParA$data)
+fit_clm1 <- VGAM::vglm(Y1 ~ X, family =
+                      VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
+                      data = df_ParA$data)
+fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
+                       VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
+                       data = df_ParA$data)
+SR1 <- resids(fit_clm1, method = "latent",boot_id = NULL)
+SR2 <- resids(fit_clm2, method = "latent", boot_id = NULL)
+
+## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
+PR1 <- resids(fit_clm1, method = "Sign", boot_id = NULL)
+PR2 <- resids(fit_clm2, method = "Sign", boot_id = NULL)
+
+## obtain generalized residuals (Franses and Paap 2001 book)
+GR1 <- resids(fit_clm1, method = "General", boot_id = NULL)
+GR2 <- resids(fit_clm2, method = "General", boot_id = NULL)
+
+## obtain deviance residuals
+DR1 <- resids(fit_clm1, method = "Deviance", boot_id = NULL)
+DR2 <- resids(fit_clm2, method = "Deviance", boot_id = NULL)
+
+## visualize residual vs. residual
+par(mfrow=c(2,2))
+par(mar=c(4, 4.8, 2.5, 1.5))
+
+plot(PR1, PR2, pch=".", main = "Sign-based Residuals",
+     xlab = expression(paste(R[1]^"ALT")),
+     ylab = expression(paste(R[2]^"ALT")))
+plot(GR1, GR2, pch=".", main = "Generalized Residuals",
+     xlab = expression(paste(R[1]^"ALT")),
+     ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
+plot(DR1, DR2, pch='.', main = "Deviance Residuals",
+     xlab = expression(paste(R[1]^"ALT")),
+     ylab = expression(paste(R[2]^"ALT")))
+plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
+     xlab = expression(R[1]), ylab = expression(R[2]),
+     xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
+axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+
+# Import nes96 data in "parasol"
 data(nes96)
+# Parial association:
 PAsso_1 <- corr(responses = c("vote.num", "PID"),
-adjustments = c("income.num", "age", "edu.year"),
-data = nes96,
-association = c("partial"),
-models = c("probit", "probit"),
-method = c("kendall"),
-resids.method = "latent", fitted.models = NULL, rep_num = 100)
+                adjustments = c("income.num", "age", "edu.year"),
+                data = nes96,
+                association = c("partial"),
+                models = c("probit", "probit"),
+                method = c("kendall"),
+                resids.method = "latent",
+                fitted.models = NULL, rep_num = 100)
 
-# Compare marginal correlation and partial correlation.
-#tau; tau.sd.boot
-PAsso_1$corr;
-#Pcor_2$corr;
+# Marginal association:
+MAsso_1 <- corr(responses = c("vote.num", "PID"),
+                adjustments = c("income.num", "age", "edu.year"),
+                data = nes96,
+                association = c("marginal"))
+
+# Compare marginal correlation with partial correlation.
+PAsso_1
+MAsso_1
 
 
+}
+\references{
+Dungang Liu, Shaobo Li and Yan Yu. Assessing Partial Association Between Ordinal
+Variables: A General Framework
+
+Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+Regression Models: A Surrogate Approach.
+\emph{Journal of the American Statistical Association} (accepted). URL
+http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20
 }

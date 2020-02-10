@@ -42,7 +42,9 @@ test_that("marginal correlation for two responses", {
 
 
 test_that("partial correlation for two responses",{
-
+  skip_if_not_installed("MASS")
+  skip_if_not_installed("parcor")
+  skip_if_not_installed("tidyverse")
   # "corr" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
 
   y1 <- nes96$vote.num

@@ -90,50 +90,6 @@
 #'                lpars = list(lwd = 3, col = "red2"))
 #' abline(h = 0, lty = 2, col = "blue2")
 #'
-#' #
-#' # Another Adjacent Categories Regression Model Example to compare different residuals
-#' #
-#'
-#' load(file = "data/df_ParA.RData")
-#' summary(df_ParA$data)
-#' fit_clm1 <- VGAM::vglm(Y1 ~ X, family =
-#'                       VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE))
-#' fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
-#'                        VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE))
-#' SR1 <- generate_residuals(fit_clm1, method = "latent",boot_id = NULL)
-#' SR2 <- generate_residuals(fit_clm2, method = "latent", boot_id = NULL)
-#'
-#' ## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
-#' PR1 <- generate_residuals(fit_clm1, method = "Sign", boot_id = NULL)
-#' PR2 <- generate_residuals(fit_clm2, method = "Sign", boot_id = NULL)
-#'
-#' ## obtain generalized residuals (Franses and Paap 2001 book)
-#' GR1 <- generate_residuals(fit_clm1, method = "General", boot_id = NULL)
-#' GR2 <- generate_residuals(fit_clm2, method = "General", boot_id = NULL)
-#'
-#' ## obtain deviance residuals
-#' DR1 <- generate_residuals(fit_clm1, method = "Deviance", boot_id = NULL)
-#' DR2 <- generate_residuals(fit_clm2, method = "Deviance", boot_id = NULL)
-#'
-#' ## visualize residual vs. residual
-#' par(mfrow=c(2,2))
-#' par(mar=c(4, 4.8, 2.5, 1.5))
-#'
-#' plot(PR1, PR2, pch=".", main = "Sign-based Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(GR1, GR2, pch=".", main = "Generalized Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
-#' plot(DR1, DR2, pch='.', main = "Deviance Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
-#'      xlab = expression(R[1]), ylab = expression(R[2]),
-#'      xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
-#' axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
-#' axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
-#'
 resids <- function(object, nsim = 1L,
                    method = c("latent", "jitter", "Sign", "General", "Deviance"),
                    jitter.scale = c("response", "probability"), ...) {

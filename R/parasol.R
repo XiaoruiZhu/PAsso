@@ -1,14 +1,14 @@
-#' parasol: An R package for assessing the Partial ASSociation between
+#' @title parasol: An R package for assessing the Partial ASSociation between
 #' Ordinal variables. It includes quantification, visualization, and hypothesis testing.
 #'
-#' The \code{parasol}: a package for assessing the PARtial ASsociation between
+#' @description The \code{parasol}: a package for assessing the PARtial ASsociation between
 #' OrdinaL variables for fitted ordinal and general (e.g., binary)
 #' regression models of class
 #' \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}},
 #' \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
-#' The development version can be found on GitHub:
+#' @details The development version can be found on GitHub:
 #' \url{https://github.com/XiaoruiZhu/parasol}. As of right now, \code{parasol} exports the
 #' following functions:
 #' \itemize{
@@ -39,7 +39,7 @@
 #'
 #' @importFrom stats qunif runif
 #'
-#' @importFrom Rcpp sourceCpp
+#' @import Rcpp
 #'
 #' @docType package
 #'

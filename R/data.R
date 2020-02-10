@@ -236,7 +236,6 @@ NULL
 #'   \item \code{vote.num} recode(vote, 'Clinton'=0, 'Dole'=1),
 #' }
 #'
-#' @references
 #'
 #' @name nes96
 #'

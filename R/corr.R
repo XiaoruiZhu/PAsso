@@ -1,13 +1,12 @@
-#' Correlation coefficients and partial correlation coefficients between
+#' The Correlation and partial correlation coefficients between
 #' ordinal responses after adjusting for a set of covariates.
 #'
-#' This function is mainly designed to conduct partial association analysis
-#' partial association analysis bewteen two or more ordinal response variables
-#' after adjusting for a set of covariates. It can conduct marginal correlation
-#' analyses without adjusting covariates. It generates an object that has
-#' correlation coefficients matrix, and some attributes ("arguments" saves
-#' c(association, method, resids.method)). The attribute "responses" contains
-#' the response variables.
+#' This function is mainly designed for conducting the partial association analysis
+#' bewteen two or more ordinal response variables after adjusting for a set of
+#' covariates. It can also conduct marginal correlation analyses without adjusting
+#' covariates. It generates an object that has correlation coefficients matrix,
+#' and some attributes ("arguments" saves c(association, method, resids.method)).
+#' The attribute "responses" contains the names of response variables.
 #'
 #' @param responses A string vector that specifies response variables. It requires to be equal
 #' or greater than two variables in the data frame.
@@ -32,12 +31,6 @@
 #'   \item{\code{General}}{Generalized residuals (Franses and Paap 2001);}
 #'   \item{\code{Deviance}}{Deviance residuals (-2*loglik).}
 #' }
-#' @param rep_num A number to specify repeat times of simulation of surrogate residuls
-#' such that the partial correlation coefficients are calculated repeatly. The final
-#' correlation coefficents the average of all partial correlation coefficients.
-#' It is the \code{"nsim"} argument in \code{"resids()"} function.
-#' @param ... Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
-#' in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)
 #' @param fitted.models A list contains all the models (S3 objects) you want to
 #' assess for the partial association between ordinal responses after adjusting
 #' for a set of covariates covariates. All of these models should be applied to the
@@ -46,7 +39,14 @@
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
-#' @import matrixStats
+#' @param rep_num A number to specify repeat times of simulation of surrogate residuls
+#' such that the partial correlation coefficients are calculated repeatly. The final
+#' correlation coefficents the average of all partial correlation coefficients.
+#' It is the \code{"nsim"} argument in \code{"resids()"} function.
+#' @param ... Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
+#' in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)
+#'
+#' @import matrixStats MASS
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
 #' components if \code{"partial"} is the association argument. It contains the partial
@@ -63,24 +63,85 @@
 #'   \item{\code{mods_n}}{The sample size of each fitted model;}
 #'   \item{\code{cor_func}}{The correlation function after assign different method.}
 #' }
+#' @references
+#' Dungang Liu, Shaobo Li and Yan Yu. Assessing Partial Association Between Ordinal
+#' Variables: A General Framework
+#'
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted). URL
+#' http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20
 #'
 #' @export
 #'
 #' @examples
-#' # import data
-#' data(nes96)
-#' PAsso_1 <- corr(responses = c("vote.num", "PID"),
-#' adjustments = c("income.num", "age", "edu.year"),
-#' data = nes96,
-#' association = c("partial"),
-#' models = c("probit", "probit"),
-#' method = c("kendall"),
-#' resids.method = "latent", fitted.models = NULL, rep_num = 100)
+#' #
+#' # Adjacent Categories Regression Model Example to compare different residuals
+#' #
 #'
-#' # Compare marginal correlation and partial correlation.
-#' #tau; tau.sd.boot
-#' PAsso_1$corr;
-#' #Pcor_2$corr;
+#' data("df_ParA")
+#' summary(df_ParA$data)
+#' fit_clm1 <- VGAM::vglm(Y1 ~ X, family =
+#'                       VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
+#'                       data = df_ParA$data)
+#' fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
+#'                        VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
+#'                        data = df_ParA$data)
+#' SR1 <- resids(fit_clm1, method = "latent",boot_id = NULL)
+#' SR2 <- resids(fit_clm2, method = "latent", boot_id = NULL)
+#'
+#' ## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
+#' PR1 <- resids(fit_clm1, method = "Sign", boot_id = NULL)
+#' PR2 <- resids(fit_clm2, method = "Sign", boot_id = NULL)
+#'
+#' ## obtain generalized residuals (Franses and Paap 2001 book)
+#' GR1 <- resids(fit_clm1, method = "General", boot_id = NULL)
+#' GR2 <- resids(fit_clm2, method = "General", boot_id = NULL)
+#'
+#' ## obtain deviance residuals
+#' DR1 <- resids(fit_clm1, method = "Deviance", boot_id = NULL)
+#' DR2 <- resids(fit_clm2, method = "Deviance", boot_id = NULL)
+#'
+#' ## visualize residual vs. residual
+#' par(mfrow=c(2,2))
+#' par(mar=c(4, 4.8, 2.5, 1.5))
+#'
+#' plot(PR1, PR2, pch=".", main = "Sign-based Residuals",
+#'      xlab = expression(paste(R[1]^"ALT")),
+#'      ylab = expression(paste(R[2]^"ALT")))
+#' plot(GR1, GR2, pch=".", main = "Generalized Residuals",
+#'      xlab = expression(paste(R[1]^"ALT")),
+#'      ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
+#' plot(DR1, DR2, pch='.', main = "Deviance Residuals",
+#'      xlab = expression(paste(R[1]^"ALT")),
+#'      ylab = expression(paste(R[2]^"ALT")))
+#' plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
+#'      xlab = expression(R[1]), ylab = expression(R[2]),
+#'      xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
+#' axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+#' axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+#'
+#' # Import nes96 data in "parasol"
+#' data(nes96)
+#' # Parial association:
+#' PAsso_1 <- corr(responses = c("vote.num", "PID"),
+#'                 adjustments = c("income.num", "age", "edu.year"),
+#'                 data = nes96,
+#'                 association = c("partial"),
+#'                 models = c("probit", "probit"),
+#'                 method = c("kendall"),
+#'                 resids.method = "latent",
+#'                 fitted.models = NULL, rep_num = 100)
+#'
+#' # Marginal association:
+#' MAsso_1 <- corr(responses = c("vote.num", "PID"),
+#'                 adjustments = c("income.num", "age", "edu.year"),
+#'                 data = nes96,
+#'                 association = c("marginal"))
+#'
+#' # Compare marginal correlation with partial correlation.
+#' PAsso_1
+#' MAsso_1
 #'
 #'
 corr <- function(responses, adjustments, data,
@@ -91,6 +152,7 @@ corr <- function(responses, adjustments, data,
                  fitted.models = NULL,
                  rep_num = 100, ...){
 
+  # TEST HEADER:
   # responses <- c("vote.num", "PID")
   # adjustments <- c("income.num", "age", "edu.year")
   # association = "partial"; method = "kendall"; resids.method = "latent"
@@ -143,8 +205,7 @@ corr <- function(responses, adjustments, data,
 
     }
 
-    n_responses <- length(responses) # Only work for two response variables
-    # if (n_responses>2) { stop("More than two responses, please calculate them pair by pair!") }
+    n_responses <- length(responses)
     n_adjustments <- length(adjustments)
 
     # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
@@ -159,7 +220,8 @@ corr <- function(responses, adjustments, data,
     }
 
     # Combine Models together -------------------------------
-    # Use different functions if response has differen levels!
+    # Use two different functions (polr, glm) if response has differen levels!
+    # NEEDED FEATURE: Test for other packages.
     fitted.models <- list()
     for (i in 1:n_responses) {
       if (length(unique(data[,responses[i]])) > 2) { # If response has more than 2 levels, use "polr", otherwise "glm".
@@ -245,54 +307,44 @@ corr <- function(responses, adjustments, data,
 } ## end of function
 
 
-#' @return \code{NULL}
-#'
 #' @rdname print
 #' @method print PAsso
 #'
 #' @export
-print.PAsso <- function(x, digits = max(3, getOption("digits") - 3), ...) {
+print.PAsso <- function(x, ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
-  print(signif(x$corr, digits))
+  print(signif(x$corr, ...))
 }
 
-#' @return \code{NULL}
-#'
+
 #' @rdname summary
 #' @method summary PAsso
 #'
 #' @export
-summary.PAsso <- function(x, digits = max(3, getOption("digits") - 3), ...) {
+summary.PAsso <- function(object, ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
-  print(signif(x$corr, digits))
+  print(signif(object$corr, ...))
 
   cat("--------------------------------------------\n")
   cat("\nThe fitted models of the response variables are: \n", sep = "")
-  print(x$fitted.models)
+  print(object$fitted.models)
 }
 
 
-#' @return \code{NULL}
-#'
-#' @rdname print
-#' @method print MAsso
-#'
-#' @export
-print.MAsso <- function(x, digits = max(3, getOption("digits") - 3), ...) {
-  cat("-------------------------------------------- \n")
-  cat("The partial correlation coefficient matrix: \n")
-  print(signif(x$corr, digits))
-}
-
-#' @return \code{NULL}
-#'
 #' @rdname summary
 #' @method summary MAsso
 #'
 #' @export
-summary.MAsso <- print.MAsso
+summary.MAsso <- function(object, ...) {
+  cat("-------------------------------------------- \n")
+  cat("The partial correlation coefficient matrix: \n")
+  print(signif(object, ...))
 
+  cat("--------------------------------------------\n")
+  cat("\nThe fitted models of the response variables are: \n", sep = "")
+  print(object$fitted.models)
+}
 
 
