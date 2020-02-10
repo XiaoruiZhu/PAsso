@@ -15,16 +15,12 @@ The goal of parasol is to assess the Partial Association between Ordinal variabl
 Overview
 --------
 
-An R package of a unified framework for assessing **Par**rtial **As**sociation between **O**rdina**l** variables. It includes quantification, visualization, and hypothesis testing. All the products are based on the paper [Dungang, Shaobo, Yan (2019)] and the approach described in [Dungang and Zhang
-(2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20).
+An R package of a unified framework for assessing **Par**rtial **As**sociation between **O**rdina**l** variables. It includes quantification, visualization, and hypothesis testing. All the products are based on the paper by Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019) and the approach described in [Dungang and Zhang
+(2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20) and Greenwell et al. (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
 
 ## Installation
 
-The `parasol` package is currently listed on [parasol CRAN]() and can easily be installed:
-
-``` r
-install.packages("parasol")
-```
+The `parasol` package is currently not available on [parasol CRAN]() and wait for future updates.
 
 ### Install from GitHub
 
@@ -67,7 +63,7 @@ MAsso_1
 References
 ----------
 
-Dungang, Shaobo, Yan (2019). A unified framework for assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing.
+Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019). A unified framework for assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing.
 
 Liu, D. and Zhang, H. Residuals and Diagnostics for Ordinal Regression
 Models: A Surrogate Approach. *Journal of the American Statistical

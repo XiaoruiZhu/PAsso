@@ -177,83 +177,17 @@ corr <- function(responses, adjustments, data,
                      wolfsigma = function(X)
                        t(copBasic::wolfCOP(para = data.frame(X), as.sample = TRUE)))
 
-  # Pull out ingredients for cooking --------------------------------------------
-  if (!missing(fitted.models) & is.list(fitted.models)) { # If fitted.models is imported as a list, then done!
-    responses <- sapply(fitted.models, function(mod) colnames(model.frame(mod))[1])
-    n_responses <- length(responses)
 
-    mods_ys <- sapply(fitted.models, function(mod) model.frame(mod)[,1])
-    colnames(mods_ys) <- c(responses)
-    conf_temp <- lapply(fitted.models, function(mod) colnames(model.frame(mod)[1,-1]))
-
-    if (length(unique.default(conf_temp)) != 1L) { # If data are not same, stop!
-      stop("The imported fitted.models have different confounders!")
-    } else { # If confounders are same, use them!
-      adjustments <- conf_temp[[1]]; n_adjustments <- length(adjustments)
-    }
-
-    data <- data.frame(mods_ys, model.frame(fitted.models[[1]])[,-1]) # Make sure data is data.frame to avoid issue!
-    colnames(data) <- c(responses, adjustments)
-
-  } else { # Start to deal with "responses" and "adjustments"
-    if ((length(responses) != length(models)) | ((!missing(responses)) & missing(models))) {
-      # models_Q <- utils::menu(choices = c("Yes", "No"),
-      #                         title="Not all models of the responses are specified. Will you sse same model for all responses?")
-      # if (models_Q) {
-      # message("Use same probit model for all models!")
-      models <- rep("probit", length(responses))
-
-    }
-
-    n_responses <- length(responses)
-    n_adjustments <- length(adjustments)
-
-    # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
-    mods_ys <- as.matrix(data[,responses])
-
-    formulaAll <-
-      sapply(responses,
-             function(X) paste(X, paste(adjustments, collapse = "+"), sep = "~"))
-
-    for (i in responses) { # Change all response variables to factor type to avoid error!
-      data[,i] <- as.factor(data[,i])
-    }
-
-    # Combine Models together -------------------------------
-    # Use two different functions (polr, glm) if response has differen levels!
-    # NEEDED FEATURE: Test for other packages.
-    fitted.models <- list()
-    for (i in 1:n_responses) {
-      if (length(unique(data[,responses[i]])) > 2) { # If response has more than 2 levels, use "polr", otherwise "glm".
-        fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
-                                            method = models[i], data = quote(data)))
-        # assign(x = paste("fitted", responses[i], sep = "_"),
-        # fitted_temp)
-        fitted.models[[i]] <- fitted_temp
-        # FIXED: formula now is shown as what it is (by "do.call" and "quote")!
-      } else {
-        fitted_temp <- do.call("glm",
-                               list(formula = as.formula(formulaAll[i]),
-                                    family = quote(binomial(link = models[i])),
-                                    data = quote(data)))
-        # assign(x = paste("fitted", responses[i], sep = "_"),
-        # fitted_temp)
-        fitted.models[[i]] <- fitted_temp
-        # summary(fitted_vote.num)
-        # identical(fitted_temp, fitted_vote.num)
-      }
-    }
-  }
-
-  mods_n <- sapply(fitted.models, nobs)
-  # mods_ys_names <- responses # sapply(fitted.models, function(mod) colnames(model.frame(mod))[1])
-
-  if (length(unique.default(mods_n)) != 1L) { # if sample sizes of all models object are not same, stop!
-    stop("Stop due to different data in the models!")
-  }
 
   # Main Body ---------------------------------------------------------------
   if (association=="marginal") { # marginal association (Default Kendall's tau)
+    # Pull out ingredients for cooking marginal association --------------------------------------------
+    if (missing(responses) & association=="marginal") {
+      stop("For marginal association analysis, responses are required!")
+    }
+
+    # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
+    mods_ys <- as.matrix(data[,responses])
 
     MatCorr <- cor(mods_ys, method = method)
     attr(MatCorr, "arguments") <- c(association, method)
@@ -263,7 +197,83 @@ corr <- function(responses, adjustments, data,
     return(MatCorr)
 
   } else { # Partial Association based on surrogate residuals
-    # Only simulate once to get correlation
+    # Pull out ingredients for cooking partial association --------------------------------------------
+    if (!missing(fitted.models) & is.list(fitted.models)) { # If fitted.models is imported as a list, then done!
+      responses <- sapply(fitted.models, function(mod) colnames(model.frame(mod))[1])
+      n_responses <- length(responses)
+
+      mods_ys <- sapply(fitted.models, function(mod) model.frame(mod)[,1])
+      colnames(mods_ys) <- c(responses)
+      conf_temp <- lapply(fitted.models, function(mod) colnames(model.frame(mod)[1,-1]))
+
+      if (length(unique.default(conf_temp)) != 1L) { # If data are not same, stop!
+        stop("The imported fitted.models have different confounders!")
+      } else { # If confounders are same, use them!
+        adjustments <- conf_temp[[1]]; n_adjustments <- length(adjustments)
+      }
+
+      data <- data.frame(mods_ys, model.frame(fitted.models[[1]])[,-1]) # Make sure data is data.frame to avoid issue!
+      colnames(data) <- c(responses, adjustments)
+
+    } else { # Start to deal with "responses" and "adjustments"
+      if ((length(responses) != length(models)) | ((!missing(responses)) & missing(models))) {
+        # models_Q <- utils::menu(choices = c("Yes", "No"),
+        #                         title="Not all models of the responses are specified. Will you sse same model for all responses?")
+        # if (models_Q) {
+        # message("Use same probit model for all models!")
+        models <- rep("probit", length(responses))
+
+      }
+
+      n_responses <- length(responses)
+      n_adjustments <- length(adjustments)
+
+      # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
+      mods_ys <- as.matrix(data[,responses])
+
+      formulaAll <-
+        sapply(responses,
+               function(X) paste(X, paste(adjustments, collapse = "+"), sep = "~"))
+
+      for (i in responses) { # Change all response variables to factor type to avoid error!
+        data[,i] <- as.factor(data[,i])
+      }
+
+      # Combine Models together -------------------------------
+      # Use two different functions (polr, glm) if response has differen levels!
+      # NEEDED FEATURE: Test for other packages.
+      fitted.models <- list()
+      for (i in 1:n_responses) {
+        if (length(unique(data[,responses[i]])) > 2) { # If response has more than 2 levels, use "polr", otherwise "glm".
+          fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
+                                              method = models[i], data = quote(data)))
+          # assign(x = paste("fitted", responses[i], sep = "_"),
+          # fitted_temp)
+          fitted.models[[i]] <- fitted_temp
+          # FIXED: formula now is shown as what it is (by "do.call" and "quote")!
+        } else {
+          fitted_temp <- do.call("glm",
+                                 list(formula = as.formula(formulaAll[i]),
+                                      family = quote(binomial(link = models[i])),
+                                      data = quote(data)))
+          # assign(x = paste("fitted", responses[i], sep = "_"),
+          # fitted_temp)
+          fitted.models[[i]] <- fitted_temp
+          # summary(fitted_vote.num)
+          # identical(fitted_temp, fitted_vote.num)
+        }
+      }
+    }
+
+    mods_n <- sapply(fitted.models, nobs)
+    # mods_ys_names <- responses # sapply(fitted.models, function(mod) colnames(model.frame(mod))[1])
+
+    if (length(unique.default(mods_n)) != 1L) { # if sample sizes of all models object are not same, stop!
+      stop("Stop due to different data in the models!")
+    }
+
+
+    # Simulate surrogate residuals for calculating the correlation -----------------------------------
     MatCorr <- matrix(1, nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses))
 
     if (rep_num==1) { # Use just one replication of SR to calcualte partial correlation!
