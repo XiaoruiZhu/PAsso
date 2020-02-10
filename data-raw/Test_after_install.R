@@ -4,6 +4,7 @@ library(parcor)
 library(parasol)
 library(tidyverse)
 library(matrixStats)
+library(progress)
 
 # import data -------------------------------------------------------------
 data(nes96)

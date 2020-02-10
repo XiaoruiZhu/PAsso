@@ -15,7 +15,7 @@
 #'
 #' @export
 corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
-  # object <- PAsso_2; boot_SE=10; H0=0; parallel=TRUE
+  # object <- PAsso_1; boot_SE=10; H0=0; parallel=TRUE
 
   responses <- attr(object, "responses")
   adjustments <- attr(object, "adjustments")
@@ -124,7 +124,9 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
     # Return values:
     boot_left <- sum(!is.na(boot_Cor_temp))
-    boot_Cor_left <- boot_Cor_temp[, complete.cases(t(boot_Cor_temp))] # Keep complete column
+    boot_Cor_left <- matrix(data = boot_Cor_temp[, complete.cases(t(boot_Cor_temp))],
+                            nrow = length(pair_list), ncol = boot_left)
+    # Make above one as matrix to avoid bug when use apply! Keep complete column
 
     corr_stat <- corr_p.value <- matrix(NA, nrow = n_responses, ncol = n_responses)
 
