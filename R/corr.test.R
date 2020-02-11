@@ -27,7 +27,8 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
   mods_n <- object$mods_n
 
-  boot_Cor_temp <- matrix(NA, ncol = boot_SE, nrow = n_responses*(n_responses-1)/2)
+  n_corr <- n_responses*(n_responses-1)/2
+  boot_Cor_temp <- matrix(NA, ncol = boot_SE, nrow = n_corr)
   # A matrix to save all bootstrap correlation coefficients in upper triangle matrix.
   temp_pair <- combn(responses, 2) # result is a matrix, use each column!
 
@@ -51,17 +52,6 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
     if (StillBoot) { # If still run bootstrap, throw messages, otherwise stop.
 
       if (parallel) { # Use parallel for bootstrapping and "progress" package
-
-        # numCores <- detectCores() - 1 # Not too aggressive!
-        # cl <- makeCluster(numCores)
-        # registerDoSNOW(cl)
-
-        # pb <- progress_bar$new(
-        #   format = "letter = :letter [:bar] :elapsed | eta: :eta",
-        #   total = boot_SE,    # 100
-        #   width = 60)
-        # progress_letter <- rep(LETTERS[1:10], 10)  # token reported in progress bar
-
         # allowing progress bar to be used in foreach -----------------------------
         progress <- function(n){
           pb$tick(tokens = list(letter = progress_repNo[n]))
@@ -123,7 +113,7 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
     }
 
     # Return values:
-    boot_left <- sum(!is.na(boot_Cor_temp))
+    boot_left <- sum(complete.cases(t(boot_Cor_temp)))
     boot_Cor_left <- matrix(data = boot_Cor_temp[, complete.cases(t(boot_Cor_temp))],
                             nrow = length(pair_list), ncol = boot_left)
     # Make above one as matrix to avoid bug when use apply! Keep complete column
@@ -135,15 +125,16 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
     if (H0==0) {
       corr_p.value[upper.tri(corr_p.value)] <-
-        2 * apply(rbind(mean(boot_Cor_left>0),
-                        mean(boot_Cor_left<0)),
-                  MARGIN = 2,
+        2 * apply(cbind(matrixStats::rowMeans2(boot_Cor_left>0),
+                        matrixStats::rowMeans2(boot_Cor_left<0)),
+                  MARGIN = 1,
                   FUN = min)
     } else {
       corr_p.value[upper.tri(corr_p.value)] <-
-        2 * apply(rbind(mean(boot_Cor_left > -1*H0),
-                        mean(boot_Cor_left < H0, 0.5)),
-                  MARGIN = 2,
+        2 * apply(cbind(matrixStats::rowMeans2(boot_Cor_left > -1*H0),
+                        matrixStats::rowMeans2(boot_Cor_left < H0),
+                        rep(0.5, n_corr)),
+                  MARGIN = 1,
                   FUN = min)
     }
 
@@ -263,8 +254,9 @@ format.pval.corr <-
 #' @method print PAsso.test
 #'
 #' @export
-print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 2L), ...) {
-  # x <- PAsso_5v_test
+print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  # x <- PAsso_5v_test; digits = max(3L, getOption("digits") - 2L)
+
   x$corr[lower.tri(x$corr)] <- NA
 
   cat("-------------------------------------------- \n")
@@ -276,21 +268,24 @@ print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 2L), ...)
 
   for (i in 1:(n_rep-1)) {
     mat_tem[(3*i-2),i:n_rep] <-
-      format(round(x$corr[i, i:n_rep], digits = digits, ...), nsmall = digits)
+      format(x$corr[i, i:n_rep], digits = digits-1, ...)
+      # format(x$corr[i, i:n_rep], digits = digits-1)
 
     mat_tem[(3*i-1),(i+1):n_rep] <-
-      format(round(x$sd_MatCor[i,(i+1):n_rep], digits = digits, ...), nsmall = digits)
+      format(x$sd_MatCor[i,(i+1):n_rep], digits = max(1, digits-2), ...)
+    # format(x$sd_MatCor[i,(i+1):n_rep], digits = digits-1)
 
     temp_p <- x$corr_p.value[i,(i+1):n_rep]
     Cf_p <- format.pval.corr(temp_p, boot_SE = boot_SE,
                              digits = digits, ...)
+                             # digits = digits)
     Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
                      symbols = c("***", "**", "*", ".", " "))
     mat_tem[(3*i),(i+1):n_rep] <- paste(Cf_p, format(Signif), sep = "")
     # Std. Error
   }
-  mat_tem[(3*n_rep-2),n_rep] <- "1"
+  mat_tem[(3*n_rep-2),n_rep] <- format(x$corr[n_rep, n_rep], digits = digits-1, ...)
 
   colnames(mat_tem) <- colnames(x$corr)
   temp_rowname <- rep(rownames(x$corr), each=3)
@@ -302,7 +297,9 @@ print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 2L), ...)
   rownames(mat_tem) <- temp_rowname
 
   # mat_tem[is.na(mat_tem)] <- " "
-  print(mat_tem, na.print = "")
+  # print(mat_tem, na.print = "")
+  print.default(mat_tem, na.print = "",
+                print.gap = 2, quote = FALSE, ...)
 }
 
 #' @rdname summary

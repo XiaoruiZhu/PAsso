@@ -22,10 +22,7 @@ An R package of a unified framework for assessing **Par**rtial **As**sociation b
 
 The `parasol` package is currently not available on [parasol CRAN]() and wait for future updates.
 
-### Install from GitHub
-
-
-# Alternatively, install the development version from GitHub
+### Install the development version from GitHub
 
 ``` r
 if (!requireNamespace("devtools")) install.packages("devtools")
@@ -57,7 +54,25 @@ MAsso_1 <- corr(responses = c("vote.num", "PID"),
 
 # Compare marginal correlation with partial correlation.
 PAsso_1
+summary(PAsso_1, digits=3)
 MAsso_1
+
+# Association analysis between five ordinal responses
+PAsso_5v <- corr(responses = c("vote.num", "PID", "selfLR", "ClinLR", "DoleLR"),
+                 adjustments = c("income.num", "age", "edu.year"),
+                 data = nes96,
+                 association = c("partial"),
+                 method = c("kendall"), resids.method = "latent", rep_num=30)
+
+print(PAsso_5v, digits=2)
+# summary(PAsso_5v) 
+
+PAsso_5v_test <- corr.test(object = PAsso_5v, boot_SE=20, H0=0)
+print(PAsso_5v_test, 3) # Summary of correlation matrix, test and models.  
+
+# Draw matrix plot
+ggpairs.PAsso(object = PAsso_5v, colour="blue")
+
 ```
 
 References

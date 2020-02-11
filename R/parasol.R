@@ -39,7 +39,6 @@
 #'
 #' @importFrom stats qunif runif
 #'
-#' @import Rcpp
 #'
 #' @docType package
 #'

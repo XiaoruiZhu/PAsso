@@ -321,10 +321,22 @@ corr <- function(responses, adjustments, data,
 #' @method print PAsso
 #'
 #' @export
-print.PAsso <- function(x, ...) {
+print.PAsso <- function(x, digits = max(3, getOption("digits")-3), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
-  print(signif(x$corr, ...))
+
+  # x$corr[lower.tri(x$corr)] <- NA
+
+  # print.default(format(x$corr, digits = max(2, (digits))),
+                # print.gap = 2, na.print = "",
+                # quote = FALSE, ...)
+
+  temp <- format(x$corr, digits = max(2, (digits)), ...)
+  temp[lower.tri(temp)] <- NA
+
+  print.default(temp,
+                print.gap = 2, na.print = "",
+                quote = FALSE, ...)
 }
 
 
@@ -332,29 +344,60 @@ print.PAsso <- function(x, ...) {
 #' @method summary PAsso
 #'
 #' @export
-summary.PAsso <- function(object, ...) {
+summary.PAsso <- function(object, digits = max(3, getOption("digits")-3), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
-  print(signif(object$corr, ...))
+  # print(signif(object$corr, ...))
+
+  temp <- format(object$corr, digits = max(2, (digits)), ...)
+  temp[lower.tri(temp)] <- NA
+
+  print.default(temp,
+                print.gap = 2, na.print = "",
+                quote = FALSE, ...)
 
   cat("--------------------------------------------\n")
   cat("\nThe fitted models of the response variables are: \n", sep = "")
   print(object$fitted.models)
+
+  # print.default(format(x$corr, digits = max(2, (digits-1))), print.gap = 2,
+                # quote = FALSE, ...)
 }
 
+#' @rdname print
+#' @method print MAsso
+#'
+#' @export
+print.MAsso <- function(x, digits = max(3, getOption("digits")-3), ...) {
+  cat("-------------------------------------------- \n")
+  cat("The marginal correlation coefficient matrix: \n")
+
+  temp <- format(x, digits = max(2, (digits)), ...)
+  temp[lower.tri(temp)] <- NA
+
+  print.default(temp,
+                print.gap = 2, na.print = "",
+                quote = FALSE, ...)
+
+}
 
 #' @rdname summary
 #' @method summary MAsso
 #'
 #' @export
-summary.MAsso <- function(object, ...) {
+summary.MAsso <- function(object,
+                          digits = max(3, getOption("digits")-3), ...) {
   cat("-------------------------------------------- \n")
-  cat("The partial correlation coefficient matrix: \n")
-  print(signif(object, ...))
+  cat("The marginal correlation coefficient matrix: \n")
+  # print(signif(object, ...))
 
-  cat("--------------------------------------------\n")
-  cat("\nThe fitted models of the response variables are: \n", sep = "")
-  print(object$fitted.models)
+  temp <- format(object, digits = max(2, (digits)), ...)
+  temp[lower.tri(temp)] <- NA
+
+  print.default(temp,
+                print.gap = 2, na.print = "",
+                quote = FALSE, ...)
+
 }
 
 

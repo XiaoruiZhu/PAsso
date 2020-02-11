@@ -36,8 +36,8 @@ PAsso_adv1 <- corr(fitted.models=list(fit.vote, fit.PID),
 
 # Partial association coefficients (Parts of Table 7 in paper)
 PAsso_adv1$corr
-print(PAsso_adv1, digits = 5)
-summary(PAsso_adv1)
+print(PAsso_adv1, digits = 3, na.print="")
+summary(PAsso_adv1, digits = 3)
 
 # "corr" function: The simple way, input response and confounders only ----------------------------
 PAsso_1 <- corr(responses = c("vote.num", "PID"),
@@ -56,6 +56,11 @@ PAsso_adv1$corr;
 PAsso_1$corr;
 PAsso_1
 
+MAsso_1 <- corr(responses = c("vote.num", "PID"),
+                data = nes96,
+                association = c("marginal"))
+summary(MAsso_1, digits=3)
+
 # "corr" function: input three responses ----------------------------
 PAsso_2 <- corr(responses = c("vote.num", "PID", "selfLR"),
                 adjustments = c("income.num", "age", "edu.year"),
@@ -70,13 +75,25 @@ tau; tau.sd.boot
 PAsso_adv1$corr;
 PAsso_1$corr;
 PAsso_2
+print(PAsso_2, digits=3)
+summary(PAsso_2)
+
+# "corr" function: input three responses ----------------------------
+PAsso_2_marg <- corr(responses = c("vote.num", "PID", "selfLR"),
+                data = nes96, association = c("marginal"))
+
+# Compare marginal correlation and partial correlation.
+PAsso_2
+PAsso_2_marg
+summary(PAsso_2_marg, digits=5)
 
 # Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
 library(progress)
 
 system.time(Pcor_SR_test1 <- corr.test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
 Pcor_SR_test1$corr; Pcor_SR_test1$corr_stat; Pcor_SR_test1$corr_p.value; Pcor_SR_test1$CI_95
-print(Pcor_SR_test1,3)
+
+print(Pcor_SR_test1)
 # Pcor_SR.test function: Test by parallel ----------------------------
 
 library(doParallel); library(progress)
@@ -86,9 +103,12 @@ cl <- makeCluster(numCores)
 # registerDoSNOW(cl) # on Mac or Linux
 registerDoParallel(cl) # Win
 
-system.time(Pcor_SR_test2 <- corr.test(object = PAsso_2, boot_SE=40, H0=0, parallel=TRUE))
-Pcor_SR_test2$sd_MatCor; Pcor_SR_test2$corr; Pcor_SR_test2$corr_stat; Pcor_SR_test2$corr_p.value; Pcor_SR_test2$CI_95
-print(Pcor_SR_test2,3)
+system.time(Pcor_SR_test2 <- corr.test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE))
+Pcor_SR_test2$sd_MatCor; Pcor_SR_test2$corr; Pcor_SR_test2$corr_stat;
+Pcor_SR_test2$corr_p.value;
+Pcor_SR_test2$CI_95
+
+print(Pcor_SR_test2)
 
 stopCluster(cl)
 
@@ -106,7 +126,7 @@ Mcor_tau <- cor(
                 PID, selfLR, ClinLR, DoleLR),
   method = "kendall")
 Mcor_tau[lower.tri(Mcor_tau)] <- NA
-print(Mcor_tau, na.print="")
+print(Mcor_tau)
 
 # regression model
 fit.selfLR<- polr(selfLR ~ income.num + age + edu.year,
@@ -123,7 +143,7 @@ PAsso_adv_5v <- corr(
   method = c("kendall"), resids.method = "latent", rep_num=30)
 
 PAsso_adv_5v # (Right part of Table 7 in paper)
-summary(PAsso_adv_5v)
+print(PAsso_adv_5v)
 
 PAsso_5v <- corr(responses = c("vote.num", "PID", "selfLR", "ClinLR", "DoleLR"),
                  adjustments = c("income.num", "age", "edu.year"),
@@ -134,10 +154,14 @@ PAsso_5v <- corr(responses = c("vote.num", "PID", "selfLR", "ClinLR", "DoleLR"),
 PAsso_5v # (Right part of Table 7 in paper)
 summary(PAsso_5v)
 
+system.time(PAsso_5v_test1 <- corr.test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
+PAsso_5v_test1$sd_MatCor; PAsso_5v_test1$corr; PAsso_5v_test1$corr_p.value
+print.PAsso.test(PAsso_5v_test, 3)
+
 system.time(PAsso_5v_test <- corr.test(object = PAsso_5v, boot_SE=20, H0=0, parallel=TRUE))
 PAsso_5v_test$sd_MatCor; PAsso_5v_test$corr;
 PAsso_5v_test$corr_stat; PAsso_5v_test$corr_p.value; PAsso_5v_test$CI_95
-print(PAsso_5v_test, 3)
+print.PAsso.test(PAsso_5v_test, 3)
 
 # Partial Regression plot matrix ------------------------------------------
 ggpairs.PAsso(object = PAsso_1, colour="blue")
