@@ -78,11 +78,9 @@ ggpairs.PAsso(object = PAsso_5v, colour="blue")
 References
 ----------
 
-Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019). A unified framework for assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing.
+Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019). A unified framework for assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing, working paper.
 
-Liu, D. and Zhang, H. Residuals and Diagnostics for Ordinal Regression
-Models: A Surrogate Approach. *Journal of the American Statistical
-Association* (accepted). URL
+Dungang Liu & Heping Zhang (2018) Residuals and Diagnostics for Ordinal Regression Models: A Surrogate Approach, Journal of the American Statistical Association, 113:522, 845-854, DOI: 10.1080/01621459.2017.1292915, URL
 <http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20>
 
 Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Dungang, L. (2018)
