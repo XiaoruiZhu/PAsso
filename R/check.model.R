@@ -55,8 +55,9 @@ check.model <- function(
   if (output == "qq") {
     for (i in 1:n_resp) {
       plot_list[[i]] <-
-        autoplot.resid(rep_SRs[,1,i], what = output,
-                       distribution = qnorm, resp_name = resp_name[i], ...)
+        # autoplot(rep_SRs[,1,i], what = output,
+        autoplot(object$fitted.models[[i]], what = output,
+                 distribution = qnorm, resp_name = resp_name[i], ...)
     }
 
     do.call("grid.arrange", c(plot_list, ncol=nCol))

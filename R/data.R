@@ -362,13 +362,13 @@ NULL
 #'   \item \code{income} Respondent's family income
 #'
 #'   \item \code{income.num} Respondent's family income: an ordered
-#'   factor with levels: income.num=recode(income, '3Kminus'=3, '3K-$5K'=4,
-#'   '5K−7K'=6, '7K−9K'=8, '9K−10K'=9.5, '10K−11K'=10.5,
-#'   '11K−12K'=11.5, '12K−13K'=12.5, '13K−14K'=13.5, '14K−15K'=14.5,
-#'   '15K−17K'=16, '17K−20K'=18.5, '20K−22K'=21, '22K−25K'=23.5,
-#'   '25K−30K'=27.5, '30K−35K'=32.5, '35K−40K'=37.5, '40K−45K'=42.5,
-#'   '45K−50K'=47.5, '50K−60K'=55, '60K−75K'=67, '75K−90K'=80,
-#'   '90K−105K'=95, '$105Kplus'=105).
+#'   factor with levels: income.num=recode(income, '3Kminus'=3, '3K-5K'=4,
+#'   '5K-7K'=6, '7K-9K'=8, '9K-10K'=9.5, '10K-11K'=10.5,
+#'   '11K-12K'=11.5, '12K-13K'=12.5, '13K-14K'=13.5, '14K-15K'=14.5,
+#'   '15K-17K'=16, '17K-20K'=18.5, '20K-22K'=21, '22K-25K'=23.5,
+#'   '25K-30K'=27.5, '30K-35K'=32.5, '35K-40K'=37.5, '40K-45K'=42.5,
+#'   '45K-50K'=47.5, '50K-60K'=55, '60K-75K'=67, '75K-90K'=80,
+#'   '90K-105K'=95, '105Kplus'=105).
 #'
 #'   \item \code{vote} Expected vote in 1996 presidential election:
 #'   a factor with levels \code{Clinton} and \code{Dole}.

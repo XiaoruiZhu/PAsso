@@ -14,6 +14,9 @@
 #'
 #' @return A list of \code{"plotly"} object with name "plot_1", "plot_2" etc.
 #'
+#' @rdname plot3D
+#' @export plot3D
+#'
 #' @examples
 #' data("nes2016_pre")
 #' PAsso_2 <- PAsso(responses = c("vote.num", "PID", "selfLR"),
@@ -23,26 +26,22 @@
 #' plot_all <- plot3D(PAsso_2)
 #' plot_all$plot_1
 #'
-#' @rdname plot3D
-#' @export plot3D
 plot3D <- function(object) {
   UseMethod("plot3D")
 }
 
-#' @return \code{NULL}
 #'
 #' @rdname plot3D
 #' @method plot3D default
 #' @export
-plot3D.default <- function(x, ...){
+plot3D.default <- function(object, ...){
 
   warning(paste("plot3D does not know how to handle object of class ",
-                class(x),
+                class(object),
                 "and can only be used on classes PAsso"))
 
 }
 
-#' @return \code{NULL}
 #'
 #' @rdname plot3D
 #' @method plot3D PAsso

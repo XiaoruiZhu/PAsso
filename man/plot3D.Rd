@@ -8,7 +8,7 @@
 \usage{
 plot3D(object)
 
-\method{plot3D}{default}(x, ...)
+\method{plot3D}{default}(object, ...)
 
 \method{plot3D}{PAsso}(object, ...)
 }
@@ -17,10 +17,6 @@ plot3D(object)
 }
 \value{
 A list of \code{"plotly"} object with name "plot_1", "plot_2" etc.
-
-\code{NULL}
-
-\code{NULL}
 }
 \description{
 A 3-D P-P plot to inspect the partial association analyses

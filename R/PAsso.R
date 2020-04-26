@@ -394,7 +394,7 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
   cat("The partial correlation coefficient matrix: \n\n")
   # print(signif(object$corr, ...))
 
-  temp <- format(object$corr, digits = max(2, (digits-1)), ...)
+  temp <- format(object$corr, digits = max(2, (digits)), ...)
   temp[lower.tri(temp)] <- NA
 
   print.default(temp,
@@ -403,7 +403,7 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
 
   cat("-------------------------------------------- \n")
   cat("The marginal correlation coefficient matrix: \n\n")
-  Marg_temp <- format(object$Marg_corr, digits = max(2, (digits-1)), ...)
+  Marg_temp <- format(object$Marg_corr, digits = max(2, (digits)), ...)
   Marg_temp[lower.tri(Marg_temp)] <- NA
 
   print.default(Marg_temp,

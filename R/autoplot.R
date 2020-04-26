@@ -86,8 +86,9 @@
 #'
 #' @return A \code{"ggplot"} object.
 #'
-#' @rdname autoplot.resid
-#'
+#' @importFrom ggplot2 autoplot
+#' @name autoplot
+#' @method autoplot resid
 #' @export
 #'
 #' @examples
@@ -206,7 +207,8 @@ autoplot.resid <- function(
       labs(x = "Fitted value", y = resp_name, ...) # Add availability for title, and revise ylab to show response
     if (smooth) {
       p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
-                           size = smooth.size, se = FALSE)
+                           size = smooth.size, se = FALSE,
+                           method = "gam", formula = y ~ s(x, bs = "cs"))
     }
     p
   } else {
@@ -228,7 +230,8 @@ autoplot.resid <- function(
                           alpha = alpha)
       if (smooth) {
         p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
-                             size = smooth.size, se = FALSE)
+                             size = smooth.size, se = FALSE,
+                             method = "gam", formula = y ~ s(x, bs = "cs"))
       }
     }
     resp_name <- paste("Residual (", resp_name , ")", sep = "")
@@ -265,7 +268,8 @@ autoplot.resid <- function(
 }
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
+#' @method autoplot clm
 #'
 #' @export
 autoplot.clm <- function(
@@ -328,31 +332,31 @@ autoplot.clm <- function(
 }
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
 #'
 #' @export
 autoplot.glm <- autoplot.clm
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
 #'
 #' @export
 autoplot.lrm <- autoplot.clm
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
 #'
 #' @export
 autoplot.orm <- autoplot.clm
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
 #'
 #' @export
 autoplot.polr <- autoplot.clm
 
 
-#' @rdname autoplot.resid
+#' @rdname autoplot
 #'
 #' @export
 autoplot.vglm <- autoplot.clm

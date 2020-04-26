@@ -7,7 +7,7 @@ Description: An R package of a unified framework for assessing Partial Associati
     Shaobo Li, Yan Yu and Irini Moustaki (2019), and the approach described 
     in Liu and Zhang (2017, <doi:https://doi.org/10.1080/01621459.2017.1292915>) 
     and Greenwell et al. (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: 
   c(person(given = "Xiaorui", family = "Zhu",
            role = c("aut", "cre"),
@@ -20,13 +20,13 @@ Authors@R:
            email = "dungang.liu@uc.edu", ))
 Maintainer: Xiaorui(Jeremy) Zhu <zhuxiaorui1989@gmail.com>
 Depends:
-  R (>= 3.5.0)
+  R (>= 3.5.0),
+  ggplot2 (>= 2.2.1)
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
 Imports: 
   GGally,
-  ggplot2 (>= 2.2.1),
   goftest,
   gridExtra,
   stats,

@@ -31,8 +31,7 @@
 #' plot(object = PAsso_1, colour="blue")
 #'
 plot.PAsso <- function(
-  object,
-  color="blue", ...
+  x, ...
 ) {
   # object <- PAsso_1; color="blue"
 

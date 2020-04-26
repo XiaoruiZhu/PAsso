@@ -206,7 +206,7 @@ PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
 
 PAsso_2
 print(PAsso_2, digits=3)
-summary(PAsso_2, digits = 5)
+summary(PAsso_2, digits = 4)
 
 check_qq <- check.model(object = PAsso_2, color="blue", output = "qq")
 
