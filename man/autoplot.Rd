@@ -9,7 +9,7 @@
 \alias{autoplot.orm}
 \alias{autoplot.polr}
 \alias{autoplot.vglm}
-\title{Residual plots}
+\title{Residual-based diagnostic plots}
 \usage{
 \method{autoplot}{resid}(
   object,
@@ -38,170 +38,21 @@
   ...
 )
 
-\method{autoplot}{clm}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{clm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 
-\method{autoplot}{glm}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{glm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 
-\method{autoplot}{lrm}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{lrm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 
-\method{autoplot}{orm}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{orm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 
-\method{autoplot}{polr}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{polr}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 
-\method{autoplot}{vglm}(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-)
+\method{autoplot}{vglm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[ordinal]{clm}},
+\item{object}{An object of class \code{\link[sure]{resids}},
+\code{\link[ordinal]{clm}},
 \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
@@ -284,10 +135,22 @@ displayed in the figure.}
 }
 \value{
 A \code{"ggplot"} object.
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
 }
 \description{
-Residual-based diagnostic plots for cumulative link and general regression
-models using \code{\link[ggplot2]{ggplot2}} graphics.
+Residual-based diagnostic plots for cumulative link and general
+regression models using \code{\link[ggplot2]{ggplot2}} graphics.
 }
 \examples{
 # See ?resids for an example

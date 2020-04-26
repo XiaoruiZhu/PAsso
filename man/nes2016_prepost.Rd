@@ -3,7 +3,7 @@
 \docType{data}
 \name{nes2016_prepost}
 \alias{nes2016_prepost}
-\title{US 2016 national election study of respondents without missing in both pre-election and post-election.}
+\title{US 2016 national election study of respondents in both pre-election and post-election interviews (Clean)}
 \format{
 A data frame with 1690 rows and 14 variables.
 \itemize{

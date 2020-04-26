@@ -1,12 +1,16 @@
-Package: parasol
+Package: PAsso
 Type: Package
-Title: Assessing the Partial Association between Ordinal Variables
+Title: Assessing the Partial Association between ordinal variables
 Description: An R package of a unified framework for assessing Partial Association 
     between ordinal variables. It includes quantification, visualization, and 
-    hypothesis testing. All the tools are based on the paper by  Dungang Liu, 
-    Shaobo Li, Yan Yu and Irini Moustaki (2019), and the approach described 
-    in Liu and Zhang (2017, <doi:https://doi.org/10.1080/01621459.2017.1292915>) 
-    and Greenwell et al. (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
+    hypothesis testing. It includes: a "PAsso" function to assess partial 
+    association between responses after adjusting covariates, a "test" function 
+    to conduct hypothesis testing for partial association, a "plot" function
+    to visualize partial regression plot matrix, a "check.model" function to 
+    diagnose the specifications of each fitted model. All the tools are based on 
+    the paper by Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019), and the
+    approach described in Liu and Zhang (2017) (<https://doi.org/10.1080/01621459.2017.1292915>),
+    and Greenwell et al. (2017) (<https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
 Version: 0.1.4
 Authors@R: 
   c(person(given = "Xiaorui", family = "Zhu",
@@ -19,6 +23,8 @@ Authors@R:
            role = c("ctb"),
            email = "dungang.liu@uc.edu", ))
 Maintainer: Xiaorui(Jeremy) Zhu <zhuxiaorui1989@gmail.com>
+URL: GitHub: https://github.com/XiaoruiZhu/parasol
+BugReports: https://github.com/XiaoruiZhu/parasol/issues
 Depends:
   R (>= 3.5.0),
   ggplot2 (>= 2.2.1)

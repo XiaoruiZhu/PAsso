@@ -2,7 +2,7 @@
 % Please edit documentation in R/check.model.R
 \name{check.model}
 \alias{check.model}
-\title{A visualization tool of diagnostics of fitted model in the partial association analysis}
+\title{A set of visualization tools to diagnos the fitted model in the partial association analysis}
 \usage{
 check.model(object, output = c("qq", "fitted", "covariate"), ...)
 }
@@ -14,7 +14,8 @@ produces a quantile-quantile plots of the residuals. \code{"fitted"} will give a
 plot between residuals and fitted response. \code{"covariates"} will give a matrix plot
 between each residual and each covariate.}
 
-\item{...}{Additional optional arguments for drawing plots to be passed onto.}
+\item{...}{This function is based on the \code{"autoplot"} function. Additional optional
+arguments can be passed onto for drawing various plots.}
 }
 \value{
 A list contains plots of \code{"ggplot"} object
@@ -23,7 +24,7 @@ A list contains plots of \code{"ggplot"} object
 A plot matrix to display the QQ-plot of each fitted model when conducting the partial
 association analyses. Based on the input of "PAsso" object, each plot stands for the
 QQ-plot of the surrogate residuals of fitted models. All the plots are based on the
-surrogate residuals generated from \code{"resides"} function.Graphics are designed
+surrogate residuals generated from \code{"resids"} function.Graphics are designed
 based on \code{\link{ggplot2}}.
 }
 \examples{

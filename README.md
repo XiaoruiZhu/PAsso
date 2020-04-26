@@ -1,4 +1,4 @@
-# parasol
+# PAsso
 
 <!-- badges: start -->
 
@@ -10,23 +10,23 @@
 
 <!-- badges: end -->
 
-The goal of parasol is to assess the Partial Association between Ordinal variables.
+The goal of package PAsso is to assess the Partial Association between ordinal variables.
 
 Overview
 --------
 
-An R package of a unified framework for assessing **Par**rtial **As**sociation between **O**rdina**l** variables. It includes quantification, visualization, and hypothesis testing. All the products are based on the paper by Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019) and the approach described in [Dungang and Zhang
+An R package of a unified framework for assessing **P**arrtial **Asso**ciation between Ordinal variables. It includes quantification, visualization, and hypothesis testing. All the products are based on the paper by Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2019) and the approach described in [Dungang and Zhang
 (2017)](http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20) and Greenwell et al. (2017, <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>).
 
 ## Installation
 
-The `parasol` package is currently not available on [parasol CRAN]() and wait for future updates.
+The `PAsso` package is currently not available on [PAsso CRAN]() and wait for future updates.
 
 ### Install the development version from GitHub
 
 ``` r
 if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("XiaoruiZhu/parasol")
+devtools::install_github("XiaoruiZhu/PAsso")
 ```
 
 ## Example
@@ -34,8 +34,8 @@ devtools::install_github("XiaoruiZhu/parasol")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(parasol)
-## Import "nes96" data in "parasol", more details of this data are "?parasol::nes96"
+library(PAsso)
+## Import "nes96" data in "PAsso", more details of this data are "?PAsso::nes96"
 data(nes96)
 # Parial association analysis between vote.num and PID:
 PAsso_1 <- corr(responses = c("vote.num", "PID"),

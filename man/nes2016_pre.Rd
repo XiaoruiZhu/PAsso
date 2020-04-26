@@ -3,7 +3,7 @@
 \docType{data}
 \name{nes2016_pre}
 \alias{nes2016_pre}
-\title{US 2016 national election study with pre-election interview only}
+\title{US 2016 national election study with pre-election interview only (Clean)}
 \format{
 A data frame with 2188 rows and 10 variables.
 \itemize{

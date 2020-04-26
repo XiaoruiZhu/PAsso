@@ -1,9 +1,10 @@
-#' Residual plots
+#' @title Residual-based diagnostic plots
 #'
-#' Residual-based diagnostic plots for cumulative link and general regression
-#' models using \code{\link[ggplot2]{ggplot2}} graphics.
+#' @description Residual-based diagnostic plots for cumulative link and general
+#' regression models using \code{\link[ggplot2]{ggplot2}} graphics.
 #'
-#' @param object An object of class \code{\link[ordinal]{clm}},
+#' @param object An object of class \code{\link[sure]{resids}},
+#' \code{\link[ordinal]{clm}},
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
@@ -267,37 +268,10 @@ autoplot.resid <- function(
 
 }
 
-
+#' @return \code{NULL}
 #' @rdname autoplot
 #' @method autoplot clm
-#'
-#' @export
-autoplot.clm <- function(
-  object,
-  what = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-) {
+autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...) {
 
   # Compute residuals
   res <- resids(object, ...)
@@ -320,43 +294,37 @@ autoplot.clm <- function(
 
   # Call the default method
   autoplot.resid(
-    res, what = what, x = x, distribution = qfun, fit = object, ncol = ncol,
-    alpha = alpha, xlab = xlab, color = color, shape = shape, size = size,
-    qqpoint.color = qqpoint.color, qqpoint.shape = qqpoint.shape,
-    qqpoint.size = qqpoint.size, qqline.color = qqline.color,
-    qqline.linetype = qqline.linetype, qqline.size = qqline.size,
-    smooth = smooth, smooth.color = smooth.color,
-    smooth.linetype = smooth.linetype, smooth.size = smooth.size, fill = fill, resp_name = resp_name, ...
+    res, what = what, distribution = qfun, fit = object, xlab = xlab, ...
   )
 
 }
 
 
+#' @return \code{NULL}
 #' @rdname autoplot
-#'
-#' @export
+#' @method autoplot glm
 autoplot.glm <- autoplot.clm
 
 
+#' @return \code{NULL}
 #' @rdname autoplot
-#'
-#' @export
+#' @method autoplot lrm
 autoplot.lrm <- autoplot.clm
 
 
+#' @return \code{NULL}
 #' @rdname autoplot
-#'
-#' @export
+#' @method autoplot orm
 autoplot.orm <- autoplot.clm
 
 
+#' @return \code{NULL}
 #' @rdname autoplot
-#'
-#' @export
+#' @method autoplot polr
 autoplot.polr <- autoplot.clm
 
 
+#' @return \code{NULL}
 #' @rdname autoplot
-#'
-#' @export
+#' @method autoplot vglm
 autoplot.vglm <- autoplot.clm
