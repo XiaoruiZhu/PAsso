@@ -15,19 +15,26 @@
 #' @return A \code{"GGally"} object.
 #' @import GGally
 #'
-#' @rdname ggpairs.PAsso
+#' @rdname plot
+#' @method plot PAsso
 #'
 #'
 #' @export
 #'
 #' @examples
-#' # See ?resids for an example
-#' ?resids
-ggpairs.PAsso <- function(
+#' data(nes2016)
+#'
+#' summary(nes2016)
+#'
+#' PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"), adjustments = c("income.num", "age", "edu.year"), data = nes2016)
+#'
+#' plot(object = PAsso_1, colour="blue")
+#'
+plot.PAsso <- function(
   object,
   color="blue", ...
 ) {
-  # object <- Pcor_5v; color="blue"
+  # object <- PAsso_1; color="blue"
 
   resid_Mat <- as.data.frame(object$rep_SRs[,1,])
   cor_method <- attr(object, "arguments")[2]
@@ -38,7 +45,8 @@ ggpairs.PAsso <- function(
          # diag = list(continuous = wrap("barDiag", colour = color)),
          # lower = list(continuous = GGally::wrap("cor", method="kendall")),
          lower = list(continuous = GGally::wrap("cor", method =cor_method)),
-         title = "Pairs plot of partial association and surrogate residuals!"
+         # lower = list(continuous = object$corr[upper.tri(object$corr)]),
+         ...
  )
 }
 

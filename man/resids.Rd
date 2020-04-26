@@ -4,9 +4,13 @@
 \alias{resids}
 \title{Surrogate residuals}
 \usage{
-resids(object, nsim = 1L, method = c("latent", "jitter", "Sign",
-  "General", "Deviance"), jitter.scale = c("response", "probability"),
-  ...)
+resids(
+  object,
+  nsim = 1L,
+  method = c("latent", "jitter", "Sign", "General", "Deviance"),
+  jitter.scale = c("response", "probability"),
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},

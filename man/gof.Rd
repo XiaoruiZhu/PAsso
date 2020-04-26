@@ -8,8 +8,7 @@
 \usage{
 gof(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
-\method{gof}{default}(object, nsim = 10, test = c("ks", "ad", "cvm"),
-  ...)
+\method{gof}{default}(object, nsim = 10, test = c("ks", "ad", "cvm"), ...)
 
 \method{plot}{gof}(x, ...)
 }

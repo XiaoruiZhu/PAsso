@@ -1,4 +1,4 @@
-context("corr: marginal and partial association")
+context("PAsso: marginal and partial association")
 
 
 test_that("marginal correlation for two responses", {
@@ -24,7 +24,7 @@ test_that("marginal correlation for two responses", {
   }))
   # tau; tau.sd.boot
 
-  MAsso_1 <- corr(responses = c("vote.num", "PID"),
+  MAsso_1 <- PAsso(responses = c("vote.num", "PID"),
                   adjustments = c("income.num", "age", "edu.year"),
                   data = nes96,
                   association = c("marginal")
@@ -45,7 +45,7 @@ test_that("partial correlation for two responses",{
   skip_if_not_installed("MASS")
   skip_if_not_installed("parcor")
   skip_if_not_installed("tidyverse")
-  # "corr" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
+  # "PAsso" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
 
   y1 <- nes96$vote.num
   y2 <- nes96$PID
@@ -53,7 +53,7 @@ test_that("partial correlation for two responses",{
   fit.vote<- glm(y1 ~ X, family = binomial(link = "probit"))
   fit.PID<- polr(as.factor(y2)~ X, method="probit")
   fitted.temp <- list(fit.vote, fit.PID)
-  PAsso_adv1 <- corr(fitted.models=fitted.temp,
+  PAsso_adv1 <- PAsso(fitted.models=fitted.temp,
                      association = c("partial"),
                      method = c("kendall"),
                      resids.method = "latent", rep_num=100)
@@ -62,8 +62,8 @@ test_that("partial correlation for two responses",{
   expect_equal(dim(PAsso_adv1$corr)[1], length(fitted.temp))
   expect_is(PAsso_adv1, "PAsso")
 
-  # "corr" function: The simple way, input response and confounders only ----------------------------
-  PAsso_1 <- corr(responses = c("vote.num", "PID"),
+  # "PAsso" function: The simple way, input response and confounders only ----------------------------
+  PAsso_1 <- PAsso(responses = c("vote.num", "PID"),
                   adjustments = c("income.num", "age", "edu.year"),
                   data = nes96
                   # association = c("partial"),

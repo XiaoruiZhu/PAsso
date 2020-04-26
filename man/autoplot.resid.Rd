@@ -10,61 +10,194 @@
 \alias{autoplot.vglm}
 \title{Residual plots}
 \usage{
-autoplot.resid(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.resid(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.clm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.clm(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.glm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.glm(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.lrm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.lrm(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.orm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.orm(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.polr(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.polr(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-autoplot.vglm(object, what = c("qq", "fitted", "covariate"), x = NULL,
-  fit = NULL, distribution = qnorm, ncol = NULL, alpha = 1,
-  xlab = NULL, color = "#444444", shape = 19, size = 2,
-  qqpoint.color = "#444444", qqpoint.shape = 19, qqpoint.size = 2,
-  qqline.color = "#888888", qqline.linetype = "dashed",
-  qqline.size = 1, smooth = TRUE, smooth.color = "red",
-  smooth.linetype = 1, smooth.size = 1, fill = NULL, ...)
+autoplot.vglm(
+  object,
+  what = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[ordinal]{clm}},
@@ -141,6 +274,9 @@ nonparametric smooth.}
 the boxplots for residual-by-covariate plots when \code{x} is of class
 \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 to the factor levels.}
+
+\item{resp_name}{Character string to specifiy the response name that will be
+displayed in the figure.}
 
 \item{...}{Additional optional arguments to be passed onto
 \code{\link[sure]{resids}}.}

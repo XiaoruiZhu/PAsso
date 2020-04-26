@@ -3,7 +3,6 @@
 \docType{package}
 \name{parasol}
 \alias{parasol}
-\alias{parasol-package}
 \title{parasol: An R package for assessing the Partial ASSociation between
 Ordinal variables. It includes quantification, visualization, and hypothesis testing.}
 \description{

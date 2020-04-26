@@ -14,12 +14,15 @@
 #' @importFrom utils combn setTxtProgressBar txtProgressBar
 #'
 #' @export
-corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
+test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
   # object <- PAsso_1; boot_SE=10; H0=0; parallel=TRUE
+
+  if (!inherits(object, "PAsso")) stop("Input object must be 'PAsso' class.")
 
   responses <- attr(object, "responses")
   adjustments <- attr(object, "adjustments")
   arguments <- attr(object, "arguments")
+  models <- attr(object, "models")
 
   MatCor <- object$corr
 
@@ -47,8 +50,11 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
   # [FEATURE]: standard error from bootstrap: Done!
   if (arguments[1] == "partial") { # association=="partial"
-    StillBoot <- utils::menu(choices = c("Yes", "No"),
-                             title="Using bootstrap to conduct inference of partial association phi could be slow. \nDo you really want to continue?")
+    # StillBoot <- utils::menu(choices = c("Yes", "No"),
+                             # title="Using bootstrap to conduct inference of partial association phi could be slow. \nDo you really want to continue?")
+    message("Using bootstrap to conduct inference of partial association phi could be slow.")
+    StillBoot <- TRUE
+
     if (StillBoot) { # If still run bootstrap, throw messages, otherwise stop.
 
       if (parallel) { # Use parallel for bootstrapping and "progress" package
@@ -68,10 +74,10 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
                       index <- sample(mods_n[1], replace=T)
                       boot_data <- as.data.frame(data_temp[index, ])
                       Pcor_temp <-
-                        corr(data = boot_data,
+                        PAsso(data = boot_data,
                              responses = attr(object, "responses"),
                              adjustments = attr(object, "adjustments"),
-                             # models=c("probit", "probit"), # in "corr" recover models arguments.
+                             models= attr(object, "models"), # in "PAsso" recover models arguments.
                              association = arguments[1],
                              method = arguments[2],
                              resids.method = arguments[3])
@@ -88,10 +94,10 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
             index <- sample(mods_n[1], replace=T)
             boot_data <- object$data[index, ]
             Pcor_temp <-
-              corr(data = boot_data,
+              PAsso(data = boot_data,
                    responses = attr(object, "responses"),
                    adjustments = attr(object, "adjustments"),
-                   # models=c("probit", "probit"),
+                   models = attr(object, "models"),
                    association = arguments[1],
                    method = arguments[2],
                    resids.method = arguments[3])
@@ -138,7 +144,7 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
                   FUN = min)
     }
 
-    # Save components: std. Error; statistics; p-value; CI_95.
+    # Save components: S.E.; statistics; p-value; CI_95.
     object$sd_MatCor <- sd_MatCor
     object$corr_stat <- corr_stat
     object$corr_p.value <- corr_p.value
@@ -157,7 +163,7 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
     # Return a class of "PAsso.test" inheriting from "PAsso".
     attr(object, "boot_SE") <- boot_SE
     attr(object, "H0") <- H0
-    class(object) <- c("PAsso.test", class(object))
+    class(object) <- c("PAsso.test", class(object)[-1])
     object
 
   } else {
@@ -177,7 +183,7 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
     sd_MatCor <- sapply(pair_cortest, FUN = function(x) as.vector(x$estimate/x$statistic))
 
-    # Save components: std. Error; statistics; p-value; CI_95.
+    # Save components: S.E.; statistics; p-value; CI_95.
     object$sd_MatCor <- sd_MatCor
     object$corr_stat <- corr_stat
     object$corr_p.value <- corr_p.value
@@ -193,7 +199,7 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
     # Return an object of class "MAsso.test" inheriting from "MAsso".
     attr(object, "boot_SE") <- c(boot_SE)
     attr(object, "H0") <- H0
-    class(object) <- c("MAsso.test", class(object))
+    class(object) <- c("MAsso.test", class(object)[-1])
     object
 
   }
@@ -202,6 +208,8 @@ corr.test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 }
 
 #' @keywords internal
+#' This function is use to transfer the bootstrap pvalue to the confidence level it should be. For boot_SE=20,
+#' the actual confidence level is only 1/20.
 format.pval.corr <-
   function(pv, digits = max(1L, getOption("digits") - 2L),
            eps = .Machine$double.eps,
@@ -255,64 +263,59 @@ format.pval.corr <-
 #'
 #' @export
 print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
-  # x <- PAsso_5v_test; digits = max(3L, getOption("digits") - 2L)
 
   x$corr[lower.tri(x$corr)] <- NA
 
   cat("-------------------------------------------- \n")
-  cat("The partial association analysis: \n")
+  cat("The partial association analysis: \n\n")
   n_rep <- dim(x$corr)[1]
-  mat_tem <- matrix(NA, nrow = n_rep*3, ncol = n_rep)
+  mat_tem <- matrix(NA, nrow = n_rep*4, ncol = n_rep)
 
   boot_SE <- attr(x, "boot_SE")
 
   for (i in 1:(n_rep-1)) {
-    mat_tem[(3*i-2),i:n_rep] <-
-      format(x$corr[i, i:n_rep], digits = digits-1, ...)
-      # format(x$corr[i, i:n_rep], digits = digits-1)
+    mat_tem[(4*i-3),i:n_rep] <-
+      format(round(x$corr[i, i:n_rep], digits = max(1, digits)),
+             digits = max(1, digits), ...)
 
-    mat_tem[(3*i-1),(i+1):n_rep] <-
-      format(x$sd_MatCor[i,(i+1):n_rep], digits = max(1, digits-2), ...)
-    # format(x$sd_MatCor[i,(i+1):n_rep], digits = digits-1)
+    mat_tem[(4*i-2),(i+1):n_rep] <-
+      format(round(x$sd_MatCor[i,(i+1):n_rep], digits = max(1, digits)),
+             digits = max(1, digits), ...)
 
     temp_p <- x$corr_p.value[i,(i+1):n_rep]
+    # Need to compare temp_p with boot_p!
+    temp_p[temp_p < (1/boot_SE)] <- 1/boot_SE
+
     Cf_p <- format.pval.corr(temp_p, boot_SE = boot_SE,
                              digits = digits, ...)
-                             # digits = digits)
+
     Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
                      symbols = c("***", "**", "*", ".", " "))
-    mat_tem[(3*i),(i+1):n_rep] <- paste(Cf_p, format(Signif), sep = "")
-    # Std. Error
+    mat_tem[(4*i-1),(i+1):n_rep] <- paste(Cf_p, format(Signif), sep = "")
+    # S.E.
   }
-  mat_tem[(3*n_rep-2),n_rep] <- format(x$corr[n_rep, n_rep], digits = digits-1, ...)
+  mat_tem[(4*n_rep-3),n_rep] <- format(x$corr[n_rep, n_rep], digits = digits, nsmall= digits, ...)
 
   colnames(mat_tem) <- colnames(x$corr)
-  temp_rowname <- rep(rownames(x$corr), each=3)
+  temp_rowname <- rep(rownames(x$corr), each=4)
+
   for (i in 1:(n_rep)) {
-    temp_rowname[(3*i-1)] <- "Std. Error"
-    temp_rowname[(3*i)] <- "Pr(Signif. codes)"
+    temp_rowname[(4*i-2)] <- "S.E."
+    temp_rowname[(4*i-1)] <- "Pr"
+    temp_rowname[(4*i)] <- "---"
   }
 
   rownames(mat_tem) <- temp_rowname
 
-  # mat_tem[is.na(mat_tem)] <- " "
-  # print(mat_tem, na.print = "")
   print.default(mat_tem, na.print = "",
                 print.gap = 2, quote = FALSE, ...)
+
+  # Add stars of significance level --------------------------------------------------
+  if ((w <- getOption("width")) <
+      nchar(sleg <- attr(Signif, "legend"))) {
+    sleg <- strwrap(sleg, width = w - 2, prefix = "  ")
+  }
+  cat("Signif. codes:  ", sleg, sep = "",
+      fill = w + 4 + max(nchar(sleg, "bytes") - nchar(sleg)))
 }
-
-#' @rdname summary
-#' @method summary PAsso.test
-#'
-#' @export
-summary.PAsso.test <- function(object, ...) {
-  # print(signif(object$corr, ...))
-  print(object)
-
-  cat("--------------------------------------------\n")
-  cat("\nThe fitted models of the response variables are: \n", sep = "")
-  print(object$fitted.models)
-}
-
-

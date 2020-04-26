@@ -78,6 +78,9 @@
 #' \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 #' to the factor levels.
 #'
+#' @param resp_name Character string to specifiy the response name that will be
+#' displayed in the figure.
+#'
 #' @param ... Additional optional arguments to be passed onto
 #' \code{\link[sure]{resids}}.
 #'
@@ -113,6 +116,7 @@ autoplot.resid <- function(
   smooth.linetype = 1,
   smooth.size = 1,
   fill = NULL,
+  resp_name = NULL,
   ...
 ) {
 
@@ -189,16 +193,17 @@ autoplot.resid <- function(
                  size = qqpoint.size) +
       geom_abline(slope = slope, intercept = int, color = qqline.color,
                   linetype = qqline.linetype, size = qqline.size) +
-      labs(x = "Theoretical quantile", y = "Sample quantile")
+      labs(x = "Theoretical quantile", y = "Sample quantile", title = resp_name, ...) # Add availability for title
   } else {
     NULL
   }
 
   # Residual vs fitted value
   p2 <- if ("fitted" %in% what) {
+    resp_name <- paste("Residual (", resp_name , ")", sep = "")
     p <- ggplot(data.frame("x" = mr, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
-      labs(x = "Fitted value", y = "Surrogate residual")
+      labs(x = "Fitted value", y = resp_name, ...) # Add availability for title, and revise ylab to show response
     if (smooth) {
       p <- p + geom_smooth(color = smooth.color, linetype = smooth.linetype,
                            size = smooth.size, se = FALSE)
@@ -226,7 +231,8 @@ autoplot.resid <- function(
                              size = smooth.size, se = FALSE)
       }
     }
-    p + labs(x = xlab, y = "Surrogate residual")
+    resp_name <- paste("Residual (", resp_name , ")", sep = "")
+    p + labs(x = xlab, y = resp_name, ...) # Add availability for title, and revise ylab to show response
   } else {
     NULL
   }
@@ -234,13 +240,23 @@ autoplot.resid <- function(
   # Return plot(s)
   if (length(what) == 1) {  # return a single plot
     if (what == "qq") {
-      p1
+      p1 +
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
     } else if (what == "fitted") {
-      p2
+      p2 +
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
     } else {
-      p3
+      p3 +
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
     }
   } else {  # return multiple plots
+    p1 <- p1 +
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+    p2 <- p2 +
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+    p3 <- p3 +
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+
     plots <- list(p1, p2, p3)
     grid.arrange(grobs = plots[!unlist(lapply(plots, FUN = is.null))],
                  ncol = ncol)
@@ -275,6 +291,7 @@ autoplot.clm <- function(
   smooth.linetype = 1,
   smooth.size = 1,
   fill = NULL,
+  resp_name = NULL,
   ...
 ) {
 
@@ -305,7 +322,7 @@ autoplot.clm <- function(
     qqpoint.size = qqpoint.size, qqline.color = qqline.color,
     qqline.linetype = qqline.linetype, qqline.size = qqline.size,
     smooth = smooth, smooth.color = smooth.color,
-    smooth.linetype = smooth.linetype, smooth.size = smooth.size, fill = fill
+    smooth.linetype = smooth.linetype, smooth.size = smooth.size, fill = fill, resp_name = resp_name, ...
   )
 
 }
