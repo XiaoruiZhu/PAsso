@@ -33,11 +33,15 @@ plot <- function(object) {
 }
 
 
+#' @param x A PAsso object for drawing partial regression plot.
+#' @param color The color of points.
+#' @param ...
+#'
 #' @rdname plot
 #' @method plot PAsso
 #' @export
 plot.PAsso <- function(
-  x, ...
+  x, color="blue", ...
 ) {
   # x <- PAsso_1; color="blue"
 
@@ -46,10 +50,10 @@ plot.PAsso <- function(
 
   GGally::ggpairs(resid_Mat,
          upper = list(
-           continuous = GGally::wrap("smooth_loess", colour=color)),
+           continuous = GGally::wrap("smooth_loess", colour=color, ...)),
          # diag = list(continuous = wrap("barDiag", colour = color)),
          # lower = list(continuous = GGally::wrap("cor", method="kendall")),
-         lower = list(continuous = GGally::wrap("cor", method =cor_method)),
+         lower = list(continuous = GGally::wrap("cor", method = cor_method, ...)),
          # lower = list(continuous = x$corr[upper.tri(x$corr)]),
          ...
  )

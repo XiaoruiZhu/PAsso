@@ -760,5 +760,5 @@ generate_residuals <-
 }
 
 .onUnload <- function (libpath) {
-  library.dynam.unload("parasol", libpath)
+  library.dynam.unload("PAsso", libpath)
 }

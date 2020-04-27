@@ -32,7 +32,8 @@ coefficient \code{"partial"} (default) or the marginal correlation \code{"margin
 is to be computed. They can be abbreviated.}
 
 \item{uni.model}{A character string specifying the universal model setting for all
-responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}}
+responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
+refers to cumulative logit model.}
 
 \item{models}{A string vector contains default link functions of fitting models with
 respect to each response variable. If \code{"uni.model"} is provided, this one will
@@ -96,7 +97,7 @@ and some attributes ("arguments" saves c(association, method, resids.method)).
 The attribute "responses" contains the names of response variables.
 }
 \examples{
-# Import nes2016_pre data in "parasol"
+# Import nes2016_pre data in "PAsso"
 data(nes2016_pre)
 # Parial association:
 PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
