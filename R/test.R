@@ -298,19 +298,20 @@ print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 
   for (i in 1:(n_rep-1)) {
     mat_tem[(4*i-3),i:n_rep] <-
-      format(round(x$corr[i, i:n_rep], digits = max(1, digits)),
-             digits = max(1, digits), ...)
+      format(round(x$corr[i, i:n_rep], digits = max(2, digits)),
+             digits = max(2, digits), ...)
 
     mat_tem[(4*i-2),(i+1):n_rep] <-
-      format(round(x$sd_MatCor[i,(i+1):n_rep], digits = max(1, digits)),
-             digits = max(1, digits), ...)
+      format(round(x$sd_MatCor[i,(i+1):n_rep], digits = max(2, digits)),
+             digits = max(2, digits), ...)
 
     temp_p <- x$corr_p.value[i,(i+1):n_rep]
     # Need to compare temp_p with boot_p!
     temp_p[temp_p < (1/boot_SE)] <- 1/boot_SE
 
-    Cf_p <- format.pval.corr(temp_p, boot_SE = boot_SE,
-                             digits = digits, ...)
+    Cf_p <- format.pval.corr(round(temp_p, digits=max(2, digits)),
+                             boot_SE = boot_SE,
+                             digits = max(2, digits), ...)
 
     Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
@@ -318,7 +319,9 @@ print.PAsso.test <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
     mat_tem[(4*i-1),(i+1):n_rep] <- paste(Cf_p, format(Signif), sep = "")
     # S.E.
   }
-  mat_tem[(4*n_rep-3),n_rep] <- format(x$corr[n_rep, n_rep], digits = digits, nsmall= digits, ...)
+  mat_tem[(4*n_rep-3),n_rep] <- format(x$corr[n_rep, n_rep],
+                                       digits = max(2, digits),
+                                       nsmall= max(2, digits), ...)
 
   colnames(mat_tem) <- colnames(x$corr)
   temp_rowname <- rep(rownames(x$corr), each=4)

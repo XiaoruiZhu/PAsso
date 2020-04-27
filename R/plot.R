@@ -28,7 +28,7 @@
 #'
 #' plot(x = PAsso_1)
 #'
-plot <- function(object) {
+plot <- function(x, y, ...) {
   UseMethod("plot")
 }
 

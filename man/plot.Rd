@@ -5,16 +5,16 @@
 \alias{plot.PAsso}
 \title{A matrix of partial regression plots between responses after adjustments}
 \usage{
-plot(object)
+plot(x, y, ...)
 
 \method{plot}{PAsso}(x, color = "blue", ...)
 }
 \arguments{
 \item{x}{A PAsso object for drawing partial regression plot.}
 
-\item{color}{The color of points.}
-
 \item{...}{}
+
+\item{color}{The color of points.}
 }
 \value{
 A \code{"GGally"} object.

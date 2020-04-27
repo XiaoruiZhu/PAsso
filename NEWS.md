@@ -1,3 +1,39 @@
+# PAsso 0.1.5
+
+## Major changes
+
+1. Replace 'cor' function by 'pcaPP::cor.fk(X)' to speed up the PAsso().
+
+2. Finalize the S3 methods 'summary.PAsso' and 'print.PAsso.test' to provide clean results.
+
+## Bug fixes
+
+1. The digits in the print and summary are consistent.
+2. The manual is updated and S3 'autoplot' is shortened.
+2. check.model for qq-plot is fixed.
+
+# PAsso 0.1.4
+
+## Major changes
+
+1. Change the name of package to "PAsso".
+2. Change the autoplot function as a S3 method.
+
+# parasol 0.1.3
+
+## Major changes
+
+1. Rename functions: corr -> PAsso; corr.test -> test; ggpairs -> plot; checkmodel -> check.model.
+
+2. Update print and summary functions for PAsso and test.
+
+3. Add S3 function "plot3D" to draw 3D P-P plot.
+
+4. Add nes2016_raw, nes2016_pre, nes2016_post, nes2016_prepost datasets.
+
+5. Include nes2016.clean() function to clean up nes2016_raw dataset.
+
+
 # parasol 0.1.1
 
 ## Major changes
@@ -7,6 +43,6 @@
 
 ## Bug fixes
 
-1. "polr" and "glm" functions work;
+1. "polr" and "glm" functions work.
 2. The formula in the model can be shown by the print("PAsso").
 

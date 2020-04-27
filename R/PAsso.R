@@ -151,7 +151,8 @@ PAsso <- function(responses, adjustments, data,
 
   # Initialize the cor_func for different methods
   cor_func <- switch(method,
-                     kendall = function(X) cor(X, method = "kendall"),
+                     # kendall = function(X) cor(X, method = "kendall"),
+                     kendall = function(X) pcaPP::cor.fk(X),
                      pearson = function(X) cor(X),
                      wolfsigma = function(X)
                        t(copBasic::wolfCOP(para = data.frame(X), as.sample = TRUE)))
@@ -316,7 +317,8 @@ PAsso <- function(responses, adjustments, data,
     }
 
     # Add marginal association!
-    Marg_corr <- cor(mods_ys, method = method)
+    # Marg_corr <- cor(mods_ys, method = method)
+    Marg_corr <- cor_func(mods_ys)
 
     PartialAsso <- list(corr=MatCorr, rep_corr=rep_MatCorr, rep_SRs=rep_SRs,
                        fitted.models=fitted.models, data=data, mods_n=mods_n,
@@ -347,7 +349,8 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
                 # print.gap = 2, na.print = "",
                 # quote = FALSE, ...)
 
-  temp <- format(x$corr, digits = max(2, (digits)), ...)
+  temp <- format(round(x$corr, digits=max(2, (digits))),
+                 digits = max(2, (digits)), ...)
   temp[lower.tri(temp)] <- NA
 
   print.default(temp,
@@ -369,7 +372,8 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
   cat("The partial correlation coefficient matrix: \n\n")
   # print(signif(object$corr, ...))
 
-  temp <- format(object$corr, digits = max(2, (digits)), ...)
+  temp <- format(round(object$corr, digits=max(2, (digits))),
+                 digits = max(2, (digits)), ...)
   temp[lower.tri(temp)] <- NA
 
   print.default(temp,
@@ -378,7 +382,8 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
 
   cat("-------------------------------------------- \n")
   cat("The marginal correlation coefficient matrix: \n\n")
-  Marg_temp <- format(object$Marg_corr, digits = max(2, (digits)), ...)
+  Marg_temp <- format(round(object$Marg_corr, digits=max(2, (digits))),
+                      digits = max(2, (digits)), ...)
   Marg_temp[lower.tri(Marg_temp)] <- NA
 
   print.default(Marg_temp,
@@ -418,21 +423,21 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
       # Obtain p-value
       temp_p <- 2*pt(-abs(coefs_se[,3]), df = n_samp-1)
       `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
-                  eps = .Machine$double.eps)
+                  eps = .Machine$double.eps, ...)
     } else if (inherits(object$fitted.models[[i]], "glm")) {
       # Obtain coefficients and standard error
       coefs_se <- sumry[-1,1:3]
       # Obtain p-value
       temp_p <- sumry[-1,4]
       `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
-                             eps = .Machine$double.eps)
+                             eps = .Machine$double.eps, ...)
     }
     Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
                      symbols = c("***", "**", "*", ".", " "))
 
-    coefs_se <- format(round(coefs_se, digits = digits),
-                       digits = digits)
+    coefs_se <- format(round(coefs_se, digits = max(2, (digits))),
+                       digits = max(2, (digits)), ...)
     coefs_se <- cbind(coefs_se, `Pr`, Signif)
 
     coefs_table[seq(1, n_adju*3, by = 3),i] <- paste(coefs_se[,1], coefs_se[,5], sep = "")

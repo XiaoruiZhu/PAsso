@@ -6,12 +6,26 @@ library(tidyverse)
 library(progress)
 library(profvis)
 
+library(PAsso)
 # import data -------------------------------------------------------------
 data("nes2016_pre")
 nes2016 <- nes2016_pre
 summary(nes2016)
 
 nes2016 <- nes2016 %>% rename(vote.num=Prevote.num)
+
+system.time(
+  cor_matrix1 <- cor(nes2016[, c("vote.num","PID")], use = "pairwise.complete.obs", method = "pearson")
+)
+
+system.time(
+  cor_matrix2 <- cor(nes2016[, c("vote.num","PID")], use = "pairwise.complete.obs", method = "kendall")
+)
+library(pcaPP)
+system.time(
+  cor_matrix3 <- cor.fk(nes2016[, c("vote.num","PID")])
+)
+cor_matrix2; cor_matrix3
 
 # "PAsso" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
 # Test "PAsso" function: Partial Association by surrogate residuals regression models
@@ -87,9 +101,9 @@ summary(PAsso_2_jit, digits=4)
 # "PAsso" function: input three responses ----------------------------
 
 # Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
-library(progress); library(doParallel)
+library(progress); #library(doParallel)
 
-system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=F))
+system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
 
 print(Pcor_SR_test1, digits=3)
 summary(PAsso_1, digits=4)
@@ -103,7 +117,7 @@ cl <- makeCluster(numCores)
 # registerDoSNOW(cl) # on Mac or Linux
 registerDoParallel(cl) # Win
 
-system.time(Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE))
+system.time(Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=200, H0=0, parallel=TRUE))
 
 profvis({Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE)
 })
@@ -144,7 +158,7 @@ PAsso_adv_5v <- PAsso(
   method = c("kendall"), resids.method = "latent", rep_num=30)
 
 PAsso_adv_5v # (Right part of Table 7 in paper)
-print(PAsso_adv_5v, digits=4)
+print(PAsso_adv_5v, digits=3)
 summary(PAsso_adv_5v, digits=4)
 
 PAsso_5v <- PAsso(responses = c("vote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
@@ -154,28 +168,22 @@ PAsso_5v <- PAsso(responses = c("vote.num", "PID", "selfLR", "ClinLR", "TrumpLR"
                  method = c("kendall"), resids.method = "latent", rep_num=30)
 
 PAsso_5v # (Right part of Table 7 in paper)
-summary(PAsso_5v)
+summary(PAsso_5v,3)
 
-system.time(PAsso_5v_test1 <- test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
-PAsso_5v_test1$sd_MatCor; PAsso_5v_test1$corr; PAsso_5v_test1$corr_p.value
-print(PAsso_5v_test1, 5)
+system.time(PAsso_5v_test <- test(object = PAsso_5v, boot_SE=200, H0=0, parallel=FALSE))
 
-system.time(PAsso_5v_test <- test(object = PAsso_5v, boot_SE=20, H0=0, parallel=FALSE))
-PAsso_5v_test$sd_MatCor; PAsso_5v_test$corr;
-PAsso_5v_test$corr_stat; PAsso_5v_test$corr_p.value; PAsso_5v_test$CI_95
 print(PAsso_5v_test, 3)
 
 # Partial Regression plot matrix ------------------------------------------
-ggpairs(object = PAsso_1, colour="blue")
-plot(object = PAsso_1, colour="blue")
-plot(object = PAsso_adv1, colour="blue")
-plot(object = PAsso_2, colour="blue")
-plot(object = PAsso_5v, colour="blue")
+plot(PAsso_1)
+plot(x = PAsso_adv1)
+plot(x = PAsso_2)
+plot(x = PAsso_5v)
 # plot(object = PAsso_5v_test, colour="blue")
 
 
 # check.model function -----------------------------------------------------
-library(parasol); library(ggplot2)
+library(PAsso); library(ggplot2)
 data("nes2016_pre")
 PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                 adjustments = c("income.num", "age", "edu.year"),
@@ -184,8 +192,6 @@ PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                 association = c("partial"), method = c("kendall"),
                 resids.method = "latent")
 
-PAsso_2
-print(PAsso_2, digits=3)
 summary(PAsso_2, digits = 4)
 
 check_qq <- check.model(object = PAsso_2, color="blue", output = "qq")
@@ -193,6 +199,12 @@ check_qq <- check.model(object = PAsso_2, color="blue", output = "qq")
 check_fitted <- check.model(object = PAsso_2, output = "fitted")
 
 check_covar <- check.model(object = PAsso_2, output = "covariate")
+
+check_qq <- check.model(object = PAsso_5v, color="blue", output = "qq")
+
+check_fitted <- check.model(object = PAsso_5v, output = "fitted")
+
+check_covar <- check.model(object = PAsso_5v, output = "covariate")
 
 
 ## general association measure and 3-D plot for VOTE and PID
@@ -204,5 +216,3 @@ dim(PAsso_2$rep_SRs)
 testPlots <- plot3D(PAsso_2)
 testPlots$plot_1
 
-WolfCop <- wolfCOP(para = data.frame(r_vote, r_PID), as.sample = TRUE)
-WolfCop

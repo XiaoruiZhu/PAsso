@@ -58,7 +58,7 @@ check.model <- function(
       plot_list[[i]] <-
         # autoplot(rep_SRs[,1,i], what = output,
         autoplot(object$fitted.models[[i]], what = output,
-                 distribution = qnorm, resp_name = resp_name[i], ...)
+                 resp_name = resp_name[i], ...)
     }
 
     do.call("grid.arrange", c(plot_list, ncol=nCol))
