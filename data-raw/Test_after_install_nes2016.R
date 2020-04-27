@@ -1,10 +1,10 @@
 
 library(MASS)
-library(parcor)
-library(parasol)
+library(PAsso)
 library(tidyverse)
-library(matrixStats)
+# library(matrixStats)
 library(progress)
+library(profvis)
 
 # import data -------------------------------------------------------------
 data("nes2016_pre")
@@ -12,17 +12,6 @@ nes2016 <- nes2016_pre
 summary(nes2016)
 
 nes2016 <- nes2016 %>% rename(vote.num=Prevote.num)
-
-# Bivariate analysis of VOTE and PID (Kendall's tao) ----------------------
-
-# marginal association (Kendall's tau)
-tau <- cor(nes2016[,c("vote.num", "PID")],method = "kendall")
-# standard error from bootstrap
-tau.sd.boot <- sd(sapply(1:200, function(b){
-  index<- sample(nrow(nes2016), replace=T)
-  cor(nes2016[index, c("vote.num", "PID")], method = "kendall")
-}))
-tau; tau.sd.boot
 
 # "PAsso" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
 # Test "PAsso" function: Partial Association by surrogate residuals regression models
@@ -37,15 +26,18 @@ system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
                    resids.method = "latent")
 )
 
-system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
-                                association = c("marginal"),
-                                method = c("kendall"),
-                                resids.method = "latent")
-)
 # Partial association coefficients (Parts of Table 7 in paper)
-PAsso_adv1$corr
 print(PAsso_adv1, digits = 3)
 summary(PAsso_adv1, digits = 3)
+
+# Test jittering
+system.time(PAsso_adv1_jit <- PAsso(fitted.models=list(fit.vote, fit.PID),
+                                association = c("partial"),
+                                method = c("kendall"),
+                                resids.method = "jitter")
+)
+print(PAsso_adv1, digits = 3)
+summary(PAsso_adv1_jit, digits = 3)
 
 # "PAsso" function: The simple way, input response and confounders only ----------------------------
 PAsso_1 <- PAsso(responses = c("vote.num", "PID"),
@@ -55,21 +47,12 @@ PAsso_1 <- PAsso(responses = c("vote.num", "PID"),
                    # models = c("probit", "probit"),
                    # method = c("kendall"),
                    # resids.method = "latent", fitted.models = NULL,
-                   # rep_num = 100
+                   # rep_num = 30
                 )
 
-# Compare marginal correlation and partial correlation.
-tau; tau.sd.boot
-PAsso_adv1$corr;
-PAsso_1$corr;
 print(PAsso_1, 5)
-summary(PAsso_1)
+summary(PAsso_1, 4)
 plot(PAsso_1)
-
-MAsso_1 <- PAsso(responses = c("vote.num", "PID"),
-                data = nes2016,
-                association = c("marginal"))
-summary(MAsso_1, digits=3)
 
 # "PAsso" function: input three responses ----------------------------
 PAsso_2 <- PAsso(responses = c("vote.num", "PID", "selfLR"),
@@ -77,36 +60,39 @@ PAsso_2 <- PAsso(responses = c("vote.num", "PID", "selfLR"),
                 data = nes2016,
                 models = c("probit", "probit", "probit"),
                 association = c("partial"), method = c("kendall"),
-                resids.method = "latent",
-                rep_num = 100)
+                resids.method = "latent")
 
+profvis({
+  PAsso_2 <- PAsso(responses = c("vote.num", "PID", "selfLR"),
+                   adjustments = c("income.num", "age", "edu.year"),
+                   data = nes2016,
+                   models = c("probit", "probit", "probit"),
+                   association = c("partial"), method = c("kendall"),
+                   resids.method = "latent",rep_num = 2)
+})
 # Compare marginal correlation and partial correlation.
-tau; tau.sd.boot
-PAsso_adv1$corr;
-PAsso_1$corr;
-PAsso_2
-print(PAsso_2, digits=3)
-summary(PAsso_2, digits=3)
+print(PAsso_2, digits=4)
+summary(PAsso_2, digits=4)
 plot(PAsso_2)
 
-# "PAsso" function: input three responses ----------------------------
-PAsso_2_marg <- PAsso(responses = c("vote.num", "PID", "selfLR"),
-                data = nes2016, association = c("marginal"))
+PAsso_2_jit <- PAsso(responses = c("vote.num", "PID", "selfLR"),
+                 adjustments = c("income.num", "age", "edu.year"),
+                 data = nes2016,
+                 uni.model = "probit",
+                 association = c("partial"), method = c("kendall"),
+                 resids.method = "jitter")
+print(PAsso_2, digits=4)
+summary(PAsso_2_jit, digits=4)
 
-# Compare marginal correlation and partial correlation.
-PAsso_2
-PAsso_2_marg
-summary(PAsso_2_marg, digits=5)
+# "PAsso" function: input three responses ----------------------------
 
 # Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
-library(progress)
+library(progress); library(doParallel)
 
-system.time(Pcor_SR_test1 <- test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
-Pcor_SR_test1$corr; Pcor_SR_test1$corr_stat; Pcor_SR_test1$corr_p.value; Pcor_SR_test1$CI_95
+system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=F))
 
 print(Pcor_SR_test1, digits=3)
 summary(PAsso_1, digits=4)
-summary(Pcor_SR_test1, digits=4)
 
 # Pcor_SR.test function: Test by parallel ----------------------------
 
@@ -117,20 +103,14 @@ cl <- makeCluster(numCores)
 # registerDoSNOW(cl) # on Mac or Linux
 registerDoParallel(cl) # Win
 
-system.time(Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=300, H0=0, parallel=TRUE))
-Pcor_SR_test2$sd_MatCor; Pcor_SR_test2$corr; Pcor_SR_test2$corr_stat;
-Pcor_SR_test2$corr_p.value;
-Pcor_SR_test2$CI_95
+system.time(Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE))
 
-print(Pcor_SR_test2)
+profvis({Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE)
+})
+summaryRprof(Pcor_SR_test2 <- test(object = PAsso_2, boot_SE=20, H0=0, parallel=TRUE))
+
+print(Pcor_SR_test2, digits=3)
 summary(Pcor_SR_test2)
-
-# test1 <- summary(Pcor_SR_test2$fitted.models[[1]])
-# test2 <- Pcor_SR_test2$fitted.models[[2]]
-# test2$zeta
-#
-# test3 <- summary(Pcor_SR_test2$fitted.models[[3]])
-
 stopCluster(cl)
 
 # multivariate analysis (5 variables) --------------------------------------------------------------------

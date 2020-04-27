@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // rcpp_hello_world
 List rcpp_hello_world();
-RcppExport SEXP _parasol_rcpp_hello_world() {
+RcppExport SEXP _PAsso_rcpp_hello_world() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -17,11 +17,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_parasol_rcpp_hello_world", (DL_FUNC) &_parasol_rcpp_hello_world, 0},
+    {"_PAsso_rcpp_hello_world", (DL_FUNC) &_PAsso_rcpp_hello_world, 0},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_parasol(DllInfo *dll) {
+RcppExport void R_init_PAsso(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

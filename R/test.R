@@ -16,7 +16,7 @@
 #'
 #' @export
 #' @examples
-#' # Import nes2016_pre data in "parasol"
+#' # Import nes2016_pre data in "PAsso"
 #' data(nes2016_pre)
 #' # Parial association:
 #' PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
@@ -29,7 +29,7 @@
 #' PAsso_1_test <- test(object = PAsso_1, boot_SE=20, H0=0, parallel=FALSE))
 #'
 test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
-  # object <- PAsso_1; boot_SE=10; H0=0; parallel=TRUE
+  # object <- PAsso_1; boot_SE=10; H0=0; parallel=FALSE
 
   if (!inherits(object, "PAsso")) stop("Input object must be 'PAsso' class.")
 
@@ -66,71 +66,71 @@ test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
   if (arguments[1] == "partial") { # association=="partial"
     # StillBoot <- utils::menu(choices = c("Yes", "No"),
                              # title="Using bootstrap to conduct inference of partial association phi could be slow. \nDo you really want to continue?")
-    message("Using bootstrap to conduct inference of partial association phi could be slow.")
-    StillBoot <- TRUE
+    message("The bootstrapping procedure may be slow when boot_SE is large!")
 
-    if (StillBoot) { # If still run bootstrap, throw messages, otherwise stop.
+    if (parallel) { # Use parallel for bootstrapping and "progress" package
+      # Below is for .options.snow = opts: allowing progress bar to be used in foreach -----------------------------
+      # progress <- function(n){
+      #   pb$tick(tokens = list(letter = progress_repNo[n]))
+      # }
+      # opts <- list(progress = progress)
 
-      if (parallel) { # Use parallel for bootstrapping and "progress" package
-        # allowing progress bar to be used in foreach -----------------------------
-        progress <- function(n){
-          pb$tick(tokens = list(letter = progress_repNo[n]))
-        }
+      data_temp <- object$data
+      boot_Cor_temp <-
+        foreach(j=1:boot_SE,
+                .packages = c('MASS', 'stats', 'PAsso'),
+                .export=c("mods_n", "data_temp", "arguments"),
+                .combine=cbind) %dopar% {
+                  # ProgressBar
+                  pb$tick(tokens = list(letter = progress_repNo[j]))
 
-        opts <- list(progress = progress)
-        data_temp <- object$data
-        boot_Cor_temp <-
-          foreach(j=1:boot_SE,
-                  .packages = c('MASS', 'matrixStats', 'parasol'),
-                  .export=c("mods_n", "data_temp", "arguments"),
-                  .combine=cbind, .options.snow = opts) %dopar% {
-                    # tryCatch({
-                      index <- sample(mods_n[1], replace=T)
-                      boot_data <- as.data.frame(data_temp[index, ])
-                      Pcor_temp <-
-                        PAsso(data = boot_data,
-                             responses = attr(object, "responses"),
-                             adjustments = attr(object, "adjustments"),
-                             models= attr(object, "models"), # in "PAsso" recover models arguments.
-                             association = arguments[1],
-                             method = arguments[2],
-                             resids.method = arguments[3])
-                      Pcor_temp$corr[upper.tri(Pcor_temp$corr)]
-                    # }, error=function(e){})
-                  }
-        # boot_Cor_temp
+                  # tryCatch({
+                    index <- sample(mods_n[1], replace=T)
+                    boot_data <- as.data.frame(data_temp[index, ])
+                    Pcor_temp <-
+                      PAsso(data = boot_data,
+                            responses = attr(object, "responses"),
+                            adjustments = attr(object, "adjustments"),
+                            models= attr(object, "models"), # in "PAsso" recover models arguments.
+                            association = arguments[1],
+                            method = arguments[2],
+                            resids.method = arguments[3])
+                    Pcor_temp$corr[upper.tri(Pcor_temp$corr)]
+                  # }, error=function(e){
+                  #   message("Error in bootstrap", i, ":\n")
+                  #   message(error_message)
+                  # })
+                }
 
+    } else { # Without using parallel.
 
-      } else { # Without using parallel.
-
-        for(i in 1:boot_SE){
-          tryCatch({
-            index <- sample(mods_n[1], replace=T)
-            boot_data <- object$data[index, ]
-            Pcor_temp <-
-              PAsso(data = boot_data,
-                   responses = attr(object, "responses"),
-                   adjustments = attr(object, "adjustments"),
-                   models = attr(object, "models"),
-                   association = arguments[1],
-                   method = arguments[2],
-                   resids.method = arguments[3])
-            boot_Cor_temp[,i]<- Pcor_temp$corr[upper.tri(Pcor_temp$corr)]
-          }, error=function(e){})
-          # ProgressBar
-          pb$tick(tokens = list(letter = progress_repNo[i]))
-        }
-
+      for(i in 1:boot_SE){
+        tryCatch({
+          index <- sample(mods_n[1], replace=T)
+          boot_data <- object$data[index, ]
+          Pcor_temp <-
+            PAsso(data = boot_data,
+                  responses = attr(object, "responses"),
+                  adjustments = attr(object, "adjustments"),
+                  models = attr(object, "models"),
+                  association = arguments[1],
+                  method = arguments[2],
+                  resids.method = arguments[3])
+          boot_Cor_temp[,i] <- Pcor_temp$corr[upper.tri(Pcor_temp$corr)]
+        }, error=function(e){
+          message("Error in bootstrap", i, ":\n")
+          message(error_message)
+        })
+        # ProgressBar
+        pb$tick(tokens = list(letter = progress_repNo[i]))
       }
+
+    }
 
       # Calculate standard error of partial association coefficients!
       sd_MatCor <- matrix(NA, nrow = n_responses, ncol = n_responses)
-      sd_MatCor[upper.tri(sd_MatCor)] <- sqrt(matrixStats::rowVars(boot_Cor_temp))
-
-
-    } else { #
-      stop(call. = TRUE)
-    }
+      # sd_MatCor[upper.tri(sd_MatCor)] <- sqrt(matrixStats::rowVars(boot_Cor_temp))
+      sd_MatCor[upper.tri(sd_MatCor)] <- apply(X = boot_Cor_temp, MARGIN = 1, FUN = sd)
 
     # Return values:
     boot_left <- sum(complete.cases(t(boot_Cor_temp)))
@@ -145,17 +145,26 @@ test <- function(object, boot_SE=300, H0=0, parallel=FALSE) {
 
     if (H0==0) {
       corr_p.value[upper.tri(corr_p.value)] <-
-        2 * apply(cbind(matrixStats::rowMeans2(boot_Cor_left>0),
-                        matrixStats::rowMeans2(boot_Cor_left<0)),
-                  MARGIN = 1,
-                  FUN = min)
+        2 * apply(
+          X = cbind(
+            # matrixStats::rowMeans2(boot_Cor_left>0),
+            # matrixStats::rowMeans2(boot_Cor_left<0)
+            apply(X = (boot_Cor_left > 0), MARGIN = 1, FUN = mean),
+            apply(X = (boot_Cor_left < 0), MARGIN = 1, FUN = mean)
+          ),
+          MARGIN = 1,
+          FUN = min)
     } else {
       corr_p.value[upper.tri(corr_p.value)] <-
-        2 * apply(cbind(matrixStats::rowMeans2(boot_Cor_left > -1*H0),
-                        matrixStats::rowMeans2(boot_Cor_left < H0),
-                        rep(0.5, n_corr)),
-                  MARGIN = 1,
-                  FUN = min)
+        2 * apply(
+          X = cbind(
+            # matrixStats::rowMeans2(boot_Cor_left > -1*H0),
+            # matrixStats::rowMeans2(boot_Cor_left < H0),
+            apply(X = (boot_Cor_left > -1*H0), MARGIN = 1, FUN = mean),
+            apply(X = (boot_Cor_left < H0), MARGIN = 1, FUN = mean),
+            rep(0.5, n_corr)),
+          MARGIN = 1,
+          FUN = min)
     }
 
     # Save components: S.E.; statistics; p-value; CI_95.

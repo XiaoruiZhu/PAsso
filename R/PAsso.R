@@ -17,6 +17,7 @@
 #' is to be computed. They can be abbreviated.
 #' @param uni.model A character string specifying the universal model setting for all
 #' responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
+#' refers to cumulative logit model.
 #' @param models A string vector contains default link functions of fitting models with
 #' respect to each response variable. If \code{"uni.model"} is provided, this one will
 #' be generated automaticlly.
@@ -48,7 +49,7 @@
 #' @param ... Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
 #' in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)
 #'
-#' @import matrixStats MASS
+#' @import MASS
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
 #' components if \code{"partial"} is the association argument. It contains the partial
@@ -91,7 +92,7 @@
 #' @export
 #'
 #' @examples
-#' # Import nes2016_pre data in "parasol"
+#' # Import nes2016_pre data in "PAsso"
 #' data(nes2016_pre)
 #' # Parial association:
 #' PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
@@ -103,7 +104,7 @@
 #'
 #' PAsso_1
 #'
-#' @useDynLib parasol
+#' @useDynLib PAsso
 PAsso <- function(responses, adjustments, data,
                  association = c("partial", "marginal"),
                  uni.model = c("probit", "logit"),
@@ -114,6 +115,14 @@ PAsso <- function(responses, adjustments, data,
                  rep_num = 30, ...){
 
   # TEST HEADER:
+  # data=boot_data
+  # responses = attr(object, "responses")
+  # adjustments = attr(object, "adjustments")
+  # models = attr(object, "models")
+  # association = arguments[1]
+  # method = arguments[2]
+  # resids.method = arguments[3]
+
   # responses <- c("vote.num", "PID")
   # adjustments <- c("income.num", "age", "edu.year")
   # association = "partial"; method = "kendall"; resids.method = "latent"
@@ -156,8 +165,8 @@ PAsso <- function(responses, adjustments, data,
       stop("For marginal association analysis, responses are required!")
     }
 
-    # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
-    mods_ys <- as.matrix(data[,responses])
+    mods_ys <- apply(X = data[,responses], MARGIN = 2, FUN = as.numeric)
+    # Save numeric response for calculating marginal corr
 
     MatCorr <- cor(mods_ys, method = method)
     attr(MatCorr, "arguments") <- c(association, method)
@@ -175,8 +184,10 @@ PAsso <- function(responses, adjustments, data,
       responses <- lapply(conf_temp0, `[[`, 1)
       n_responses <- length(responses)
 
-      mods_ys <- sapply(fitted.models, function(mod) model.frame(mod)[,1])
+      mods_ys <- sapply(fitted.models, function(mod) as.numeric(model.frame(mod)[,1]))
       colnames(mods_ys) <- c(responses)
+      # Save numeric response for calculating marginal corr
+
       conf_temp <- lapply(conf_temp0, function(mod) mod[-1])
 
 
@@ -223,13 +234,12 @@ PAsso <- function(responses, adjustments, data,
       n_adjustments <- length(adjustments)
 
       # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
-      mods_ys <- as.matrix(data[,responses])
+      mods_ys <- apply(X = data[,responses], MARGIN = 2, FUN = as.numeric)
+      # Save numeric response for calculating marginal corr
 
       formulaAll <-
         sapply(responses,
                function(X) paste(X, paste(adjustments, collapse = "+"), sep = "~"))
-
-      numeric_resp <- as.matrix(data[,responses]) # Save numeric response for calculating marginal corr
 
       for (i in responses) { # Change all response variables to factor type to avoid error!
         data[,i] <- as.factor(data[,i])
@@ -260,6 +270,10 @@ PAsso <- function(responses, adjustments, data,
           # identical(fitted_temp, fitted_vote.num)
         }
       }
+
+      # Transfer the data again to obtain numeric responses!!!
+      data <- data.frame(mods_ys, model.frame(fitted.models[[1]])[,-1]) # Make sure data is data.frame to avoid issue!
+      colnames(data) <- c(responses, adjustments)
     }
 
     mods_n <- sapply(fitted.models, nobs)
@@ -302,7 +316,7 @@ PAsso <- function(responses, adjustments, data,
     }
 
     # Add marginal association!
-    Marg_corr <- cor(numeric_resp, method = method)
+    Marg_corr <- cor(mods_ys, method = method)
 
     PartialAsso <- list(corr=MatCorr, rep_corr=rep_MatCorr, rep_SRs=rep_SRs,
                        fitted.models=fitted.models, data=data, mods_n=mods_n,

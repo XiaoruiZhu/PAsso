@@ -96,7 +96,7 @@ and some attributes ("arguments" saves c(association, method, resids.method)).
 The attribute "responses" contains the names of response variables.
 }
 \examples{
-# Import nes2016_pre data in "parasol"
+# Import nes2016_pre data in "PAsso"
 data(nes2016_pre)
 # Parial association:
 PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
