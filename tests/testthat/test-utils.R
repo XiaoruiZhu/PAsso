@@ -1,4 +1,4 @@
-context("Utility functions")
+context("sure: Utility functions")
 
 
 test_that("utility functions work for \"clm\" objects", {
@@ -246,39 +246,39 @@ test_that("generate_residuals function works for different methods", {
     fit_clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
   )
   suppressWarnings(
-    resids_clm <- generate_residuals(fit_clm, method = "Sign", boot_id = NULL)
+    resids_clm <- generate_residuals(fit_clm, method = "sign", boot_id = NULL)
   )
   suppressWarnings(
     resids_clm_boot <-
-      generate_residuals(fit_clm, method = "Sign",
+      generate_residuals(fit_clm, method = "sign",
                          boot_id = sample(nobs(fit_clm), replace = TRUE))
   )
 
 
   fit_polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
-  resids_polr <- generate_residuals(fit_polr, method = "Sign", boot_id = NULL)
+  resids_polr <- generate_residuals(fit_polr, method = "sign", boot_id = NULL)
   resids_polr_boot <-
-    generate_residuals(fit_polr, method = "Sign",
+    generate_residuals(fit_polr, method = "sign",
                        boot_id = sample(nobs(fit_polr), replace = TRUE))
 
   fit_lrm <- rms::lrm(y ~ x, data = df1)
-  resids_lrm <- generate_residuals(fit_lrm, method = "Sign", boot_id = NULL)
+  resids_lrm <- generate_residuals(fit_lrm, method = "sign", boot_id = NULL)
   resids_lrm_boot <-
-    generate_residuals(fit_lrm, method = "Sign",
+    generate_residuals(fit_lrm, method = "sign",
                        boot_id = sample(nobs(fit_lrm), replace = TRUE))
 
   fit_orm <- rms::orm(y ~ x, data = df1, family = logistic)
-  resids_orm <- generate_residuals(fit_orm, method = "Sign", boot_id = NULL)
+  resids_orm <- generate_residuals(fit_orm, method = "sign", boot_id = NULL)
   resids_orm_boot <-
-    generate_residuals(fit_orm, method = "Sign",
+    generate_residuals(fit_orm, method = "sign",
                        boot_id = sample(nobs(fit_orm), replace = TRUE))
 
   fit_vglm <- VGAM::vglm(y ~ x, data = df1,
                          family = VGAM::cumulative(link = "logit",
                                                    parallel = TRUE))
-  resids_vglm <- generate_residuals(fit_vglm, method = "Sign", boot_id = NULL)
+  resids_vglm <- generate_residuals(fit_vglm, method = "sign", boot_id = NULL)
   resids_vglm_boot <-
-    generate_residuals(fit_vglm, method = "Sign",
+    generate_residuals(fit_vglm, method = "sign",
                        boot_id = sample(nobs(fit_vglm), replace = TRUE))
 
 

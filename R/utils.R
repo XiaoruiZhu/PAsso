@@ -1,8 +1,14 @@
-# various internal functions
-
 ################################################################################
-# The following functions have been taken from truncdist, but have been modified
-# to not throw warnings when vectors are passed to arguments a and b
+# Various internal functions
+# The following functions are taken from "truncdist" and "sure" packages,
+# But:
+# 1. A few functions have been modified to not throw warnings.
+# 2. A few bugs are fixed.
+# 3. "generate_residuals" has been modified with new arguments. It can deal with
+#     several other residuals.
+# 4. "generate_surrogate" has been modified with new arguments.
+# 5. The bootstrap procedure for more replications of residuals has been changed
+#     to be consistent with partial association analysis.
 ################################################################################
 
 #' Simulate sample from truncated distribution
@@ -23,7 +29,6 @@
 #' ## Simulate one random sample from a standard normal distribution
 #' ## truncated to the left in the middle
 #' .rtrunc(1, spec = "norm", a = -Inf, b = 0)
-#' @export
 #' @keywords internal
 .rtrunc <- function (n, spec, a = -Inf, b = Inf, ...) {
   .qtrunc(runif(n, min = 0, max = 1), spec, a = a, b = b, ...)
@@ -597,8 +602,8 @@ ncat.vglm <- function(object) {
 ################################################################################
 
 #' @keywords internal
-generate_surrogate <- function(object, method = c("latent", "jitter"),
-                               jitter.scale = c("response", "probability"),
+generate_surrogate <- function(object, method = c("latent", "uniform"),
+                               jitter.uniform.scale = c("probability", "response"),
                                boot_id = NULL) {
 
   # Match arguments
@@ -638,14 +643,14 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
   } else {  # jittering approach
 
     # Determine scale for jittering
-    jitter.scale <- match.arg(jitter.scale)
+    jitter.uniform.scale <- match.arg(jitter.uniform.scale)
     y <- getResponseValues(object)
     if (is.null(boot_id)) {
       boot_id <- seq_along(y)
     }
     y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
-    if (jitter.scale == "response") {  # jittering on the response scale
+    if (jitter.uniform.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1)
@@ -666,8 +671,8 @@ generate_surrogate <- function(object, method = c("latent", "jitter"),
 
 #' @keywords internal
 generate_residuals <-
-  function(object, method = c("latent", "jitter", "Sign", "General", "Deviance"),
-           jitter.scale = c("response", "probability"),
+  function(object, method = c("latent", "uniform", "sign", "general", "deviance"),
+           jitter.uniform.scale = c("probability", "response"),
            boot_id = NULL) {
 
   # Match arguments
@@ -707,12 +712,12 @@ generate_residuals <-
       stop("Distribution not supported.", call. = FALSE)
     }
     s - mean_response[boot_id]  # surrogate residuals
-  } else if (method == "jitter") {  # jittering approach
-    jitter.scale <- match.arg(jitter.scale)
+  } else if (method == "uniform") {  # jittering approach
+    jitter.uniform.scale <- match.arg(jitter.uniform.scale)
 
     y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
-    if (jitter.scale == "response") {  # jittering on the response scale
+    if (jitter.uniform.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
@@ -721,7 +726,7 @@ generate_residuals <-
       .max <- pbinom(y, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
       runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
     }
-  } else if (method == "Sign") { # Sign-based residuals
+  } else if (method == "sign") { # sign-based residuals
     n <- length(y)
     y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
@@ -731,7 +736,7 @@ generate_residuals <-
     pysj <- sapply(1:n, function(x) sum(prob[x,1:y[x]])) - pyej
     PR <- -1 + 2*pysj + pyej
     PR
-  } else if (method == "General") { # Generalized residuals
+  } else if (method == "general") { # generalized residuals
     n <- length(y); y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
 
@@ -739,15 +744,18 @@ generate_residuals <-
     F_acat <- t(apply(prob, 1, cumsum))
     F_acat <- cbind(0, F_acat)
 
+    # An workaround to avoid BUG below: dnorm(qnorm(1)) return Inf
+    F_acat[,dim(F_acat)[2]] <- 0.9999999999
+
     Pj <- sapply(1:n, function(x) prob[x,y[x]])
     Fj <- sapply(1:n, function(x) F_acat[x,y[x]+1])
     Fj_1 <- sapply(1:n, function(x) F_acat[x,y[x]])
 
     fj <- dnorm(qnorm(Fj))
     fj_1 <- dnorm(qnorm(Fj_1))
-    (fj_1-fj)/Pj # Return Generalized residuals
+    (fj_1-fj)/Pj # Return generalized residuals
 
-  } else { # Deviance residuals (-2*loglik)
+  } else { # deviance residuals (-2*loglik)
     n <- length(y); y <- y[boot_id]
     prob <- getFittedProbs(object)[boot_id, ]
 
