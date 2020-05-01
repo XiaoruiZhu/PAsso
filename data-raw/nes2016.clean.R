@@ -18,7 +18,7 @@ nes2016.clean <- function(interview=c("pre", "post", "both")){
   if (missing(interview)) { interview <- "pre" }
   interview <- match.arg(interview)
 
-  nes2016_temp <- PAsso::nes2016_raw %>%
+  nes2016_temp <- nes2016_raw %>%
     dplyr::mutate(Postvote.num=recode(voteResult, 'HillaryClinton'=0, 'DonaldTrump'=1),
                   Prevote.num=recode(IntendVote, 'HillaryClinton'=0, 'DonaldTrump'=1),
                   PID=recode(PID, 'strDem'=1, 'weakDem'=2, 'indDem'=3, 'indind'=4, 'indRep'=5, 'weakRep'=6, 'strRep'=7),
@@ -59,9 +59,9 @@ nes2016.clean <- function(interview=c("pre", "post", "both")){
   if (interview == "pre") {
     nes2016 <- nes2016_temp %>%
       dplyr::filter(!is.na(Prevote.num) & (Prevote.num != 3)) %>% # Only keep obs of two votes in prevote
-      dplyr::select(-c(education, agegroup, income, voteResult,
+      dplyr::select(-c(agegroup, voteResult,
                 ClintonLR, Postvote.num, WeightforPostElection)) %>% # Remove useless variables
-      dplyr::select(c(age, edu.year, income.num,
+      dplyr::select(c(age, edu.year, education, income.num, income,
                PID, selfLR, TrumpLR, ClinLR, IntendVote, Prevote.num,
                WeightforPreElection))
   } else if (interview == "post") {

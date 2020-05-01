@@ -9,45 +9,93 @@ A data frame with 2188 rows and 10 variables.
 \itemize{
   \item \code{age} Respondent's age in years.
 
-  \item \code{edu.year} Respondent's education year, which is mapped from raw data
-  \code{nes2016_raw}. \code{MS}=8, \code{HSdrop}=11, \code{HS}=12, \code{Coll}=14,
+  \item \code{edu.year} Respondent's education year, which is mapped from \code{education}
+  level: \code{MS}=8, \code{HSdrop}=11, \code{HS}=12, \code{Coll}=14,
   \code{CCdeg}=15, \code{BAdeg}=17, \code{MAdeg}=19.
 
+  \item \code{education} Respondent's education level.
+
   \item \code{income.num} Respondent's family income in thousands: an numerical variable.
-  income.num = recode(income, '(01) 01. Under $5,000' = 5, '(02) 02. $5,000-$9,999' = 7.5,
-  '(03) 03. $10,000-$12,499' = 11.25, '(04) 04. $12,500-$14,999' = 13.75,
-  '(05) 05. $15,000-$17,499' = 16.25, '(06) 06. $17,500-$19,999' = 18.75,
-  '(07) 07. $20,000-$22,499' = 21.25, '(08) 08. $22,500-$24,999' = 23.75,
-  '(09) 09. $25,000-$27,499' = 26.25, '(10) 10. $27,500-$29,999' = 28.75,
-  '(11) 11. $30,000-$34,999' = 32.5, '(12) 12. $35,000-$39,999' = 37.5,
-  '(13) 13. $40,000-$44,999' = 42.5, '(14) 14. $45,000-$49,999' = 47.5,
-  '(15) 15. $50,000-$54,999' = 52.5, '(16) 16. $55,000-$59,999' = 57.5,
-  '(17) 17. $60,000-$64,999' = 62.5, '(18) 18. $65,000-$69,999' = 67.5,
-  '(19) 19. $70,000-$74,999' = 72.5, '(20) 20. $75,000-$79,999' = 77.5,
-  '(21) 21. $80,000-$89,999' = 85, '(22) 22. $90,000-$99,999' = 95,
-  '(23) 23. $100,000-$109,999' = 105, '(24) 24. $110,000-$124,999' = 117.5,
-  '(25) 25. $125,000-$149,999' = 137.5, '(26) 26. $150,000-$174,999' = 162.5,
-  '(27) 27. $175,000-$249,999' = 212.5, '(28) 28. $250,000 or more' = 250)
+  It is median value of the range of each \code{income} level
+
+  \item \code{income.num} Respondent's family income level:
+
+  '(01) 01. Under $5,000' = 5,
+
+  '(02) 02. $5,000-$9,999',
+
+  '(03) 03. $10,000-$12,499',
+
+  '(04) 04. $12,500-$14,999',
+
+  '(05) 05. $15,000-$17,499',
+
+  '(06) 06. $17,500-$19,999',
+
+  '(07) 07. $20,000-$22,499',
+
+  '(08) 08. $22,500-$24,999',
+
+  '(09) 09. $25,000-$27,499',
+
+  '(10) 10. $27,500-$29,999',
+
+  '(11) 11. $30,000-$34,999',
+
+  '(12) 12. $35,000-$39,999',
+
+  '(13) 13. $40,000-$44,999',
+
+  '(14) 14. $45,000-$49,999',
+
+  '(15) 15. $50,000-$54,999',
+
+  '(16) 16. $55,000-$59,999',
+
+  '(17) 17. $60,000-$64,999',
+
+  '(18) 18. $65,000-$69,999',
+
+  '(19) 19. $70,000-$74,999',
+
+  '(20) 20. $75,000-$79,999',
+
+  '(21) 21. $80,000-$89,999',
+
+  '(22) 22. $90,000-$99,999',
+
+  '(23) 23. $100,000-$109,999',
+
+  '(24) 24. $110,000-$124,999',
+
+  '(25) 25. $125,000-$149,999',
+
+  '(26) 26. $150,000-$174,999',
+
+  '(27) 27. $175,000-$249,999',
+
+  '(28) 28. $250,000 or more' = 250.
 
   \item \code{PID} Party identification: a numeric variable with value from 1 to 7
   representing strong Democrat, \code{strDem} < weak Democrat, \code{weakDem} <
   independent Democrat, \code{indDem} < independent independent \code{indind} <
   indepedent Republican, \code{indRep} < weak Republican, \code{weakRep} <
   strong Republican, \code{strRep}.
-  \item \code{selfLR} Left-Right self-placement of respondent: a numeric variable
-  with value from 1 to 7 representing \code{extLib}: extremely liberal, \code{Lib}: liberal,
+  \item \code{selfLR} The respondent' self-placement about own left-right in 7 ordinal levels
+  (from extremely liberal to extremely conservative). \code{extLib}: extremely liberal, \code{Lib}: liberal,
   \code{sliLib}: slightly liberal, \code{Mod}: moderate, \code{sliCon}:
   slightly conservative, \code{Con}: conservative, \code{extCon}: extremely
   conservative. \code{extLib} < \code{Lib} < \code{sliLib} <
   \code{Mod} < \code{sliCon} < \code{Con} < \code{extCon}.
 
-  \item \code{TrumpLR} Left-Right placement of Donald Trump (same
-  scale as selfLR), a numeric variable with value from 1 to 7.
+  \item \code{TrumpLR} The respondent's opinion about Donald Trump's left-right
+  placement (same scale as selfLR).
 
-  \item \code{ClinLR} Left-Right placement of Bill Clinton (same
-  scale as selfLR): a numeric variable with value from 1 to 7.
+  \item \code{ClinLR} The respondent's opinion about Hilary Clinton's left-right
+  placement (same scale as selfLR).
 
-  \item \code{IntendVote} The intend vote two months preceeding the
+  \item \code{IntendVote} The respondent's voting preference between
+  Donald Trump and Hilary Clinton two months preceeding the
   November election (Pre-election interview). It is a factor with levels
   \code{HillaryClinton} and \code{DonaldTrump}.
 
