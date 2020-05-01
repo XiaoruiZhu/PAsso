@@ -1,8 +1,6 @@
 library(tidyverse)
 library(faraway)
-
-load(file = "data/nes96.rda")
-summary(nes96)
+source(file = "data-raw/nes2016.clean.R")
 
 nes2016_raw <- read.csv(file = "D:/Dropbox/1.Research/2.Surrogate/5.R_Packages/PartialAssociation_DL_SL_XZ/3.Data/ANES2016.csv")
 summary(nes2016_raw)
@@ -15,12 +13,13 @@ table(nes2016_raw$vote, nes2016_raw$PID)
 table(nes2016_raw$IntendVote, nes2016_raw$voteResult)
 
 
-# Post: Save observations without any missing in prevote ------------------------------------------------------------------
+# pre: Save it as "nes2016", observations without any missing in prevote ------------------------------------------------------------------
 nes2016_pre <- nes2016.clean(interview = "pre")
 dim(nes2016_pre)
 summary(nes2016_pre)
 table(nes2016_pre$Prevote.num)
-save(nes2016_pre, file = "data/nes2016_pre.rda", compress='xz')
+nes2016 <- nes2016_pre
+save(nes2016, file = "data/nes2016.rda", compress='xz')
 
 # Post: Save observations without any missing in postvote -----------------------------------------------------
 nes2016_post <- nes2016.clean(interview = "post")

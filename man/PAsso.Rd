@@ -8,13 +8,15 @@ PAsso(
   responses,
   adjustments,
   data,
-  association = c("partial", "marginal"),
   uni.model = c("probit", "logit"),
   models = NULL,
   method = c("kendall", "pearson", "wolfsigma"),
-  resids.method = c("latent", "jitter", "Sign", "General", "Deviance"),
+  resids.type = c("surrogate", "sign", "general", "deviance"),
+  jitter = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
   fitted.models = NULL,
   rep_num = 30,
+  association = "partial",
   ...
 )
 }
@@ -25,11 +27,7 @@ or greater than two variables in the data frame.}
 \item{adjustments}{A string vector specifies covariates/confounders that need to
 be adjusted.}
 
-\item{data}{the data.frame including responses and adjustments.}
-
-\item{association}{A character string indicating whether the partial association
-coefficient \code{"partial"} (default) or the marginal correlation \code{"marginal"}
-is to be computed. They can be abbreviated.}
+\item{data}{A data.frame including responses and adjustments.}
 
 \item{uni.model}{A character string specifying the universal model setting for all
 responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
@@ -43,16 +41,29 @@ be generated automaticlly.}
 Three choices \code{c("kendall", "pearson", "wolfsigma")}. The default is
 \code{"kendall"}}
 
-\item{resids.method}{A character string specifying which method to use to generate the
-residuals. Current options are \code{"latent"} and
-\code{"jitter"}. Default is \code{"latent"}.
+\item{resids.type}{A character string specifying which type of residuals to generate
+Current options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
 \describe{
-  \item{\code{latent}}{surrogate approach;}
-  \item{\code{jitter}}{jittering approach;}
-  \item{\code{Sign}}{Sign-based residuals;}
-  \item{\code{General}}{Generalized residuals (Franses and Paap 2001);}
-  \item{\code{Deviance}}{Deviance residuals (-2*loglik).}
+  \item{\code{surrogate}}{surrogate residuals (Liu and Zhang, 2017);}
+  \item{\code{sign}}{sign-based residuals (Li and Shepherd, 2010, 2012);}
+  \item{\code{general}}{generalized residuals (Franses and Paap, 2001);}
+  \item{\code{deviance}}{deviance residuals (-2*loglik).}
+}
+
+Although \code{"sign"}, \code{"general"}, and \code{"deviance"} are provided in
+this package, these residuals are problematic for partial association analysis
+between ordinal response (more discussions see Liu, Dungang, Li, Shaobo, Yu, Yan,
+and Moustaki, Irini.(2020))}
+
+\item{jitter}{A character string specifying how to generate surrogate residuals.
+Current options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
+\describe{
+  \item{\code{latent}}{surrogate residuals.}
+  \item{\code{uniform}}{sign-based residuals.}
 }}
+
+\item{jitter.uniform.scale}{A character string specifying the scale on which to perform
+the jittering whenever \code{jitter = "uniform"}. More details: \code{\link[Passo]{residuals}}.}
 
 \item{fitted.models}{A list contains all the models (S3 objects) you want to
 assess for the partial association between ordinal responses after adjusting
@@ -72,9 +83,9 @@ in \code{"resids"} function. Just keep them as default if not specified. Current
 }
 \value{
 An object of class \code{"PAsso"} is a list containing at least the following
-components if \code{"partial"} is the association argument. It contains the partial
+components. It contains the partial
 correlation matrix and multiple repeats if \code{rep_num} > 1. This object has "arguments"
-attribute saved as c(association, method, resids.method), "responses" attribute, and
+attribute saved as c(association, method, resids.type), "responses" attribute, and
 "adjustments" attribute.
 The list contains:
 \describe{
@@ -85,38 +96,114 @@ The list contains:
   \item{\code{fitted.models}}{The list stores all fitted.models;}
   \item{\code{data}}{The data.frame of original dataset;}
   \item{\code{mods_n}}{The sample size of each fitted model;}
-  \item{\code{cor_func}}{The correlation function after assign different method.}
+  \item{\code{cor_func}}{The correlation function after assign different method;}
+  \item{\code{Marg_corr}}{The marginal association matrix.}
 }
 }
 \description{
-This function is mainly designed for conducting the partial association analysis
-bewteen two or more ordinal response variables after adjusting for a set of
-covariates. It can also conduct marginal correlation analyses without adjusting
-covariates. It generates an object that has correlation coefficients matrix,
-and some attributes ("arguments" saves c(association, method, resids.method)).
-The attribute "responses" contains the names of response variables.
+This function is mainly designed for conducting the partial association analysis.
+It provides two ways of using:
+
+1. A user-friendly way: only need "responses", "adjustments", and
+"data". All the rest of the argument will be setted as default (see Arguments for details of
+default).
+
+2. An advanced way: user can input a list of fitted models by "fitted.models", then the
+"responses" and "adjustments" are not necessary. Supported class of cumulative models:
+\code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}, \code{\link[rms]{lrm}},
+\code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+
+It generates an object that has partial association matrix, marginal association,
+and some attributes: "arguments" saves c(association, method, resids.type). "responses"
+contains the names of response variables. The attribute "adjustments" contains the names
+of covariates. The "summary" function of "PAsso" class of object provides marginal association '
+matrix for comparison purpose.
 }
 \examples{
-# Import nes2016_pre data in "PAsso"
-data(nes2016_pre)
-# Parial association:
+
+###########################################################
+# User-friendly way of using
+###########################################################
+
+# Import nes2016 data in "PAsso"
+data(nes2016)
+
+# User-friendly way of using: Parial association analysis
 PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
                 adjustments = c("income.num", "age", "edu.year"),
-                data = nes2016_pre,
-                association = c("partial"),
-                models = c("probit", "probit"),
+                data = nes2016,
                 method = c("kendall"))
 
-PAsso_1
+print(PAsso_1, digits = 4)
+
+# --------------------------------------------
+# The partial correlation coefficient matrix:
+#              Prevote.num  PID
+# Prevote.num  1.0000       0.4483
+# PID                       1.0000
+
+summary(PAsso_adv1, digits = 4)
+
+# --------------------------------------------
+# The partial correlation coefficient matrix:
+#              Prevote.num  PID
+# Prevote.num  1.0000       0.4483
+# PID                       1.0000
+# --------------------------------------------
+# The marginal correlation coefficient matrix:
+#              Prevote.num  PID
+# Prevote.num  1.0000       0.7059
+# PID                       1.0000
+
+--------------------------------------------
+--------------------------------------------
+# The coefficients of fitted models are:
+#              Prevote.num  PID
+# income.num   0.0005       0.0009*
+# Std. Error   0.0005       0.0004
+# ---
+# age          0.0092***    0.0048***
+# Std. Error   0.0016       0.0013
+# ---
+# edu.year    -0.0798***   -0.0459***
+# Std. Error   0.0117       0.0098
+# ---
+# Signif. codes:  0 â€˜***â€™ 0.001 â€˜**â€™ 0.01 â€˜*â€™ 0.05 â€˜.â€™ 0.1 â€˜ â€™ 1
+
+###########################################################
+# Advanced way of using
+###########################################################
+
+fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+               family = binomial(link = "probit"))
+fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
+               method="probit", Hess = TRUE)
+
+PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
+                    method = c("kendall"),
+                    resids.type = "surrogate")
+
+print(PAsso_adv1, digits = 4)
+summary(PAsso_adv1, digits = 4)
 
 }
 \references{
-Liu, Dungang, Li, Shaobo, Yu, Yu, and Moustaki, Irini. Assessing partial association between
+Liu, Dungang, Li, Shaobo, Yu, Yan, and Moustaki, Irini. Assessing partial association between
 ordinal variables: quantification, visualization, and hypothesis testing, \emph{Journal of the
 American Statistical Association}, Revision under review.
 
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
-Regression Models: A Surrogate Approach.
-\emph{Journal of the American Statistical Association}.
+Regression Models: A Surrogate Approach. \emph{Journal of the American Statistical Association}.
 \url{http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
+
+Li, Chun, and Bryan E. Shepherd. "Test of association between two ordinal variables while
+adjusting for covariates." \emph{Journal of the American Statistical Association} 105, no.
+490 (2010): 612-620. \url{https://doi.org/10.1198/jasa.2010.tm09386}
+
+Li, Chun, and Bryan E. Shepherd. "A new residual for ordinal outcomes." \emph{Biometrika}
+99, no. 2 (2012): 473-480. \url{https://doi.org/10.1093/biomet/asr073}
+
+Franses, Philip Hans, and Richard Paap. Quantitative models in marketing research.
+Cambridge University Press, 2001.
+\url{https://pdfs.semanticscholar.org/dad0/820f287a8cf5a4e8039549e35fc111fd86e5.pdf}
 }

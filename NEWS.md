@@ -1,3 +1,22 @@
+# PAsso 0.1.6
+
+## Major changes
+
+1. Add 'diagnostic.plot' to replace 'check.model' for the diagnostics of fitted models in PAsso object. 'autoplot' become internal S3 method.
+
+2. S3 'diagnostic.plot' method can deal with classes of PAsso, PAsso.test, resid, clm, glm, lrm, orm, polr.
+
+3. Only keep one nes2016 dataset.
+
+4. Change 'resids' function to a S3 method 'residuals', which is consistent with R core 'stats' package.
+
+5. Conduct more test by 'testthat' to avoid bugs when methods are applied to different classes.
+
+## Bug fixes
+
+1. Jittering on the probability scale is currently only supported for logit-type models.
+2. issues of 'plot' and 'diagnostic.plot'. 
+
 # PAsso 0.1.5
 
 ## Major changes

@@ -1,112 +1,66 @@
 
 library(MASS)
-# library(tidyverse)
-# library(matrixStats)
-# library(progress)
-# library(profvis)
+library(tidyverse)
+library(progress)
 
 library(PAsso)
 # import data -------------------------------------------------------------
-data("nes2016_pre")
-nes2016 <- nes2016_pre
+data("nes2016")
 summary(nes2016)
 
-system.time(
-  cor_matrix1 <- cor(nes2016[, c("PrePrevote.num","PID")], method = "pearson")
-)
-
-system.time(
-  cor_matrix2 <- cor(nes2016[, c("PrePrevote.num","PID")], method = "kendall")
-)
-library(pcaPP)
-system.time(
-  cor_matrix3 <- cor.fk(nes2016[, c("PrePrevote.num","PID")])
-)
-cor_matrix2; cor_matrix3
-
-# "PAsso" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
-# Test "PAsso" function: Partial Association by surrogate residuals regression models
-fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
-               family = binomial(link = "probit"))
-fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
-               method="probit", Hess = TRUE)
-
-system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
-                   association = c("partial"),
-                   method = c("kendall"),
-                   resids.method = "latent")
-)
-
-# Partial association coefficients (Parts of Table 7 in paper)
-print(PAsso_adv1, digits = 3)
-summary(PAsso_adv1, digits = 3)
-
-# Test jittering
-system.time(PAsso_adv1_jit <- PAsso(fitted.models=list(fit.vote, fit.PID),
-                                association = c("partial"),
-                                method = c("kendall"),
-                                resids.method = "jitter")
-)
-print(PAsso_adv1, digits = 3)
-summary(PAsso_adv1_jit, digits = 3)
-
-# "PAsso" function: The simple way, input response and confounders only ----------------------------
+# Partial association between "Prevote.num" and "PID" after adjusting ----------------------------
+# "income.num", "age", "edu.year"
+# "PAsso" function: Only need input responses, adjustments, data
+# Other default arguments are displayed below as well
 PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
-                   adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016
-                   # association = c("partial"),
-                   # models = c("probit", "probit"),
-                   # method = c("kendall"),
-                   # resids.method = "latent", fitted.models = NULL,
-                   # rep_num = 30
+                 adjustments = c("income.num", "age", "edu.year"),
+                 data = nes2016,
+                 uni.model <- "probit"
+                 # association = c("partial"),
+                 # models = c("probit", "probit"),
+                 # method = c("kendall"),
+                 # resids.method = "surrogate", fitted.models = NULL,
+                 # rep_num = 30
                 )
 
+# Print the partial association matrix only
 print(PAsso_1, 5)
+
+# Provide partial association matrix, marginal association matrix, and summary of models' coefficients
 summary(PAsso_1, 4)
+
+# Plot partial association regression plot: residuals
 plot(PAsso_1)
 
 # "PAsso" function: input three responses ----------------------------
 PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                 adjustments = c("income.num", "age", "edu.year"),
                 data = nes2016,
-                models = c("probit", "probit", "probit"),
-                association = c("partial"), method = c("kendall"),
-                resids.method = "latent")
+                uni.model <- "probit",
+                method = c("kendall"),
+                # models = c("probit", "probit", "probit"),
+                # association = c("partial")
+                resids.type = "surrogate")
 
-profvis({
-  PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
-                   adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016,
-                   models = c("probit", "probit", "probit"),
-                   association = c("partial"), method = c("kendall"),
-                   resids.method = "latent",rep_num = 2)
-})
 # Compare marginal correlation and partial correlation.
-print(PAsso_2, digits=4)
 summary(PAsso_2, digits=4)
 plot(PAsso_2)
 
 PAsso_2_jit <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                  adjustments = c("income.num", "age", "edu.year"),
                  data = nes2016,
-                 uni.model = "probit",
+                 uni.model = "logit",
                  association = c("partial"), method = c("kendall"),
-                 resids.method = "jitter")
-print(PAsso_2, digits=4)
+                 resids.type = "surrogate", jitter = "uniform")
 summary(PAsso_2_jit, digits=4)
 
-# "PAsso" function: input three responses ----------------------------
-
-# Pcor_SR.test function: Conduct inference based on object of "PartialCor" class ----------------------------
+# test function: Conduct inference based on object of "PAsso.test" class ----------------------------
 library(progress); #library(doParallel)
 
 system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
-
 print(Pcor_SR_test1, digits=3)
-summary(PAsso_1, digits=4)
 
-# Pcor_SR.test function: Test by parallel ----------------------------
-
+# test function: Test parallel ----------------------------
 library(doParallel); library(progress)
 
 numCores <- detectCores()  # Not too aggressive!
@@ -124,14 +78,10 @@ PAsso_5v <- PAsso(responses = c("Prevote.num", "PID", "selfLR", "ClinLR", "Trump
                  adjustments = c("income.num", "age", "edu.year"),
                  data = nes2016,
                  association = c("partial"),
-                 method = c("kendall"), resids.method = "latent", rep_num=30)
+                 method = c("kendall"), resids.type = "surrogate")
 
-PAsso_5v # (Right part of Table 7 in paper)
-summary(PAsso_5v,3)
-
-system.time(PAsso_5v_test <- test(object = PAsso_5v, boot_SE=200, H0=0, parallel=FALSE))
-
-print(PAsso_5v_test, 3)
+print(PAsso_5v, 4) # (Right part of Table 7 in paper)
+summary(PAsso_5v,4)
 
 # Partial Regression plot matrix ------------------------------------------
 plot(PAsso_1)
@@ -139,27 +89,56 @@ plot(x = PAsso_adv1)
 plot(x = PAsso_2)
 plot(x = PAsso_5v)
 
-# check.model function -----------------------------------------------------
+# diagnostic.plot function -----------------------------------------------------
 
-check_qq <- check.model(object = PAsso_2, color="blue", output = "qq")
+check_qq <- diagnostic.plot(object = PAsso_2, output = "qq")
 
-check_fitted <- check.model(object = PAsso_2, output = "fitted")
+check_fitted <- diagnostic.plot(object = PAsso_2, output = "fitted")
 
-check_covar <- check.model(object = PAsso_2, output = "covariate")
+check_covar <- diagnostic.plot(object = PAsso_2, output = "covariate")
 
-check_qq <- check.model(object = PAsso_5v, color="blue", output = "qq")
+check_qq <- diagnostic.plot(object = PAsso_5v, color="blue", output = "qq")
 
-check_fitted <- check.model(object = PAsso_5v, output = "fitted")
+check_fitted <- diagnostic.plot(object = PAsso_5v, output = "fitted")
 
-check_covar <- check.model(object = PAsso_5v, output = "covariate")
-
+check_covar <- diagnostic.plot(object = PAsso_5v, output = "covariate")
 
 ## general association measure and 3-D plot for VOTE and PID
 library("copula")
 library("plotly")
-# library("copBasic")
 
-dim(PAsso_2$rep_SRs)
 testPlots <- plot3D(PAsso_2)
 testPlots$plot_1
+# Above result need to be opened in browser through "Viewer" tap!
+
+###########################################################
+# Advanced user's guide
+###########################################################
+
+# "PAsso" advanced using of the function: Input a few models directly ------------------------------
+
+fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+               family = binomial(link = "probit"))
+fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
+               method="probit", Hess = TRUE)
+
+system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
+                                association = c("partial"),
+                                method = c("kendall"),
+                                resids.type = "surrogate")
+)
+
+# Partial association coefficients (Parts of Table 7 in paper)
+print(PAsso_adv1, digits = 3)
+summary(PAsso_adv1, digits = 3)
+
+# Test jittering
+system.time(PAsso_adv1_jit <- PAsso(fitted.models=list(fit.vote, fit.PID),
+                                    association = c("partial"),
+                                    method = c("kendall"),
+                                    resids.type = "surrogate", jitter = "uniform",
+                                    jitter.uniform.scale = "response")
+)
+print(PAsso_adv1, digits = 3)
+summary(PAsso_adv1_jit, digits = 3)
 

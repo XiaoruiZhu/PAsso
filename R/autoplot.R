@@ -8,14 +8,14 @@
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
-#' @param what Character string specifying what to plot. Default is \code{"qq"}
+#' @param output Character string specifying what to plot. Default is \code{"qq"}
 #' which produces a quantile-quantile plots of the residuals.
 #'
 #' @param x A vector giving the covariate values to use for residual-by-
-#' covariate plots (i.e., when \code{what = "covariate"}).
+#' covariate plots (i.e., when \code{output = "covariate"}).
 #'
 #' @param fit The fitted model from which the residuals were extracted. (Only
-#' required if \code{what = "fitted"} and \code{object} inherits from class
+#' required if \code{output = "fitted"} and \code{object} inherits from class
 #' \code{"resid"}.)
 #'
 #' @param distribution Function that computes the quantiles for the reference
@@ -82,8 +82,7 @@
 #' @param resp_name Character string to specifiy the response name that will be
 #' displayed in the figure.
 #'
-#' @param ... Additional optional arguments to be passed onto
-#' \code{\link[sure]{resids}}.
+#' @param ... Additional optional arguments to be passed onto \code{\link[PAsso]{residuals}}.
 #'
 #' @return A \code{"ggplot"} object.
 #'
@@ -93,11 +92,20 @@
 #' @export
 #'
 #' @examples
-#' # See ?resids for an example
-#' ?resids
+#'
+#' # Load data
+#' data(df1)
+#' # Fit cumulative link model
+#' fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+#' # Construct residual plots
+#' p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
+#' p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
+#' p3 <- ggplot2::autoplot(fit, output = "fitted")
+#' p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+#'
 autoplot.resid <- function(
   object,
-  what = c("qq", "fitted", "covariate"),
+  output = c("qq", "fitted", "covariate"),
   x = NULL,
   fit = NULL,
   distribution = qnorm,
@@ -123,17 +131,17 @@ autoplot.resid <- function(
 ) {
 
 
-  # What type of plot to produce
-  what <- match.arg(what, several.ok = TRUE)
+  # output type of plot to produce
+  output <- match.arg(output, several.ok = TRUE)
 
   # Figure out number of plots and layout
-  np <- length(what)
+  np <- length(output)
   if (is.null(ncol)) {
-    ncol <- length(what)
+    ncol <- length(output)
   }
 
   # Check that fitted mean response values are available
-  if ("fitted" %in% what) {
+  if ("fitted" %in% output) {
     if (is.null(fit)) {
       stop("Cannot extract mean response. Please supply the original fitted",
            " model object via the `fit` argument.")
@@ -142,11 +150,15 @@ autoplot.resid <- function(
   }
 
   # Check that covariate values are supplied
-  if ("covariate"  %in% what) {
-    if (is.null(x)) {
-      stop("No covariate to plot. Please supply a vector of covariate values",
-           " via the `x` argument")
+  if ("covariate"  %in% output) {
+    if (is.null(x) & is.null(fit)) {
+      message("No covariate to plot. Please supply a vector of covariate values",
+           " via the `x` argument. Or feed the `fit` argument with the fitted model")
+    } else if (is.null(x)) {
+      # Fix this bug for more user-friendly design.
+      x <- model.frame(fit)[,2] # If no `x` feed, extract first covariate from `fit`
     }
+
     if (is.null(xlab)) {
       # xlab <- getColumnName(x)
       xlab <- deparse(substitute(x))
@@ -157,27 +169,27 @@ autoplot.resid <- function(
   if (is.null(attr(object, "boot_reps"))) {
     nsim <- 1
     res <- object
-    if ("qq" %in% what) {
+    if ("qq" %in% output) {
       res.med <- object
     }
   } else {
     res.mat <- attr(object, "boot_reps")
     res <- as.numeric(as.vector(res.mat))
     nsim <- ncol(res.mat)
-    if ("qq" %in% what) {
+    if ("qq" %in% output) {
       res.med <- apply(apply(res.mat, MARGIN = 2, FUN = sort,
                              decreasing = FALSE), MARGIN = 1, FUN = median)
     }
-    if ("fitted" %in% what) {
+    if ("fitted" %in% output) {
       mr <- mr[as.vector(attr(object, "boot_id"))]
     }
-    if ("covariate" %in% what) {
+    if ("covariate" %in% output) {
       x <- x[as.vector(attr(object, "boot_id"))]
     }
   }
 
   # Quantile-quantile
-  p1 <- if ("qq" %in% what) {
+  p1 <- if ("qq" %in% output) {
     if (!is.null(attr(object, "jitter.scale"))) {
       if (attr(object, "jitter.scale") == "response") {
         stop("Q-Q plots are not available for jittering on the response scale.")
@@ -201,7 +213,7 @@ autoplot.resid <- function(
   }
 
   # Residual vs fitted value
-  p2 <- if ("fitted" %in% what) {
+  p2 <- if ("fitted" %in% output) {
     resp_name <- paste("Residual (", resp_name , ")", sep = "")
     p <- ggplot(data.frame("x" = mr, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
@@ -217,7 +229,7 @@ autoplot.resid <- function(
   }
 
   # Residual vs covariate
-  p3 <- if ("covariate" %in% what) {
+  p3 <- if ("covariate" %in% output) {
     p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y"))
     if (is.factor(x)) {
       if (is.null(fill)) {
@@ -242,11 +254,11 @@ autoplot.resid <- function(
   }
 
   # Return plot(s)
-  if (length(what) == 1) {  # return a single plot
-    if (what == "qq") {
+  if (length(output) == 1) {  # return a single plot
+    if (output == "qq") {
       p1 +
         ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
-    } else if (what == "fitted") {
+    } else if (output == "fitted") {
       p2 +
         ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
     } else {
@@ -268,19 +280,45 @@ autoplot.resid <- function(
 
 }
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
-#' @method autoplot clm
-autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...) {
+#' @export
+#' @keywords internal
+autoplot.glm <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+) {
 
   # Compute residuals
-  res <- resids(object, ...)
+  res <- residuals(object, ...)
 
   # Quantile function to use for Q-Q plots
   qfun <- if (is.null(attr(res, "jitter.scale"))) {
     getQuantileFunction(object)
   } else {
-    if (what == "qq" && attr(res, "jitter.scale") == "response") {
+    if (output == "qq" && attr(res, "jitter.scale") == "response") {
       stop("Quantile-quantile plots are not appropriate for residuals ",
            "obtained by jittering on the response scale.")
     }
@@ -292,39 +330,57 @@ autoplot.clm <- function(object, what = c("qq", "fitted", "covariate"), xlab = N
     xlab <- deparse(substitute(x))
   }
 
+  getResponseValues
+
   # Call the default method
   autoplot.resid(
-    res, what = what, distribution = qfun, fit = object, xlab = xlab, ...
+    res, output = output, x = x, distribution = qfun, fit = object, ncol = ncol,
+    alpha = alpha, xlab = xlab, color = color, shape = shape, size = size,
+    qqpoint.color = qqpoint.color, qqpoint.shape = qqpoint.shape,
+    qqpoint.size = qqpoint.size, qqline.color = qqline.color,
+    qqline.linetype = qqline.linetype, qqline.size = qqline.size,
+    smooth = smooth, smooth.color = smooth.color,
+    smooth.linetype = smooth.linetype, smooth.size = smooth.size, fill = fill,
+    resp_name = resp_name, ...
   )
 
 }
 
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
-#' @method autoplot glm
-autoplot.glm <- autoplot.clm
+#' @export
+#' @keywords internal
+autoplot.clm <- autoplot.glm
 
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
 #' @method autoplot lrm
-autoplot.lrm <- autoplot.clm
+#' @export
+#' @keywords internal
+autoplot.lrm <- autoplot.glm
 
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
 #' @method autoplot orm
-autoplot.orm <- autoplot.clm
+#' @export
+#' @keywords internal
+autoplot.orm <- autoplot.glm
 
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
 #' @method autoplot polr
-autoplot.polr <- autoplot.clm
+#' @export
+#' @keywords internal
+autoplot.polr <- autoplot.glm
 
 
-#' @return \code{NULL}
+
 #' @rdname autoplot
 #' @method autoplot vglm
-autoplot.vglm <- autoplot.clm
+#' @export
+#' @keywords internal
+autoplot.vglm <- autoplot.glm

@@ -1,3 +1,3 @@
 library(testthat)
 
-test_check("parasol")
+test_check("PAsso")

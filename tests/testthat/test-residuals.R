@@ -1,7 +1,7 @@
-context("Surrogate residuals")
+context("PAsso: S3 method 'residuals()' for Surrogate residuals")
 
 
-test_that("resids work for \"clm\" objects", {
+test_that("residuals work for \"clm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -14,8 +14,15 @@ test_that("resids work for \"clm\" objects", {
   fit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
+  res_PR1 <- residuals(fit, type = "sign")
+  res_PR2 <- residuals(fit, type = "sign", nsim = 10)
+  res_GR1 <- residuals(fit, type = "general")
+  res_GR2 <- residuals(fit, type = "general", nsim = 10)
+  res_DR1 <- residuals(fit, type = "deviance")
+  res_DR2 <- residuals(fit, type = "deviance", nsim = 10)
+
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -27,10 +34,15 @@ test_that("resids work for \"clm\" objects", {
   expect_equal(dim(attr(res2, "boot_reps")), c(nrow(df1), 10))
   expect_equal(dim(attr(res2, "boot_id")), c(nrow(df1), 10))
 
+  expect_equal(attr(res1, "arguments")[1], "surrogate")
+  expect_equal(attr(res_PR1, "arguments")[1], "sign")
+  expect_equal(attr(res_GR1, "arguments")[1], "general")
+  expect_equal(attr(res_DR1, "arguments")[1], "deviance")
+
 })
 
 
-test_that("resids work for \"glm\" objects", {
+test_that("residuals work for \"glm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -42,10 +54,12 @@ test_that("resids work for \"glm\" objects", {
   fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
-  res3 <- resids(fit, jitter.scale = "probability")
-  res4 <- resids(fit, nsim = 10, jitter.scale = "probability")
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
+  res3 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                    jitter.unifrom.scale = "probability")
+  res4 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                    jitter.unifrom.scale = "probability", nsim = 10)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -68,7 +82,7 @@ test_that("resids work for \"glm\" objects", {
 })
 
 
-test_that("resids work for \"lrm\" objects", {
+test_that("residuals work for \"lrm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -81,8 +95,8 @@ test_that("resids work for \"lrm\" objects", {
   fit <- rms::lrm(y ~ x, data = df1)
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -97,7 +111,7 @@ test_that("resids work for \"lrm\" objects", {
 })
 
 
-test_that("resids work for \"orm\" objects", {
+test_that("residuals work for \"orm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -110,8 +124,8 @@ test_that("resids work for \"orm\" objects", {
   fit <- rms::orm(y ~ x, data = df1, family = logistic)
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -126,7 +140,7 @@ test_that("resids work for \"orm\" objects", {
 })
 
 
-test_that("resids work for \"polr\" objects", {
+test_that("residuals work for \"polr\" objects", {
 
   # Skips
   skip_on_cran()
@@ -139,8 +153,8 @@ test_that("resids work for \"polr\" objects", {
   fit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -155,7 +169,7 @@ test_that("resids work for \"polr\" objects", {
 })
 
 
-test_that("resids work for \"vglm\" objects", {
+test_that("residuals work for \"vglm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -172,8 +186,8 @@ test_that("resids work for \"vglm\" objects", {
   )
 
   # Compute residuals
-  res1 <- resids(fit)
-  res2 <- resids(fit, nsim = 10)
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))
@@ -188,7 +202,7 @@ test_that("resids work for \"vglm\" objects", {
 })
 
 
-test_that("resids work for \"clm\" objects with different link functions", {
+test_that("residuals work for \"clm\" objects with different link functions", {
 
   # Skips
   skip_on_cran()
@@ -205,11 +219,11 @@ test_that("resids work for \"clm\" objects with different link functions", {
   fit5 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
 
   # Compute residuals
-  res1 <- resids(fit1)
-  res2 <- resids(fit2)
-  res3 <- resids(fit3)
-  res4 <- resids(fit4)
-  res5 <- resids(fit5)
+  res1 <- residuals(fit1)
+  res2 <- residuals(fit2)
+  res3 <- residuals(fit3)
+  res4 <- residuals(fit4)
+  res5 <- residuals(fit5)
 
   # Expectations
   expect_equal(length(res1), nrow(df1))

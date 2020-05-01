@@ -155,10 +155,10 @@ p1.mat <- p_adj_cate(Z1)
 p2.mat <- p_adj_cate(Z2)
 Y1 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p1.mat[x,])==1)))
 Y2 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p2.mat[x,])==1)))
-df_ParA <- list(data=data.frame(Y1=Y1, Y2=Y2, X=X, Z1=Z1, Z2=Z2),
+df_AdjCat <- list(data=data.frame(Y1=Y1, Y2=Y2, X=X, Z1=Z1, Z2=Z2),
                 alpha1=alpha1, alpha2=alpha2, beta1=beta1, beta2=beta2)
 
-save(df_ParA, file = "data/df_AdjCat.rda", compress='xz')
+save(df_AdjCat, file = "data/df_AdjCat.rda", compress='xz')
 
 library(VGAM)
 fit.adj1<- vglm(Y1~X, family=acat(reverse=TRUE, parallel=TRUE))

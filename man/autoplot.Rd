@@ -3,8 +3,8 @@
 \name{autoplot}
 \alias{autoplot}
 \alias{autoplot.resid}
-\alias{autoplot.clm}
 \alias{autoplot.glm}
+\alias{autoplot.clm}
 \alias{autoplot.lrm}
 \alias{autoplot.orm}
 \alias{autoplot.polr}
@@ -13,7 +13,7 @@
 \usage{
 \method{autoplot}{resid}(
   object,
-  what = c("qq", "fitted", "covariate"),
+  output = c("qq", "fitted", "covariate"),
   x = NULL,
   fit = NULL,
   distribution = qnorm,
@@ -38,17 +38,167 @@
   ...
 )
 
-\method{autoplot}{clm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{glm}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-\method{autoplot}{glm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{clm}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-\method{autoplot}{lrm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{lrm}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-\method{autoplot}{orm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{orm}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-\method{autoplot}{polr}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{polr}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 
-\method{autoplot}{vglm}(object, what = c("qq", "fitted", "covariate"), xlab = NULL, ...)
+\method{autoplot}{vglm}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of class \code{\link[sure]{resids}},
@@ -56,14 +206,14 @@
 \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
-\item{what}{Character string specifying what to plot. Default is \code{"qq"}
+\item{output}{Character string specifying what to plot. Default is \code{"qq"}
 which produces a quantile-quantile plots of the residuals.}
 
 \item{x}{A vector giving the covariate values to use for residual-by-
-covariate plots (i.e., when \code{what = "covariate"}).}
+covariate plots (i.e., when \code{output = "covariate"}).}
 
 \item{fit}{The fitted model from which the residuals were extracted. (Only
-required if \code{what = "fitted"} and \code{object} inherits from class
+required if \code{output = "fitted"} and \code{object} inherits from class
 \code{"resid"}.)}
 
 \item{distribution}{Function that computes the quantiles for the reference
@@ -130,29 +280,26 @@ to the factor levels.}
 \item{resp_name}{Character string to specifiy the response name that will be
 displayed in the figure.}
 
-\item{...}{Additional optional arguments to be passed onto
-\code{\link[sure]{resids}}.}
+\item{...}{Additional optional arguments to be passed onto \code{\link[PAsso]{residuals}}.}
 }
 \value{
 A \code{"ggplot"} object.
-
-\code{NULL}
-
-\code{NULL}
-
-\code{NULL}
-
-\code{NULL}
-
-\code{NULL}
-
-\code{NULL}
 }
 \description{
 Residual-based diagnostic plots for cumulative link and general
 regression models using \code{\link[ggplot2]{ggplot2}} graphics.
 }
 \examples{
-# See ?resids for an example
-?resids
+
+# Load data
+data(df1)
+# Fit cumulative link model
+fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+# Construct residual plots
+p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
+p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
+p3 <- ggplot2::autoplot(fit, output = "fitted")
+p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+
 }
+\keyword{internal}

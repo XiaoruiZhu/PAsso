@@ -17,12 +17,12 @@
 #' @export plot3D
 #'
 #' @examples
-#' data("nes2016_pre")
-#' PAsso_2 <- PAsso(responses = c("vote.num", "PID", "selfLR"),
+#' data("nes2016")
+#' PAsso_3v <- PAsso(responses = c("vote.num", "PID", "selfLR"),
 #'                  adjustments = c("income.num", "age", "edu.year"),
-#'                  data = nes2016_pre)
+#'                  data = nes2016)
 #'
-#' plot_all <- plot3D(PAsso_2)
+#' plot_all <- plot3D(PAsso_3v)
 #' plot_all$plot_1
 #'
 plot3D <- function(object) {
@@ -33,11 +33,9 @@ plot3D <- function(object) {
 #' @method plot3D default
 #' @export
 plot3D.default <- function(object, ...){
-
   warning(paste("plot3D does not know how to handle object of class ",
                 class(object),
                 "and can only be used on classes PAsso"))
-
 }
 
 

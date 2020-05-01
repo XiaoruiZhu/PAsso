@@ -1,4 +1,4 @@
-context("Surrogate response values")
+context("sure: Surrogate response values")
 
 
 test_that("surrogate work for \"polr\" objects", {
@@ -17,7 +17,7 @@ test_that("surrogate work for \"polr\" objects", {
   set.seed(101)  # for reproducibility
   s <- surrogate(fit)  # surrogate response values
   set.seed(101)  # for reproducibility
-  r <- resids(fit)  # surrogate-based residuals
+  r <- residuals(fit)  # surrogate-based residuals
   mr <- getMeanResponse.polr(fit)  # mean response
 
   # Expectations

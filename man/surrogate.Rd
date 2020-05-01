@@ -6,9 +6,9 @@
 \usage{
 surrogate(
   object,
+  method = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
   nsim = 1L,
-  method = c("latent", "jitter"),
-  jitter.scale = c("response", "probability"),
   ...
 )
 }
@@ -17,16 +17,16 @@ surrogate(
 \code{\link[stats]{glm}} \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
 
-\item{nsim}{Integer specifying the number of bootstrap replicates to use.
-Default is \code{1L} meaning no bootstrap samples.}
-
 \item{method}{Character string specifying which method to use to generate the
 surrogate response values. Current options are \code{"latent"} and
-\code{"jitter"}. Default is \code{"latent"}.}
+\code{"uniform"}. Default is \code{"latent"}.}
 
-\item{jitter.scale}{Character string specifyint the scale on which to perform
-the jittering whenever \code{method = "jitter"}. Current options are
+\item{jitter.uniform.scale}{Character string specifyint the scale on which to perform
+the jittering whenever \code{method = "uniform"}. Current options are
 \code{"response"} and \code{"probability"}. Default is \code{"response"}.}
+
+\item{nsim}{Integer specifying the number of bootstrap replicates to use.
+Default is \code{1L} meaning no bootstrap samples.}
 
 \item{...}{Additional optional arguments. (Currently ignored.)}
 }

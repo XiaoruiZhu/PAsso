@@ -1,7 +1,7 @@
-context("sure: 'autoplot()' Residual plots")
+context("PAsso: 'diagnostic.plot()' Residual plots work for objects")
 
 
-test_that("autoplot works for \"clm\" objects", {
+test_that("diagnostic.plot works for \"clm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -14,22 +14,22 @@ test_that("autoplot works for \"clm\" objects", {
   fit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
 
 
-test_that("autoplot works for \"glm\" objects", {
+test_that("diagnostic.plot works for \"glm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -41,22 +41,22 @@ test_that("autoplot works for \"glm\" objects", {
   fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, jitter.scale = "probability", type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
 
 
-test_that("autoplot works for \"lrm\" objects", {
+test_that("diagnostic.plot works for \"lrm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -69,22 +69,22 @@ test_that("autoplot works for \"lrm\" objects", {
   fit <- rms::lrm(y ~ x, data = df1)
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
 
 
-test_that("autoplot works for \"orm\" objects", {
+test_that("diagnostic.plot works for \"orm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -97,22 +97,22 @@ test_that("autoplot works for \"orm\" objects", {
   fit <- rms::orm(y ~ x, data = df1, family = logistic)
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
 
 
-test_that("autoplot works for \"polr\" objects", {
+test_that("diagnostic.plot works for \"polr\" objects", {
 
   # Skips
   skip_on_cran()
@@ -125,22 +125,22 @@ test_that("autoplot works for \"polr\" objects", {
   fit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
 
 
-test_that("autoplot works for \"vglm\" objects", {
+test_that("diagnostic.plot works for \"vglm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -157,16 +157,16 @@ test_that("autoplot works for \"vglm\" objects", {
   )
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- diagnostic.plot(fit, type = "qq")
+  p2 <- diagnostic.plot(fit, type = "covariate", x = df1$x)
+  p3 <- diagnostic.plot(fit, type = "fitted")
+  # p4 <- diagnostic.plot(fit, type = "fitted", nsim = 10)
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
+  # expect_is(p4, "ggplot")
 
 })
