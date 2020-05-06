@@ -6,7 +6,7 @@
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
 #'
-#' @param nsim Integer specifying the number of bootstrap replicates to use.
+#' @param nsim Integer specifying the number of replicates to use.
 #'
 #' @param test Character string specifying which goodness-of-fit test to use.
 #' Current options include: \code{"ks"} for the Kolmogorov-Smirnov test,
@@ -65,7 +65,7 @@ plot.gof <- function(x, ...) {
 sim_pvals <- function(res, test, pfun) {
   gof_test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
                      "cvm" = goftest::cvm.test)
-  pvals <- apply(attr(res, "boot_reps"), MARGIN = 2, FUN = function(x) {
+  pvals <- apply(attr(res, "draws"), MARGIN = 2, FUN = function(x) {
     gof_test(x, pfun)$p.value
   })
   class(pvals) <- c("gof", "numeric")

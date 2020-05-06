@@ -166,14 +166,14 @@ autoplot.resid <- function(
   }
 
   # Deal with bootstrap replicates
-  if (is.null(attr(object, "boot_reps"))) {
+  if (is.null(attr(object, "draws"))) {
     nsim <- 1
     res <- object
     if ("qq" %in% output) {
       res.med <- object
     }
   } else {
-    res.mat <- attr(object, "boot_reps")
+    res.mat <- attr(object, "draws")
     res <- as.numeric(as.vector(res.mat))
     nsim <- ncol(res.mat)
     if ("qq" %in% output) {
@@ -181,10 +181,10 @@ autoplot.resid <- function(
                              decreasing = FALSE), MARGIN = 1, FUN = median)
     }
     if ("fitted" %in% output) {
-      mr <- mr[as.vector(attr(object, "boot_id"))]
+      mr <- mr[as.vector(attr(object, "draws_id"))]
     }
     if ("covariate" %in% output) {
-      x <- x[as.vector(attr(object, "boot_id"))]
+      x <- x[as.vector(attr(object, "draws_id"))]
     }
   }
 

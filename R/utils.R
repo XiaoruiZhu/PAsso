@@ -8,7 +8,8 @@
 #     several other residuals.
 # 4. "generate_surrogate" has been modified with new arguments.
 # 5. The bootstrap procedure for more replications of residuals has been changed
-#     to be consistent with partial association analysis.
+#    to be consistent with partial association analysis. It conduct multiple
+#    draws for residuals.
 ################################################################################
 
 #' Simulate sample from truncated distribution
@@ -155,11 +156,13 @@ getBounds.polr <- function(object, ...) {
 
 #' @keywords internal
 getBounds.vglm <- function(object, ...) {
-  coefs <- if (object@misc$reverse) {
-    -unname(stats::coef(object))
-  } else {
-    unname(stats::coef(object))
-  }
+  coefs <- unname(stats::coef(object)) # No need to reverse coefficients.
+
+  # coefs <- if (object@misc$reverse) {
+  #   -unname(stats::coef(object))
+  # } else {
+  #   unname(stats::coef(object))
+  # }
   c(-Inf, coefs[seq_len(ncat(object) - 1)] - coefs[1L], Inf)
 }
 
@@ -232,7 +235,12 @@ getDistributionFunction.vglm <- function(object) {
          "probit" = pnorm,
          "loglog" = pgumbel,
          "cloglog" = pGumbel,
-         "cauchit" = pcauchy)
+         "cauchit" = pcauchy,
+         "loglink" = plogis,
+         "probitlink" = pnorm,
+         "logloglink" = pgumbel,
+         "clogloglink" = pGumbel,
+         "cauchitlink" = pcauchy)
 }
 
 
@@ -304,7 +312,12 @@ getDistributionName.vglm <- function(object) {
          "probit" = "norm",
          "loglog" = "gumbel",
          "cloglog" = "Gumbel",
-         "cauchit" = "cauchy")
+         "cauchit" = "cauchy",
+         "loglink" = "logis",
+         "probitlink" = "norm",
+         "logloglink" = "gumbel",
+         "clogloglink" = "Gumbel",
+         "cauchitlink" = "cauchy")
 }
 
 
@@ -356,13 +369,7 @@ getFittedProbs.polr <- function(object) {
 
 #' @keywords internal
 getFittedProbs.vglm <- function(object) {
-  # if (object@family@vfamily == "acat") {
-    # If family of vglm is "acat": Adjacent Categories Probabilities
-    # Use following function to obtain probabilities
-
-  # } else { # If family of vglm is not used as "acat", pull fitted.values directly
-    object@fitted.values
-  # }
+  object@fitted.values
 }
 
 
@@ -422,11 +429,11 @@ getMeanResponse.polr <- function(object) {
 
 
 #' @keywords internal
-getMeanResponse.vglm <- function(object) {
+getMeanResponse.vglm <- function(object) { # Need to check "reverse", if True, predictors is right, o.w. reverse it.
   if (object@misc$reverse) {
     object@predictors[, 1L, drop = TRUE]
   } else {
-    -object@predictors[, 1L, drop = TRUE]
+    - object@predictors[, 1L, drop = TRUE]
   }
 }
 
@@ -499,7 +506,16 @@ getQuantileFunction.vglm <- function(object) {
          "probit" = qnorm,
          "loglog" = qgumbel,
          "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+         "cauchit" = qcauchy,
+         # Above are for vglm cumulative links.
+
+         "loglink" = qlogis,
+         "probitlink" = qnorm,
+         "logloglink" = qgumbel,
+         "clogloglink" = qGumbel,
+         "cauchitlink" = qcauchy
+         # Above are for the "acat" links.
+  )
 }
 
 
@@ -604,7 +620,7 @@ ncat.vglm <- function(object) {
 #' @keywords internal
 generate_surrogate <- function(object, method = c("latent", "uniform"),
                                jitter.uniform.scale = c("probability", "response"),
-                               boot_id = NULL) {
+                               draws_id = NULL) {
 
   # Match arguments
   method <- match.arg(method)
@@ -619,22 +635,22 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
     # distribution
     if (distribution %in% c("norm", "logis", "cauchy", "gumbel", "Gumbel")) {
       y <- getResponseValues(object)
-      if (is.null(boot_id)) {
-        boot_id <- seq_along(y)
+      if (is.null(draws_id)) {
+        draws_id <- seq_along(y)
       }
       mean_response <- getMeanResponse(object)  # mean response values
       if (!inherits(object, what = "lrm") && inherits(object, what = "glm")) {
         sim_trunc(n = length(y), distribution = distribution,
                   # {0, 1} -> {1, 2}
-                  a = ifelse(y[boot_id] == 1, yes = -Inf, no = 0),
-                  b = ifelse(y[boot_id] == 2, yes =  Inf, no = 0),
-                  location = mean_response[boot_id], scale = 1)  # surrogate values
+                  a = ifelse(y[draws_id] == 1, yes = -Inf, no = 0),
+                  b = ifelse(y[draws_id] == 2, yes =  Inf, no = 0),
+                  location = mean_response[draws_id], scale = 1)  # surrogate values
       } else {
         trunc_bounds <- getBounds(object)  # truncation bounds
         sim_trunc(n = length(y), distribution = distribution,
-                  a = trunc_bounds[y[boot_id]],
-                  b = trunc_bounds[y[boot_id] + 1L],
-                  location = mean_response[boot_id], scale = 1)  # surrogate values
+                  a = trunc_bounds[y[draws_id]],
+                  b = trunc_bounds[y[draws_id] + 1L],
+                  location = mean_response[draws_id], scale = 1)  # surrogate values
       }
     } else {
       stop("Distribution not supported.", call. = FALSE)
@@ -645,11 +661,11 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
     # Determine scale for jittering
     jitter.uniform.scale <- match.arg(jitter.uniform.scale)
     y <- getResponseValues(object)
-    if (is.null(boot_id)) {
-      boot_id <- seq_along(y)
+    if (is.null(draws_id)) {
+      draws_id <- seq_along(y)
     }
-    y <- y[boot_id]
-    prob <- getFittedProbs(object)[boot_id, ]
+    y <- y[draws_id]
+    prob <- getFittedProbs(object)[draws_id, ]
     if (jitter.uniform.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
@@ -677,15 +693,15 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
 generate_residuals <-
   function(object, method = c("latent", "uniform", "sign", "general", "deviance"),
            jitter.uniform.scale = c("probability", "response"),
-           boot_id = NULL) {
+           draws_id = NULL) {
 
   # Match arguments
   method <- match.arg(method)
 
-  # Pull "y" and "boot_id" for all methods
+  # Pull "y" and "draws_id" for all methods
   y <- getResponseValues(object)
-  if (is.null(boot_id)) {
-    boot_id <- seq_along(y)
+  if (is.null(draws_id)) {
+    draws_id <- seq_along(y)
   }
 
   # Generate surrogate response values
@@ -702,25 +718,25 @@ generate_residuals <-
                inherits(object, what = "glm")) {
         sim_trunc(n = length(y), distribution = distribution,
                   # {0, 1} -> {1, 2}
-                  a = ifelse(y[boot_id] == 1, yes = -Inf, no = 0),
-                  b = ifelse(y[boot_id] == 2, yes =  Inf, no = 0),
-                  location = mean_response[boot_id], scale = 1)  # surrogate values
+                  a = ifelse(y[draws_id] == 1, yes = -Inf, no = 0),
+                  b = ifelse(y[draws_id] == 2, yes =  Inf, no = 0),
+                  location = mean_response[draws_id], scale = 1)  # surrogate values
       } else {
         trunc_bounds <- getBounds(object)  # truncation bounds
         sim_trunc(n = length(y), distribution = distribution,
-                  a = trunc_bounds[y[boot_id]],
-                  b = trunc_bounds[y[boot_id] + 1L],
-                  location = mean_response[boot_id], scale = 1)  # surrogate values
+                  a = trunc_bounds[y[draws_id]],
+                  b = trunc_bounds[y[draws_id] + 1L],
+                  location = mean_response[draws_id], scale = 1)  # surrogate values
       }
     } else {
       stop("Distribution not supported.", call. = FALSE)
     }
-    s - mean_response[boot_id]  # surrogate residuals
+    s - mean_response[draws_id]  # surrogate residuals
   } else if (method == "uniform") {  # jittering approach
     jitter.uniform.scale <- match.arg(jitter.uniform.scale)
 
-    y <- y[boot_id]
-    prob <- getFittedProbs(object)[boot_id, ]
+    y <- y[draws_id]
+    prob <- getFittedProbs(object)[draws_id, ]
     if (jitter.uniform.scale == "response") {  # jittering on the response scale
       j <- seq_len(ncol(prob))
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
@@ -736,8 +752,8 @@ generate_residuals <-
     }
   } else if (method == "sign") { # sign-based residuals
     n <- length(y)
-    y <- y[boot_id]
-    prob <- getFittedProbs(object)[boot_id, ]
+    y <- y[draws_id]
+    prob <- getFittedProbs(object)[draws_id, ]
 
     # calculate probability based residual based on fitted value (prbabilities)
     pyej <- prob[cbind(1:n, y)]
@@ -745,8 +761,8 @@ generate_residuals <-
     PR <- -1 + 2*pysj + pyej
     PR
   } else if (method == "general") { # generalized residuals
-    n <- length(y); y <- y[boot_id]
-    prob <- getFittedProbs(object)[boot_id, ]
+    n <- length(y); y <- y[draws_id]
+    prob <- getFittedProbs(object)[draws_id, ]
 
     y <- as.integer(y)
     F_acat <- t(apply(prob, 1, cumsum))
@@ -764,8 +780,8 @@ generate_residuals <-
     (fj_1-fj)/Pj # Return generalized residuals
 
   } else { # deviance residuals (-2*loglik)
-    n <- length(y); y <- y[boot_id]
-    prob <- getFittedProbs(object)[boot_id, ]
+    n <- length(y); y <- y[draws_id]
+    prob <- getFittedProbs(object)[draws_id, ]
 
     -2*log(prob[cbind(1:n, y)])
   }

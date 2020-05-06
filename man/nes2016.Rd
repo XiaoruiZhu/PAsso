@@ -18,7 +18,7 @@ A data frame with 2188 rows and 10 variables.
   \item \code{income.num} Respondent's family income in thousands: an numerical variable.
   It is median value of the range of each \code{income} level
 
-  \item \code{income.num} Respondent's family income level:
+  \item \code{income} Respondent's family income level:
 
   '(01) 01. Under $5,000' = 5,
 

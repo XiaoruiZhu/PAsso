@@ -19,7 +19,7 @@ PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
                  # association = c("partial"),
                  # models = c("probit", "probit"),
                  # method = c("kendall"),
-                 # resids.method = "surrogate", fitted.models = NULL,
+                 # resids.type = "surrogate", fitted.models = NULL,
                  # rep_num = 30
                 )
 

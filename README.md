@@ -35,44 +35,59 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(PAsso)
-## Import "nes96" data in "PAsso", more details of this data are "?PAsso::nes96"
-data(nes96)
-# Parial association analysis between vote.num and PID:
-PAsso_1 <- corr(responses = c("vote.num", "PID"),
-                adjustments = c("income.num", "age", "edu.year"),
-                data = nes96,
-                association = c("partial"),
-                models = c("probit", "probit"),
-                method = c("kendall"),
-                resids.method = "latent",
-                fitted.models = NULL, rep_num = 100)
-
-# Marginal association between vote.num and PID:
-MAsso_1 <- corr(responses = c("vote.num", "PID"),
-                data = nes96,
-                association = c("marginal"))
-
-# Compare marginal correlation with partial correlation.
-PAsso_1
-summary(PAsso_1, digits=3)
-MAsso_1
-
-# Association analysis between five ordinal responses
-PAsso_5v <- corr(responses = c("vote.num", "PID", "selfLR", "ClinLR", "DoleLR"),
+PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
                  adjustments = c("income.num", "age", "edu.year"),
-                 data = nes96,
-                 association = c("partial"),
-                 method = c("kendall"), resids.method = "latent", rep_num=30)
+                 data = nes2016,
+                 uni.model <- "probit"
+                 # association = c("partial"),
+                 # models = c("probit", "probit"),
+                 # method = c("kendall"),
+                 # resids.method = "surrogate", fitted.models = NULL,
+                 # rep_num = 20
+                )
 
-print(PAsso_5v, digits=2)
-# summary(PAsso_5v) 
+# Print the partial association matrix only
+print(PAsso_1, 5)
 
-PAsso_5v_test <- corr.test(object = PAsso_5v, boot_SE=20, H0=0)
-print(PAsso_5v_test, 3) # Summary of correlation matrix, test and models.  
+# Provide partial association matrix, marginal association matrix, and summary of models' coefficients
+summary(PAsso_1, 4)
 
-# Draw matrix plot
-ggpairs.PAsso(object = PAsso_5v, colour="blue")
+# Plot partial association regression plot: residuals
+plot(PAsso_1)
 
+# Association analysis between three ordinal responses ----------
+PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+                adjustments = c("income.num", "age", "edu.year"),
+                data = nes2016,
+                uni.model <- "probit",
+                method = c("kendall"),
+                # models = c("probit", "probit", "probit"),
+                # association = c("partial")
+                resids.type = "surrogate")
+
+# Compare marginal correlation and partial correlation.
+summary(PAsso_2, digits=4)
+plot(PAsso_2)
+
+# test function: Conduct inference based on object of "PAsso.test" class ----------------------------
+library(progress); #library(doParallel)
+
+system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
+print(Pcor_SR_test1, digits=3)
+
+# diagnostic.plot function -----------------------------------------------------
+check_qq <- diagnostic.plot(object = PAsso_2, output = "qq")
+
+check_fitted <- diagnostic.plot(object = PAsso_2, output = "fitted")
+
+check_covar <- diagnostic.plot(object = PAsso_2, output = "covariate")
+
+# general association measure and 3-D plot for VOTE and PID ------------------
+library("copula")
+library("plotly")
+
+testPlots <- plot3D(PAsso_2)
+testPlots$plot_1
 ```
 
 References

@@ -37,8 +37,8 @@
 #' the jittering whenever \code{jitter = "uniform"}. Current options are
 #' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
 #'
-#' @param nsim An integer specifying the number of bootstrap replicates to use.
-#' Default is \code{1L} meaning no bootstrap samples.
+#' @param nsim An integer specifying the number of replicates to use.
+#' Default is \code{1L} meaning one simulation only of residuals.
 #'
 #' @param ... Additional optional arguments. (Currently ignored.)
 #'
@@ -46,12 +46,12 @@
 #' the simulated surrogate residuals. Additionally, if \code{nsim} > 1,
 #' then the result will contain the attributes:
 #' \describe{
-#'   \item{\code{boot_reps}}{A matrix  with \code{nsim} columns, one for each
-#'   is a bootstrap replicate of the surrogate residuals. Note, they correspond
+#'   \item{\code{draws}}{A matrix with \code{nsim} columns, one for each
+#'   is a replicate of the surrogate residuals. Note, they correspond
 #'   to the original ordering of the data;}
-#'   \item{\code{boot_id}}{A matrix  with \code{nsim} columns. Each column
+#'   \item{\code{draws_id}}{A matrix  with \code{nsim} columns. Each column
 #'   contains the observation number each surrogate residuals corresponds to in
-#'   \code{boot_reps}. (This is used for plotting purposes.)}
+#'   \code{draws}. (This is used for plotting purposes.)}
 #' }
 #'
 #' @note
@@ -107,6 +107,12 @@ residuals.clm <- function(object,
                           jitter = c("latent", "uniform"),
                           jitter.uniform.scale = c("probability", "response"),
                           nsim = 1L, ...) {
+  # object=fit;
+  # type = "surrogate"
+  # jitter = "latent"
+  # jitter.uniform.scale = "probability"
+  # nsim = 30
+
   # Sanity check
   if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr", "vglm"))) {
     stop(deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
@@ -134,18 +140,18 @@ residuals.clm <- function(object,
   r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
 
   # Multiple samples
-  if (nsim > 1L) {  # bootstrap
-    boot_reps <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
+  if (nsim > 1L) {  # multiple draws
+    draws <- draws_id <- matrix(nrow = nobs(object), ncol = nsim)
     for(i in seq_len(nsim)) {
-      # boot_id[, i] <- sample(nobs(object), replace = TRUE)
-      # BUG FIXED: Above original code is not correct! Replicate to get many draws of bootstrap residuals!
-      boot_id[, i] <- seq_along(getResponseValues(object))
-      boot_reps[, i] <-
+      # draws_id[, i] <- sample(nobs(object), replace = TRUE)
+      # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
+      draws_id[, i] <- seq_along(getResponseValues(object))
+      draws[, i] <-
         generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-                           boot_id = boot_id[, i, drop = TRUE])
+                           draws_id = draws_id[, i, drop = TRUE])
     }
-    attr(r, "boot_reps") <- boot_reps
-    attr(r, "boot_id") <- boot_id
+    attr(r, "draws") <- draws
+    attr(r, "draws_id") <- draws_id
   }
   attr(r, "names") <- NULL
   attr(r, "arguments") <- c(type, jitter, jitter.uniform.scale)
@@ -177,11 +183,15 @@ residuals.orm <- residuals.clm
 residuals.polr <- residuals.clm
 
 
-
 #' @rdname residuals
 #' @method residuals vglm
 #' @export
 residuals.vglm <- residuals.clm
+
+
+#' @export
+residualsAcat <- residuals.clm
+
 
 ################################################################################
 # GLM has its own Generic function for cumulative link models;
@@ -237,14 +247,16 @@ residuals.glm <- function (
 #'
 #' @param object An object of class \code{\link[PAsso]{PAsso}}.
 #'
+#' @param draw_id A number refers to the i-th draw of residuals.
+#'
 #' @param ... Additional optional arguments.
 #'
 #' @return A matrix of class \code{c("matrix", "resids")} containing
-#' the simulated surrogate residuals. Additionally, if \code{nsim} > 1,
+#' the simulated surrogate residuals used for the partial association
+#' analysis in \code{Passo}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
 #' then the result will contain the attributes:
 #' \describe{
-#'   \item{\code{boot_reps}}{}
-#'   \item{\code{boot_id}}{}
+#'   \item{\code{draws}}{An array contains all draws of residuals.}
 #' }
 #'
 #'
@@ -257,6 +269,14 @@ residuals.glm <- function (
 #'
 #' @examples
 #'
-residuals.PAsso <- function(object, ...) {
-
+residuals.PAsso <- function(object, draw_id=1, ...) {
+  if ((draw_id>=1) & (draw_id<=dim(object$rep_SRs)[2])) {
+    resids_PAsso <- object$rep_SRs[,draw_id,]
+    # resids_PAsso <- PAsso_1$rep_SRs[,1,]
+  }
+  attr(resids_PAsso, "draws") <- object$rep_SRs
+  attr(resids_PAsso, "arguments") <- attr(object, "arguments")
+  # Return residuals
+  class(resids_PAsso) <- c("resid", class(resids_PAsso))
+  return(resids_PAsso)
 }

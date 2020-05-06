@@ -8,14 +8,14 @@ PAsso(
   responses,
   adjustments,
   data,
-  uni.model = c("probit", "logit"),
+  uni.model = c("probit", "logit", "acat"),
   models = NULL,
   method = c("kendall", "pearson", "wolfsigma"),
   resids.type = c("surrogate", "sign", "general", "deviance"),
   jitter = c("latent", "uniform"),
   jitter.uniform.scale = c("probability", "response"),
   fitted.models = NULL,
-  rep_num = 30,
+  rep_num = 20,
   association = "partial",
   ...
 )
@@ -31,7 +31,7 @@ be adjusted.}
 
 \item{uni.model}{A character string specifying the universal model setting for all
 responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
-refers to cumulative logit model.}
+refers to cumulative logit model. \code{"acat"} fits an adjacent categories regression model.}
 
 \item{models}{A string vector contains default link functions of fitting models with
 respect to each response variable. If \code{"uni.model"} is provided, this one will
@@ -71,26 +71,25 @@ for a set of covariates covariates. All of these models should be applied to the
 same dataset, having same covariates, same sample size etc. The models in this
 list can be an object of class \code{\link[ordinal]{clm}},
 \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-\code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}
+\code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}.}
 
-\item{rep_num}{A number to specify repeat times of simulation of surrogate residuls
+\item{rep_num}{A number to specify draws of surrogate residuls
 such that the partial correlation coefficients are calculated repeatly. The final
-correlation coefficents the average of all partial correlation coefficients.
-It is the \code{"nsim"} argument in \code{"resids()"} function.}
+correlation coefficents are the average of all partial correlation coefficients.
+It is the \code{"nsim"} argument in \code{"residuals()"} function.}
 
-\item{...}{Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
-in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)}
+\item{...}{Additional optional arguments.}
 }
 \value{
 An object of class \code{"PAsso"} is a list containing at least the following
-components. It contains the partial
-correlation matrix and multiple repeats if \code{rep_num} > 1. This object has "arguments"
+components. It contains the partial correlation matrix and multiple repeats if
+\code{rep_num} > 1. This object has "arguments"
 attribute saved as c(association, method, resids.type), "responses" attribute, and
 "adjustments" attribute.
 The list contains:
 \describe{
-  \item{\code{corr}}{The estimated correlation matrix(average of \code{rep_MatCorr}) of partial association after
-  adjusting confounders;}
+  \item{\code{corr}}{The estimated correlation matrix(average of \code{rep_MatCorr})
+  of partial association after adjusting confounders;}
   \item{\code{rep_corr}}{The replications of estimated correlation matrix;}
   \item{\code{rep_SRs}}{The replications of surrogate residuals if partial association is applied;}
   \item{\code{fitted.models}}{The list stores all fitted.models;}
@@ -109,9 +108,9 @@ It provides two ways of using:
 default).
 
 2. An advanced way: user can input a list of fitted models by "fitted.models", then the
-"responses" and "adjustments" are not necessary. Supported class of cumulative models:
+"responses" and "adjustments" are not necessary. Supported class of cumulative link models in
 \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}, \code{\link[rms]{lrm}},
-\code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+\code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}, .
 
 It generates an object that has partial association matrix, marginal association,
 and some attributes: "arguments" saves c(association, method, resids.type). "responses"

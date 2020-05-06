@@ -1,84 +1,3 @@
-#' A list from an adjacent categories model
-#'
-#' This list contains dataset and model coefficients. This example is used to
-#' illustrate the association between the residual variables when the
-#' two ordinal variables Y1 and Y2 are partially independent. Data simulated from an
-#' adjacent categories regression model with an ordered (preferably) factor response.
-#' beta1 = 1, beta2 = -1,
-#' alpha1 = (-Inf, -3, -2, 0, 2, 3, Inf), alpha2 = (-Inf, -2, 0, 2, Inf)
-#'
-#' @docType data
-#'
-#' @keywords datasets
-#'
-#' @format A data frame with 10000 rows and 11 variables.
-#' \itemize{
-#'   \item \code{X} A continuous predictor variable.
-#'   \item \code{Y1} The response variable; an ordered factor.
-#'   \item \code{Y2} The response variable; an ordered factor.
-#' }
-#'
-#' @references
-#' Liu, Dungang, Li, Shaobo, Yu, Yan, and Moustaki, Irini. Assessing partial association between
-#' ordinal variables: quantification, visualization, and hypothesis testing, \emph{Journal of the
-#' American Statistical Association}, Revision under review.
-#'
-#' @name df_AdjCat
-#'
-#' @usage
-#' data(df_AdjCat)
-#'
-#' @examples
-#' #
-#' # Adjacent Categories Regression Model Example to compare different residuals.
-#' # After adjusting covariates, the association between residuals variables should be independdent.
-#' # Surrogate residuals has this property, whereas other types of residuals do not.
-#' #
-#'
-#' data("df_AdjCat")
-#' summary(df_AdjCat$data)
-#' fit_clm1 <- VGAM::vglm(Y1 ~ X, family =
-#'                       VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
-#'                       data = df_AdjCat$data)
-#' fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
-#'                        VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
-#'                        data = df_AdjCat$data)
-#' SR1 <- residuals(object = fit_clm1, type = "surrogate", surr.method = "latent", boot_id = NULL)
-#' SR2 <- residuals(fit_clm2, type = "surrogate", surr.method = "latent", boot_id = NULL)
-#'
-#' ## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
-#' PR1 <- residuals(fit_clm1, type = "sign", boot_id = NULL)
-#' PR2 <- residuals(fit_clm2, type = "sign", boot_id = NULL)
-#'
-#' ## obtain generalized residuals (Franses and Paap 2001 book)
-#' GR1 <- residuals(fit_clm1, type = "general", boot_id = NULL)
-#' GR2 <- residuals(fit_clm2, type = "general", boot_id = NULL)
-#'
-#' ## obtain deviance residuals
-#' DR1 <- residuals(fit_clm1, type = "deviance", boot_id = NULL)
-#' DR2 <- residuals(fit_clm2, type = "deviance", boot_id = NULL)
-#'
-#' ## visualize residual vs. residual
-#' par(mfrow=c(2,2))
-#' par(mar=c(4, 4.8, 2.5, 1.5))
-#'
-#' plot(PR1, PR2, pch=".", main = "sign-based Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(GR1, GR2, pch=".", main = "generalized Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
-#' plot(DR1, DR2, pch='.', main = "deviance Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
-#'      xlab = expression(R[1]), ylab = expression(R[2]),
-#'      xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
-#' axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
-#' axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
-#'
-NULL
-
 #' US 2016 national election study with pre-election interview only (Clean)
 #'
 #' A subset of 2,188 participants of the 2016 American National Election Time Series Study,
@@ -110,7 +29,7 @@ NULL
 #'   \item \code{income.num} Respondent's family income in thousands: an numerical variable.
 #'   It is median value of the range of each \code{income} level
 #'
-#'   \item \code{income.num} Respondent's family income level:
+#'   \item \code{income} Respondent's family income level:
 #'
 #'   '(01) 01. Under $5,000' = 5,
 #'

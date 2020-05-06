@@ -8,9 +8,9 @@
 #' default).
 #'
 #' 2. An advanced way: user can input a list of fitted models by "fitted.models", then the
-#' "responses" and "adjustments" are not necessary. Supported class of cumulative models:
+#' "responses" and "adjustments" are not necessary. Supported class of cumulative link models in
 #' \code{\link[ordinal]{clm}}, \code{\link[stats]{glm}}, \code{\link[rms]{lrm}},
-#' \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+#' \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}, .
 #'
 #' It generates an object that has partial association matrix, marginal association,
 #' and some attributes: "arguments" saves c(association, method, resids.type). "responses"
@@ -25,7 +25,8 @@
 #' @param data A data.frame including responses and adjustments.
 #' @param uni.model A character string specifying the universal model setting for all
 #' responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
-#' refers to cumulative logit model.
+#' refers to cumulative logit model. \code{"acat"} fits an adjacent categories regression model.
+#'
 #' @param models A string vector contains default link functions of fitting models with
 #' respect to each response variable. If \code{"uni.model"} is provided, this one will
 #' be generated automaticlly.
@@ -62,26 +63,25 @@
 #' same dataset, having same covariates, same sample size etc. The models in this
 #' list can be an object of class \code{\link[ordinal]{clm}},
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
-#' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+#' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}.
 #'
-#' @param rep_num A number to specify repeat times of simulation of surrogate residuls
+#' @param rep_num A number to specify draws of surrogate residuls
 #' such that the partial correlation coefficients are calculated repeatly. The final
-#' correlation coefficents the average of all partial correlation coefficients.
-#' It is the \code{"nsim"} argument in \code{"resids()"} function.
-#' @param ... Additional optional arguments. (say \code{"method"} and \code{"jitter.scale"}
-#' in \code{"resids"} function. Just keep them as default if not specified. Currently ignored.)
+#' correlation coefficents are the average of all partial correlation coefficients.
+#' It is the \code{"nsim"} argument in \code{"residuals()"} function.
+#' @param ... Additional optional arguments.
 #'
 #' @import MASS
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
-#' components. It contains the partial
-#' correlation matrix and multiple repeats if \code{rep_num} > 1. This object has "arguments"
+#' components. It contains the partial correlation matrix and multiple repeats if
+#' \code{rep_num} > 1. This object has "arguments"
 #' attribute saved as c(association, method, resids.type), "responses" attribute, and
 #' "adjustments" attribute.
 #' The list contains:
 #' \describe{
-#'   \item{\code{corr}}{The estimated correlation matrix(average of \code{rep_MatCorr}) of partial association after
-#'   adjusting confounders;}
+#'   \item{\code{corr}}{The estimated correlation matrix(average of \code{rep_MatCorr})
+#'   of partial association after adjusting confounders;}
 #'   \item{\code{rep_corr}}{The replications of estimated correlation matrix;}
 #'   \item{\code{rep_SRs}}{The replications of surrogate residuals if partial association is applied;}
 #'   \item{\code{fitted.models}}{The list stores all fitted.models;}
@@ -193,14 +193,14 @@
 #'
 #' @useDynLib PAsso
 PAsso <- function(responses, adjustments, data,
-                  uni.model = c("probit", "logit"),
+                  uni.model = c("probit", "logit", "acat"),
                   models = NULL,
                   method = c("kendall", "pearson", "wolfsigma"),
                   resids.type = c("surrogate", "sign", "general", "deviance"),
                   jitter = c("latent", "uniform"),
                   jitter.uniform.scale = c("probability", "response"),
                   fitted.models = NULL,
-                  rep_num = 30,
+                  rep_num = 20,
                   association = "partial", ...){
 
   # TEST HEADER:
@@ -212,10 +212,13 @@ PAsso <- function(responses, adjustments, data,
   # method = arguments[2]
   # resids.type = arguments[3]
 
-  # responses <- c("vote.num", "PID")
+  # responses = c("Prevote.num", "PID")
+  # models = c("probit", "acat")
   # adjustments <- c("income.num", "age", "edu.year")
-  # association = "partial"; method = "kendall"; resids.type = "latent"
+  # association = "partial"; method = "kendall";
   # rep_num = 30; data = nes2016;
+  # resids.type = "surrogate"; jitter = "latent"
+  # jitter.uniform.scale = "response"
   # models = c("probit", "probit")
 
   n_resp <- ifelse(missing(responses), length(fitted.models), length(responses))
@@ -320,14 +323,23 @@ PAsso <- function(responses, adjustments, data,
     # NEEDED FEATURE: Test for other packages.
     fitted.models <- list()
     for (i in 1:n_responses) {
-      if (length(unique(data[,responses[i]])) > 2) { # If response has more than 2 levels, use "polr", otherwise "glm".
+      if (length(unique(data[,responses[i]])) > 2) {
+        # If response has more than 2 levels, use "polr" or "VGAM::acat", otherwise "glm".
+
         temp_model <- ifelse(models[i]=="logit", "logistic", models[i])
         # Change link from "logit" to "logistic" since "polr" only accept "logistic" link
-        fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
-                                            Hess = TRUE, # Need this to draw coefficients and t-values as output
-                                            method = temp_model, data = quote(data)))
-        # assign(x = paste("fitted", responses[i], sep = "_"),
-        # fitted_temp)
+
+        if (temp_model %in% c("logit", "logistic", "probit")) {
+          fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
+                                              Hess = TRUE, # Need this to draw coefficients and t-values as output
+                                              method = temp_model, data = quote(data)))
+        } else if (temp_model %in% "acat") { # Conduct Adjacent Categories regression model.
+          fitted_temp <- do.call("vglm",
+                                 list(formula = as.formula(formulaAll[i]),
+                                      data = quote(data),
+                                      family = VGAM::acat(reverse = TRUE, parallel = TRUE)))
+        }
+
         fitted.models[[i]] <- fitted_temp
         # FIXED: formula now is shown as what it is (by "do.call" and "quote")!
       } else {
@@ -335,8 +347,7 @@ PAsso <- function(responses, adjustments, data,
                                list(formula = as.formula(formulaAll[i]),
                                     family = quote(binomial(link = models[i])),
                                     data = quote(data)))
-        # assign(x = paste("fitted", responses[i], sep = "_"),
-        # fitted_temp)
+
         fitted.models[[i]] <- fitted_temp
         # summary(fitted_vote.num)
         # identical(fitted_temp, fitted_vote.num)
@@ -375,14 +386,38 @@ PAsso <- function(responses, adjustments, data,
     rep_MatCorr <- MatCorr # Save Replication again!
 
   } else { # Repeat rep_num times to get SRs and calcualte average partial correlation!
-    rep_SRs <- sapply(fitted.models, function(mod)
-      attr(
-        residuals(object = mod, type = resids.type,
-                  jitter = jitter,
-                  jitter.uniform.scale = jitter.uniform.scale,
-                  nsim = rep_num,...), "boot_reps"),
-      simplify = "array") # Use array to save surrogate residuals, rep_SRs[,i,] is i-th simulation
+    # rep_SRs <- sapply(fitted.models, function(mod)
+    #   attr(
+    #     residuals(object = mod, type = resids.type,
+    #               jitter = jitter,
+    #               jitter.uniform.scale = jitter.uniform.scale,
+    #               nsim = rep_num,...), "draws"),
+    #   simplify = "array") # Use array to save surrogate residuals, rep_SRs[,i,] is i-th simulation
     # dim(rep_SRs)
+    rep_SRs <- array(data = NA, dim = c(mods_n[1],rep_num,n_responses))
+    for (i in 1:n_responses) {
+      # print(class(fitted.models[[i]]))
+      if (isS4(fitted.models[[i]]) & inherits(fitted.models[[i]], "vglm")) {
+        temp_resids <- residualsAcat(object = fitted.models[[i]],
+                                 type = resids.type, jitter = jitter,
+                                 jitter.uniform.scale = jitter.uniform.scale,
+                                 nsim = rep_num)
+      } else {
+        temp_resids <- residuals(object = fitted.models[[i]],
+                                 type = resids.type, jitter = jitter,
+                                 jitter.uniform.scale = jitter.uniform.scale,
+                                 nsim = rep_num)
+      }
+      # print(class(temp_resids))
+
+      # print(head(temp_resids))
+      # print(dim(attr(temp_resids, "draws")))
+      rep_SRs[,,i] <- attr(temp_resids, "draws")
+      # dim(rep_SRs)
+    }
+
+    dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
+    dimnames(rep_SRs)[[2]] <- seq(rep_num)
     dimnames(rep_SRs)[[3]] <- responses
 
     rep_MatCorr_temp <- apply(X = rep_SRs, MARGIN = 2, cor_func) # For each copy, calculate correlation

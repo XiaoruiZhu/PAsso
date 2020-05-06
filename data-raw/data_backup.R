@@ -1,7 +1,10 @@
-#' A dataset with ordinal response generated from an adjacent categories model
+#' A list from an adjacent categories model
 #'
-#' Data simulated from an adjacent categories regression model
-#' with an ordered (preferably) factor response. beta1 = 1, beta2 = -1,
+#' This list contains dataset and model coefficients. This example is used to
+#' illustrate the association between the residual variables when the
+#' two ordinal variables Y1 and Y2 are partially independent. Data simulated from an
+#' adjacent categories regression model with an ordered (preferably) factor response.
+#' beta1 = 1, beta2 = -1,
 #' alpha1 = (-Inf, -3, -2, 0, 2, 3, Inf), alpha2 = (-Inf, -2, 0, 2, Inf)
 #'
 #' @docType data
@@ -16,7 +19,7 @@
 #' }
 #'
 #' @references
-#' Liu, Dungang, Li, Shaobo, Yu, Yu, and Moustaki, Irini. Assessing partial association between
+#' Liu, Dungang, Li, Shaobo, Yu, Yan, and Moustaki, Irini. Assessing partial association between
 #' ordinal variables: quantification, visualization, and hypothesis testing, \emph{Journal of the
 #' American Statistical Association}, Revision under review.
 #'
@@ -27,7 +30,9 @@
 #'
 #' @examples
 #' #
-#' # Adjacent Categories Regression Model Example to compare different residuals
+#' # Adjacent Categories Regression Model Example to compare different residuals.
+#' # After adjusting covariates, the association between residuals variables should be independdent.
+#' # Surrogate residuals has this property, whereas other types of residuals do not.
 #' #
 #'
 #' data("df_AdjCat")
@@ -38,32 +43,32 @@
 #' fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
 #'                        VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
 #'                        data = df_AdjCat$data)
-#' SR1 <- resids(fit_clm1, method = "latent",boot_id = NULL)
-#' SR2 <- resids(fit_clm2, method = "latent", boot_id = NULL)
+#' SR1 <- residuals(object = fit_clm1, type = "surrogate", surr.method = "latent", boot_id = NULL)
+#' SR2 <- residuals(fit_clm2, type = "surrogate", surr.method = "latent", boot_id = NULL)
 #'
 #' ## obtain SBC residuals (Li and Shepherd 2012 JASA/Biometrika)
-#' PR1 <- resids(fit_clm1, method = "Sign", boot_id = NULL)
-#' PR2 <- resids(fit_clm2, method = "Sign", boot_id = NULL)
+#' PR1 <- residuals(fit_clm1, type = "sign", boot_id = NULL)
+#' PR2 <- residuals(fit_clm2, type = "sign", boot_id = NULL)
 #'
 #' ## obtain generalized residuals (Franses and Paap 2001 book)
-#' GR1 <- resids(fit_clm1, method = "General", boot_id = NULL)
-#' GR2 <- resids(fit_clm2, method = "General", boot_id = NULL)
+#' GR1 <- residuals(fit_clm1, type = "general", boot_id = NULL)
+#' GR2 <- residuals(fit_clm2, type = "general", boot_id = NULL)
 #'
 #' ## obtain deviance residuals
-#' DR1 <- resids(fit_clm1, method = "Deviance", boot_id = NULL)
-#' DR2 <- resids(fit_clm2, method = "Deviance", boot_id = NULL)
+#' DR1 <- residuals(fit_clm1, type = "deviance", boot_id = NULL)
+#' DR2 <- residuals(fit_clm2, type = "deviance", boot_id = NULL)
 #'
 #' ## visualize residual vs. residual
 #' par(mfrow=c(2,2))
 #' par(mar=c(4, 4.8, 2.5, 1.5))
 #'
-#' plot(PR1, PR2, pch=".", main = "Sign-based Residuals",
+#' plot(PR1, PR2, pch=".", main = "sign-based Residuals",
 #'      xlab = expression(paste(R[1]^"ALT")),
 #'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(GR1, GR2, pch=".", main = "Generalized Residuals",
+#' plot(GR1, GR2, pch=".", main = "generalized Residuals",
 #'      xlab = expression(paste(R[1]^"ALT")),
 #'      ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
-#' plot(DR1, DR2, pch='.', main = "Deviance Residuals",
+#' plot(DR1, DR2, pch='.', main = "deviance Residuals",
 #'      xlab = expression(paste(R[1]^"ALT")),
 #'      ylab = expression(paste(R[2]^"ALT")))
 #' plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
@@ -73,6 +78,7 @@
 #' axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
 #'
 NULL
+
 
 #' Raw dataset of US 2016 national election study
 #'
@@ -429,4 +435,154 @@ NULL
 #'
 #' @examples
 #' head(nes96)
+NULL
+
+#' Simulated quadratic data
+#'
+#' Data simulated from a probit model with a quadratic trend. The data are
+#' described in Example 2 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 2000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df1
+#'
+#' @usage
+#' data(df1)
+#'
+#' @examples
+#' head(df1)
+NULL
+
+
+#' Simulated heteroscedastic data
+#'
+#' Data simulated from a probit model with heteroscedasticity. The data are
+#' described in Example 4 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 2000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df2
+#'
+#' @usage
+#' data(df2)
+#'
+#' @examples
+#' head(df2)
+NULL
+
+
+#' Simulated Gumbel data
+#'
+#' Data simulated from a log-log model with a quadratic trend. The data are
+#' described in Example 3 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 2000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df3
+#'
+#' @usage
+#' data(df3)
+#'
+#' @examples
+#' head(df3)
+NULL
+
+
+#' Simulated proportionality data
+#'
+#' Data simulated from from two separate probit models. The data are described
+#' in Example 5 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 4000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df4
+#'
+#' @usage
+#' data(df4)
+#'
+#' @examples
+#' head(df4)
+NULL
+
+
+#' Simulated interaction data
+#'
+#' Data simulated from from an ordered probit model with an interaction effect.
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 2000 rows and 3 variables.
+#' \itemize{
+#'   \item \code{x1} A continuous predictor variable.
+#'   \item \code{x2} A factor with two levels: \code{"Control"} and
+#'   \code{"Treatment"}.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach.
+#' \emph{Journal of the American Statistical Association} (accepted).
+#'
+#' @name df5
+#'
+#' @usage
+#' data(df5)
+#'
+#' @examples
+#' head(df5)
 NULL

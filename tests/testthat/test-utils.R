@@ -246,40 +246,40 @@ test_that("generate_residuals function works for different methods", {
     fit_clm <- ordinal::clm(y ~ x, data = df1, link = "logit")
   )
   suppressWarnings(
-    resids_clm <- generate_residuals(fit_clm, method = "sign", boot_id = NULL)
+    resids_clm <- generate_residuals(fit_clm, method = "sign", draws_id = NULL)
   )
   suppressWarnings(
     resids_clm_boot <-
       generate_residuals(fit_clm, method = "sign",
-                         boot_id = sample(nobs(fit_clm), replace = TRUE))
+                         draws_id = sample(nobs(fit_clm), replace = TRUE))
   )
 
 
   fit_polr <- MASS::polr(y ~ x, data = df1, method = "logistic")
-  resids_polr <- generate_residuals(fit_polr, method = "sign", boot_id = NULL)
+  resids_polr <- generate_residuals(fit_polr, method = "sign", draws_id = NULL)
   resids_polr_boot <-
     generate_residuals(fit_polr, method = "sign",
-                       boot_id = sample(nobs(fit_polr), replace = TRUE))
+                       draws_id = sample(nobs(fit_polr), replace = TRUE))
 
   fit_lrm <- rms::lrm(y ~ x, data = df1)
-  resids_lrm <- generate_residuals(fit_lrm, method = "sign", boot_id = NULL)
+  resids_lrm <- generate_residuals(fit_lrm, method = "sign", draws_id = NULL)
   resids_lrm_boot <-
     generate_residuals(fit_lrm, method = "sign",
-                       boot_id = sample(nobs(fit_lrm), replace = TRUE))
+                       draws_id = sample(nobs(fit_lrm), replace = TRUE))
 
   fit_orm <- rms::orm(y ~ x, data = df1, family = logistic)
-  resids_orm <- generate_residuals(fit_orm, method = "sign", boot_id = NULL)
+  resids_orm <- generate_residuals(fit_orm, method = "sign", draws_id = NULL)
   resids_orm_boot <-
     generate_residuals(fit_orm, method = "sign",
-                       boot_id = sample(nobs(fit_orm), replace = TRUE))
+                       draws_id = sample(nobs(fit_orm), replace = TRUE))
 
   fit_vglm <- VGAM::vglm(y ~ x, data = df1,
                          family = VGAM::cumulative(link = "logit",
                                                    parallel = TRUE))
-  resids_vglm <- generate_residuals(fit_vglm, method = "sign", boot_id = NULL)
+  resids_vglm <- generate_residuals(fit_vglm, method = "sign", draws_id = NULL)
   resids_vglm_boot <-
     generate_residuals(fit_vglm, method = "sign",
-                       boot_id = sample(nobs(fit_vglm), replace = TRUE))
+                       draws_id = sample(nobs(fit_vglm), replace = TRUE))
 
 
   # Expectations
@@ -294,10 +294,10 @@ test_that("generate_residuals function works for different methods", {
   expect_equal(length(resids_vglm), nrow(df1))
   expect_equal(length(resids_vglm_boot), nrow(df1))
 
-  expect_null(attr(resids_clm, "boot_reps"))
-  expect_null(attr(resids_clm, "boot_id"))
-  expect_null(attr(resids_vglm_boot, "boot_reps"))
-  expect_null(attr(resids_vglm_boot, "boot_id"))
+  expect_null(attr(resids_clm, "draws"))
+  expect_null(attr(resids_clm, "draws_id"))
+  expect_null(attr(resids_vglm_boot, "draws"))
+  expect_null(attr(resids_vglm_boot, "draws_id"))
 
 })
 
@@ -322,6 +322,13 @@ test_that("getMeanResponse works", {
   fit_vglm <- VGAM::vglm(y ~ x, data = df1,
                          family = VGAM::cumulative(link = "logit",
                                                    parallel = TRUE))
+  # fit_vglm@misc$reverse
+  # unname(stats::coef(fit_clm))
+  # unname(stats::coef(fit_polr))
+  # unname(stats::coef(fit_lrm))
+  # unname(stats::coef(fit_orm))
+  # unname(stats::coef(fit_vglm))
+
 
   # Mean response
   mr <- cbind(

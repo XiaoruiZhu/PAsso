@@ -66,7 +66,7 @@
   ...
 )
 
-\method{residuals}{PAsso}(object, ...)
+\method{residuals}{PAsso}(object, draw_id = 1, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link[PAsso]{PAsso}}.}
@@ -92,30 +92,32 @@ surrogate response values. Current options are \code{"latent"} and
 the jittering whenever \code{jitter = "uniform"}. Current options are
 \code{"response"} and \code{"probability"}. Default is \code{"response"}.}
 
-\item{nsim}{An integer specifying the number of bootstrap replicates to use.
-Default is \code{1L} meaning no bootstrap samples.}
+\item{nsim}{An integer specifying the number of replicates to use.
+Default is \code{1L} meaning one simulation only of residuals.}
 
 \item{...}{Additional optional arguments.}
+
+\item{draw_id}{A number refers to the i-th draw of residuals.}
 }
 \value{
 A numeric vector of class \code{c("numeric", "resids")} containing
 the simulated surrogate residuals. Additionally, if \code{nsim} > 1,
 then the result will contain the attributes:
 \describe{
-  \item{\code{boot_reps}}{A matrix  with \code{nsim} columns, one for each
-  is a bootstrap replicate of the surrogate residuals. Note, they correspond
+  \item{\code{draws}}{A matrix with \code{nsim} columns, one for each
+  is a replicate of the surrogate residuals. Note, they correspond
   to the original ordering of the data;}
-  \item{\code{boot_id}}{A matrix  with \code{nsim} columns. Each column
+  \item{\code{draws_id}}{A matrix  with \code{nsim} columns. Each column
   contains the observation number each surrogate residuals corresponds to in
-  \code{boot_reps}. (This is used for plotting purposes.)}
+  \code{draws}. (This is used for plotting purposes.)}
 }
 
 A matrix of class \code{c("matrix", "resids")} containing
-the simulated surrogate residuals. Additionally, if \code{nsim} > 1,
+the simulated surrogate residuals used for the partial association
+analysis in \code{Passo}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
 then the result will contain the attributes:
 \describe{
-  \item{\code{boot_reps}}{}
-  \item{\code{boot_id}}{}
+  \item{\code{draws}}{An array contains all draws of residuals.}
 }
 
 
