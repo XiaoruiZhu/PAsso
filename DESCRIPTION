@@ -29,18 +29,19 @@ Depends:
   ggplot2 (>= 2.2.1),
   doParallel (>= 1.0.11),
   pcaPP (>= 1.9-73),
-  copBasic
+  copBasic, 
+  dplyr
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
 Imports: 
+  tidyverse,
+  MASS (>= 7.3-51.0),
   GGally,
   goftest,
   gridExtra,
   utils (>= 3.5.3),
   progress (>= 1.2.0),
-  MASS (>= 7.3-51.0),
-  tidyverse,
   plotly,
   copula
 Suggests:

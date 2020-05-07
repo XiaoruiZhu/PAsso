@@ -41,6 +41,9 @@ plot3D.default <- function(object, ...){
 
 #' @rdname plot3D
 #' @method plot3D PAsso
+#' @importFrom copula C.n pobs
+#' @importFrom plotly plotly_build plot_ly add_surface layout
+#' @importFrom dplyr %>%
 #' @export
 plot3D.PAsso <- function(
   object, ...
@@ -62,24 +65,24 @@ plot3D.PAsso <- function(
 
   for (i_plot in 1:(n_resp*(n_resp-1)/2)) {
     resi <- cbind(rep_SRs[,1,m], rep_SRs[,1,n])
-    empC <- copula::C.n(pobs(resi), resi)
-    empFG1 <- copula::pobs(resi)[,1]*copula::pobs(resi)[,2]
+    empC <- C.n(pobs(resi), resi)
+    empFG1 <- pobs(resi)[,1]*pobs(resi)[,2]
 
     ## 3-D copula plot
     v1 <- v2 <- seq(0, 1, length.out = 100)
     aa <- matrix(0, length(v1), length(v1))
     for(i in 1:length(v1)){
       for(j in 1:length(v1)){
-        aa[i,j] <- copula::C.n(t(as.matrix(c(v1[i], v2[j]))), resi)-v1[i]*v2[j]
+        aa[i,j] <- C.n(t(as.matrix(c(v1[i], v2[j]))), resi)-v1[i]*v2[j]
       }
     }
 
     # options(Viewer=NULL)
     name <- paste("plot", i_plot, sep = "_")
     plot_list[[name]] <-
-      plotly::plotly_build(plotly::plot_ly(x = v1, y = v2, z = 12*aa) %>%
-      plotly::add_surface() %>%
-      plotly::layout(scene = list(xaxis= list(title= "u"),
+      plotly_build(plot_ly(x = v1, y = v2, z = 12*aa) %>%
+      add_surface() %>%
+      layout(scene = list(xaxis= list(title= "u"),
                                  yaxis= list(title= "v"),
                                  zaxis= list(title= "12(C(u,v)-uv)")),
                      title = paste("3-D P-P Plot: ", plot_titles[i_plot], sep = "")))

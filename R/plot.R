@@ -13,9 +13,10 @@
 #' @param ... Additional optional arguments to be passed onto.
 #'
 #' @return A \code{"GGally"} object.
-#' @import GGally
 #'
-#' @rdname plot
+#' @importFrom GGally ggpairs wrap
+#'
+#' @name plot
 #' @method plot PAsso
 #' @export
 #'
@@ -35,15 +36,18 @@ plot.PAsso <- function(
 ) {
   resid_Mat <- as.data.frame(x$rep_SRs[,1,])
   cor_method <- attr(x, "arguments")[2]
-
-  GGally::ggpairs(resid_Mat,
-         upper = list(
-           continuous = GGally::wrap("smooth_loess", colour=color, ...)),
-         # diag = list(continuous = wrap("barDiag", colour = color)),
-         # lower = list(continuous = GGally::wrap("cor", method="kendall")),
-         lower = list(continuous = GGally::wrap("cor", method = cor_method, ...)),
-         # lower = list(continuous = x$corr[upper.tri(x$corr)]),
-         ...
- )
+  if (cor_method == "wolfsigma") { # wolfsigma only return one value!
+    stop("Please use plot3D() to display the 'wolfsigma' correlation")
+  } else {
+    ggpairs(resid_Mat,
+            upper = list(
+              continuous = wrap("smooth_loess", colour=color, ...)),
+            # diag = list(continuous = wrap("barDiag", colour = color)),
+            # lower = list(continuous = GGally::wrap("cor", method="kendall")),
+            lower = list(continuous = wrap("cor", method = cor_method, ...)),
+            # lower = list(continuous = x$corr[upper.tri(x$corr)]),
+            ...
+    )
+  }
 }
 

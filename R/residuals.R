@@ -273,6 +273,8 @@ residuals.PAsso <- function(object, draw_id=1, ...) {
   if ((draw_id>=1) & (draw_id<=dim(object$rep_SRs)[2])) {
     resids_PAsso <- object$rep_SRs[,draw_id,]
     # resids_PAsso <- PAsso_1$rep_SRs[,1,]
+  } else {
+    stop("The draw_id is out of bound.")
   }
   attr(resids_PAsso, "draws") <- object$rep_SRs
   attr(resids_PAsso, "arguments") <- attr(object, "arguments")

@@ -1,7 +1,7 @@
 
 library(MASS)
-library(tidyverse)
-library(progress)
+# library(tidyverse)
+# library(progress)
 
 library(PAsso)
 # import data -------------------------------------------------------------
@@ -12,17 +12,17 @@ summary(nes2016)
 # "income.num", "age", "edu.year"
 # "PAsso" function: Only need input responses, adjustments, data
 # Other default arguments are displayed below as well
-PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+system.time(PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
                  adjustments = c("income.num", "age", "edu.year"),
                  data = nes2016,
-                 uni.model <- "probit"
+                 uni.model = "probit",
                  # association = c("partial"),
                  # models = c("probit", "probit"),
-                 # method = c("kendall"),
+                 method = c("kendall"),
                  # resids.type = "surrogate", fitted.models = NULL,
-                 # rep_num = 30
+                 n_draws = 30
                 )
-
+)
 # Print the partial association matrix only
 print(PAsso_1, 5)
 
@@ -32,6 +32,13 @@ summary(PAsso_1, 4)
 # Plot partial association regression plot: residuals
 plot(PAsso_1)
 
+# Retrieve residuals
+test_resids <- residuals(PAsso_1, draw = 1)
+head(test_resids)
+dim(test_resids)
+# test_wolf <- t(copBasic::wolfCOP(para = data.frame(test_resids), as.sample = TRUE))
+
+head(residuals(object = PAsso_1, draw_id=2))
 # "PAsso" function: input three responses ----------------------------
 PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                 adjustments = c("income.num", "age", "edu.year"),
@@ -85,7 +92,6 @@ summary(PAsso_5v,4)
 
 # Partial Regression plot matrix ------------------------------------------
 plot(PAsso_1)
-plot(x = PAsso_adv1)
 plot(x = PAsso_2)
 plot(x = PAsso_5v)
 

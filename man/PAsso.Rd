@@ -15,7 +15,7 @@ PAsso(
   jitter = c("latent", "uniform"),
   jitter.uniform.scale = c("probability", "response"),
   fitted.models = NULL,
-  rep_num = 20,
+  n_draws = 20,
   association = "partial",
   ...
 )
@@ -73,7 +73,7 @@ list can be an object of class \code{\link[ordinal]{clm}},
 \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}.}
 
-\item{rep_num}{A number to specify draws of surrogate residuls
+\item{n_draws}{A number to specify draws of surrogate residuls
 such that the partial correlation coefficients are calculated repeatly. The final
 correlation coefficents are the average of all partial correlation coefficients.
 It is the \code{"nsim"} argument in \code{"residuals()"} function.}
@@ -83,7 +83,7 @@ It is the \code{"nsim"} argument in \code{"residuals()"} function.}
 \value{
 An object of class \code{"PAsso"} is a list containing at least the following
 components. It contains the partial correlation matrix and multiple repeats if
-\code{rep_num} > 1. This object has "arguments"
+\code{n_draws} > 1. This object has "arguments"
 attribute saved as c(association, method, resids.type), "responses" attribute, and
 "adjustments" attribute.
 The list contains:

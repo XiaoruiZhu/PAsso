@@ -65,7 +65,7 @@
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}.
 #'
-#' @param rep_num A number to specify draws of surrogate residuls
+#' @param n_draws A number to specify draws of surrogate residuls
 #' such that the partial correlation coefficients are calculated repeatly. The final
 #' correlation coefficents are the average of all partial correlation coefficients.
 #' It is the \code{"nsim"} argument in \code{"residuals()"} function.
@@ -73,9 +73,13 @@
 #'
 #' @import MASS
 #'
+#' @importFrom copBasic wolfCOP
+#'
+#' @importFrom pcaPP cor.fk
+#'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
 #' components. It contains the partial correlation matrix and multiple repeats if
-#' \code{rep_num} > 1. This object has "arguments"
+#' \code{n_draws} > 1. This object has "arguments"
 #' attribute saved as c(association, method, resids.type), "responses" attribute, and
 #' "adjustments" attribute.
 #' The list contains:
@@ -110,7 +114,7 @@
 #' Cambridge University Press, 2001.
 #' \url{https://pdfs.semanticscholar.org/dad0/820f287a8cf5a4e8039549e35fc111fd86e5.pdf}
 #'
-#' @importFrom ggplot2  aes_string geom_abline geom_boxplot geom_point
+#' @importFrom ggplot2 aes_string geom_abline geom_boxplot geom_point
 #'
 #' @importFrom ggplot2 geom_smooth ggplot ggtitle guides labs xlab ylab
 #'
@@ -121,6 +125,8 @@
 #' @importFrom stats predict qcauchy qlogis qnorm qqline qqplot qqnorm quantile
 #'
 #' @importFrom stats qunif runif
+#'
+#' @importFrom stats filter lag
 #'
 #' @export
 #'
@@ -200,7 +206,7 @@ PAsso <- function(responses, adjustments, data,
                   jitter = c("latent", "uniform"),
                   jitter.uniform.scale = c("probability", "response"),
                   fitted.models = NULL,
-                  rep_num = 20,
+                  n_draws = 20,
                   association = "partial", ...){
 
   # TEST HEADER:
@@ -216,7 +222,7 @@ PAsso <- function(responses, adjustments, data,
   # models = c("probit", "acat")
   # adjustments <- c("income.num", "age", "edu.year")
   # association = "partial"; method = "kendall";
-  # rep_num = 30; data = nes2016;
+  # n_draws = 30; data = nes2016;
   # resids.type = "surrogate"; jitter = "latent"
   # jitter.uniform.scale = "response"
   # models = c("probit", "probit")
@@ -241,10 +247,10 @@ PAsso <- function(responses, adjustments, data,
   # Initialize the cor_func for different methods
   cor_func <- switch(method,
                      # kendall = function(X) cor(X, method = "kendall"),
-                     kendall = function(X) pcaPP::cor.fk(X),
+                     kendall = function(X) cor.fk(X),
                      pearson = function(X) cor(X),
                      wolfsigma = function(X)
-                       t(copBasic::wolfCOP(para = data.frame(X), as.sample = TRUE)))
+                       t(wolfCOP(para = data.frame(X), as.sample = TRUE)))
 
 
 
@@ -370,43 +376,50 @@ PAsso <- function(responses, adjustments, data,
   # Simulate surrogate residuals for calculating the correlation -----------------------------------
   MatCorr <- matrix(1, nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses))
 
-  if (rep_num==1) { # Use just one replication of SR to calcualte partial correlation!
-    rep_SRs <- sapply(fitted.models, function(mod)
+  if (n_draws==1) { # Use just one replication of SR to calcualte partial correlation!
+    rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses)) # Keep array for consistency.
+
+    rep_SRs[,1,] <- sapply(fitted.models, function(mod)
       residuals(object = mod, type = resids.type,
                 jitter = jitter,
                 jitter.uniform.scale = jitter.uniform.scale,
                 nsim = 1L,...))
-    colnames(rep_SRs) <- responses
+
+    dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
+    dimnames(rep_SRs)[[2]] <- seq(n_draws)
+    dimnames(rep_SRs)[[3]] <- responses
+
+    # colnames(rep_SRs) <- responses
 
     if (method == "wolfsigma") { # wolfsigma only return one value!
-      MatCorr[upper.tri(MatCorr)] <- MatCorr[lower.tri(MatCorr)] <- cor_func(rep_SRs)
+      MatCorr[upper.tri(MatCorr)] <- MatCorr[lower.tri(MatCorr)] <- cor_func(rep_SRs[,1,])
     } else {
-      MatCorr <- cor_func(rep_SRs)
+      MatCorr <- cor_func(rep_SRs[,1,])
     }
     rep_MatCorr <- MatCorr # Save Replication again!
 
-  } else { # Repeat rep_num times to get SRs and calcualte average partial correlation!
+  } else { # Repeat n_draws times to get SRs and calcualte average partial correlation!
     # rep_SRs <- sapply(fitted.models, function(mod)
     #   attr(
     #     residuals(object = mod, type = resids.type,
     #               jitter = jitter,
     #               jitter.uniform.scale = jitter.uniform.scale,
-    #               nsim = rep_num,...), "draws"),
+    #               nsim = n_draws,...), "draws"),
     #   simplify = "array") # Use array to save surrogate residuals, rep_SRs[,i,] is i-th simulation
     # dim(rep_SRs)
-    rep_SRs <- array(data = NA, dim = c(mods_n[1],rep_num,n_responses))
+    rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses))
     for (i in 1:n_responses) {
       # print(class(fitted.models[[i]]))
       if (isS4(fitted.models[[i]]) & inherits(fitted.models[[i]], "vglm")) {
         temp_resids <- residualsAcat(object = fitted.models[[i]],
                                  type = resids.type, jitter = jitter,
                                  jitter.uniform.scale = jitter.uniform.scale,
-                                 nsim = rep_num)
+                                 nsim = n_draws)
       } else {
         temp_resids <- residuals(object = fitted.models[[i]],
                                  type = resids.type, jitter = jitter,
                                  jitter.uniform.scale = jitter.uniform.scale,
-                                 nsim = rep_num)
+                                 nsim = n_draws)
       }
       # print(class(temp_resids))
 
@@ -417,15 +430,16 @@ PAsso <- function(responses, adjustments, data,
     }
 
     dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
-    dimnames(rep_SRs)[[2]] <- seq(rep_num)
+    dimnames(rep_SRs)[[2]] <- seq(n_draws)
     dimnames(rep_SRs)[[3]] <- responses
 
     rep_MatCorr_temp <- apply(X = rep_SRs, MARGIN = 2, cor_func) # For each copy, calculate correlation
+    # For "wolfsigma", below code has bug!
     MatCorr <- matrix(apply(X = rep_MatCorr_temp, MARGIN = 1, mean),
                       nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses))
     # ABOVE: Take mean as the estimate of partial correlation matrix!
 
-    rep_MatCorr <- array(rep_MatCorr_temp, dim = c(n_responses, n_responses, rep_num),
+    rep_MatCorr <- array(rep_MatCorr_temp, dim = c(n_responses, n_responses, n_draws),
                          dimnames = list(responses, responses))
   }
 
@@ -449,10 +463,13 @@ PAsso <- function(responses, adjustments, data,
 
 
 #' @title Print partial association matrix
-#' @rdname print
+#' @name print
 #' @method print PAsso
 #'
 #' @export
+#' @examples
+#' # See PAsso for the example.
+#'
 print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
@@ -477,10 +494,13 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #' providing partial association matrix, marginal association matrix, and a
 #' matrix of models' estimation.
 #'
-#' @rdname summary
+#' @name summary
 #' @method summary PAsso
 #'
 #' @export
+#' @examples
+#' # See PAsso for the example.
+#'
 summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n\n")

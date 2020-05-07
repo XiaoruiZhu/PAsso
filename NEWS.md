@@ -1,3 +1,20 @@
+# PAsso 0.1.7
+
+## Major changes
+
+1. Update "PAsso()" to support adjacent categories regression model by using vglm(acat());
+
+2. Update "residuals()" to support acat in VGAM;
+
+3. Remove useless dataset df_AdjCat; functions "gof";
+
+4. Rename attribute "boot_reps" as "draws".
+
+## Bugs fixes
+
+1. The wolfsigma method of correlation works now even when n_draws>1.
+2. A issue when n_draws=1 in residuals.PAsso(), save array even if n_draws=1.
+
 # PAsso 0.1.6
 
 ## Major changes
