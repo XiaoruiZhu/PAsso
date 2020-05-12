@@ -10,7 +10,10 @@
 \description{
 This function summarizes the partial association analysis by
 providing partial association matrix, marginal association matrix, and a
-matrix of models' estimation.
+matrix summarizing the model's coefficients. The partial correlation coefficient
+matrix displays the partial association between each pair of responses
+after adjusting the covariates. While the marginal coefficient matrix displays association
+before the adjustment.
 }
 \examples{
 # See PAsso for the example.

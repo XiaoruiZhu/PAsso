@@ -6,18 +6,26 @@
 \alias{plot3D.PAsso}
 \title{3-D P-P plot for the inspection of the partial association analysis}
 \usage{
-plot3D(object)
+plot3D(object, y1, y2, ...)
 
-\method{plot3D}{default}(object, ...)
+\method{plot3D}{default}(object, y1, y2, ...)
 
-\method{plot3D}{PAsso}(object, ...)
+\method{plot3D}{PAsso}(object, y1, y2, ...)
 }
 \arguments{
-\item{object}{The input object should be a "PAsso" class that is generated
-by "Passo" or "test".}
+\item{object}{A PAsso class of object.}
+
+\item{y1}{A string to specify the first response for the 3D plot.}
+
+\item{y2}{A string to specify the second response for the 3D plot. If either one of the
+y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.}
+
+\item{...}{}
 }
 \value{
-A list of \code{"plotly"} objects with name "plot_1", "plot_2" etc.
+If response y1 or y2 is not specified, a list of \code{"plotly"} objects includes
+all pairs of responses will be returned (with name "response 1 v.s. response 2" etc.). If
+responses y1 and y2 are specified, returns a 3D plot as \code{"plotly"} object.
 }
 \description{
 A list of 3-D P-P plots for the inspection of the partial

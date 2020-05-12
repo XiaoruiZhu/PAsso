@@ -492,7 +492,10 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #' @title Summary of partial association analysis
 #' @description This function summarizes the partial association analysis by
 #' providing partial association matrix, marginal association matrix, and a
-#' matrix of models' estimation.
+#' matrix summarizing the model's coefficients. The partial correlation coefficient
+#' matrix displays the partial association between each pair of responses
+#' after adjusting the covariates. While the marginal coefficient matrix displays association
+#' before the adjustment.
 #'
 #' @name summary
 #' @method summary PAsso

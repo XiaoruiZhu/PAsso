@@ -18,7 +18,12 @@ diagnostic.plot(object, ...)
 
 \method{diagnostic.plot}{resid}(object, output = c("qq", "fitted", "covariate"), ...)
 
-\method{diagnostic.plot}{PAsso}(object, output = c("qq", "fitted", "covariate"), ...)
+\method{diagnostic.plot}{PAsso}(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  model_id = NULL,
+  ...
+)
 
 \method{diagnostic.plot}{clm}(
   object,
@@ -168,8 +173,8 @@ for \code{\link[PAsso]{PAsso}}).}
 \code{"covariates"} produces a plot matrix between residuals and corresponding covariate.}
 }
 \value{
-A list of \code{"ggplot"} objects. For class "PAsso", the very last element
-of the list is the combined diagnostic plots.
+A \code{"ggplot"} object for supported models. For class "PAsso", it returns a plot in
+\code{"gtable"} object that combines diagnostic plots of all responses.
 }
 \description{
 A set of visualization tools for the diagnostic of the fitted model in

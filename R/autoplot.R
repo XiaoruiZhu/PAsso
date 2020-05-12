@@ -156,7 +156,8 @@ autoplot.resid <- function(
            " via the `x` argument. Or feed the `fit` argument with the fitted model")
     } else if (is.null(x)) {
       # Fix this bug for more user-friendly design.
-      x <- model.frame(fit)[,2] # If no `x` feed, extract first covariate from `fit`
+      x <- model.frame(fit)[,2]
+      message("If no `x` feed, extract first covariate from `fit`")
     }
 
     if (is.null(xlab)) {
@@ -329,8 +330,6 @@ autoplot.glm <- function(
   if (is.null(xlab)) {
     xlab <- deparse(substitute(x))
   }
-
-  getResponseValues
 
   # Call the default method
   autoplot.resid(

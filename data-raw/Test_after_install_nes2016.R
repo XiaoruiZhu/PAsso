@@ -65,8 +65,8 @@ summary(PAsso_2_jit, digits=4)
 library(progress); #library(doParallel)
 
 system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
-print(Pcor_SR_test1, digits=3)
-
+print(Pcor_SR_test1, digits=6)
+print(PAsso_2, 6)
 # test function: Test parallel ----------------------------
 library(doParallel); library(progress)
 
@@ -97,24 +97,40 @@ plot(x = PAsso_5v)
 
 # diagnostic.plot function -----------------------------------------------------
 
-check_qq <- diagnostic.plot(object = PAsso_2, output = "qq")
+diagnostic.plot(object = PAsso_2, output = "qq")
 
-check_fitted <- diagnostic.plot(object = PAsso_2, output = "fitted")
+class(diagnostic.plot(object = PAsso_2, output = "qq", model_id = 2))
+class(diagnostic.plot(object = PAsso_2, output = "qq"))
 
-check_covar <- diagnostic.plot(object = PAsso_2, output = "covariate")
+diagnostic.plot(object = PAsso_2, output = "fitted")
 
-check_qq <- diagnostic.plot(object = PAsso_5v, color="blue", output = "qq")
+diagnostic.plot(object = PAsso_2, output = "covariate")
 
-check_fitted <- diagnostic.plot(object = PAsso_5v, output = "fitted")
+diagnostic.plot(object = PAsso_2, output = "covariate", model_id = 2)
 
-check_covar <- diagnostic.plot(object = PAsso_5v, output = "covariate")
+diagnostic.plot(object = PAsso_5v, color="blue", output = "qq")
+
+diagnostic.plot(object = PAsso_5v, output = "fitted")
+
+diagnostic.plot(object = PAsso_5v, output = "covariate")
 
 ## general association measure and 3-D plot for VOTE and PID
 library("copula")
 library("plotly")
 
-testPlots <- plot3D(PAsso_2)
-testPlots$plot_1
+# Draw all pairs
+testPlots <- plot3D(PAsso_1)
+testPlots$`Prevote.num v.s. PID`
+
+# Draw just one pair
+testPlots2 <- plot3D(object = PAsso_2, y1 = "selfLR", y2 = "PID")
+testPlots2
+
+system.time(Plots_PAsso_5v <- plot3D(object = PAsso_5v, y1 = "ClinLR", y2 = "TrumpLR"))
+Plots_PAsso_5v
+
+system.time(Plots_PAsso_5v <- plot3D(object = PAsso_5v))
+
 # Above result need to be opened in browser through "Viewer" tap!
 
 ###########################################################
