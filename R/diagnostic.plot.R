@@ -19,8 +19,8 @@
 #' @param ... This function is based on a modified version of \code{"autoplot"} function in
 #' \code{"sure"}. Additional optional arguments can be passed onto for drawing various plots.
 #'
-#' @return A list of \code{"ggplot"} objects. For class "PAsso", the very last element
-#' of the list is the combined diagnostic plots.
+#' @return A \code{"ggplot"} object for supported models. For class "PAsso", it returns a plot in
+#' \code{"gtable"} object that combines diagnostic plots of all responses.
 #'
 #' @name diagnostic.plot
 #'
@@ -84,6 +84,7 @@ diagnostic.plot.resid <- function(
 diagnostic.plot.PAsso <- function(
   object,
   output = c("qq", "fitted", "covariate"),
+  model_id = NULL,
   ...
 ) {
   # object = PAsso_2; output = "covariate"
@@ -97,54 +98,60 @@ diagnostic.plot.PAsso <- function(
   nCol <- floor(sqrt(n_resp))
   plot_list <- list()
 
-  # return a matrix-plot including diagnostics of models.
-  if (output == "qq") {
-    for (i in 1:n_resp) {
-      plot_list[[i]] <-
-        # autoplot(rep_SRs[,1,i], output = output,
-        autoplot(object$fitted.models[[i]], output = output,
-                 resp_name = resp_name[i], ...)
-    }
-    # Save the combined plot
-    print(do.call("grid.arrange", c(plot_list, ncol=nCol)))
-
-  } else if (output == "fitted") {
-
-    for (i in 1:n_resp) {
-      plot_list[[i]] <-
-        autoplot(object$fitted.models[[i]], output = output, resp_name = resp_name[i],
-                 alpha = 0.5, ...)
-    }
-    # Save the combined plot
-    print(do.call("grid.arrange", c(plot_list, ncol=nCol)))
-
-  } else {
-    adjust_name <- attr(object, "adjustments")
-    n_adjust <- length(adjust_name)
-    t_lenght <- n_resp*n_adjust
-    adjust_id <- rep(1:n_adjust, times=n_resp) # make index for covariate name in the for loop
-    resp_id <- rep(1:n_resp, each=n_adjust) # make index for response name in the for loop
-
-    for (i in 1:(t_lenght)) {
-      plot_list[[i]] <-
-        autoplot(object$fitted.models[[resp_id[i]]], output = "covariate",
-                 x = object$data[,adjust_name[adjust_id[i]]],
-                 xlab = adjust_name[adjust_id[i]],
-                 # resp_name = resp_name[resp_id[i]], ...)
-                 resp_name = resp_name[resp_id[i]])
-
-      if (i %% n_adjust != 1) { # First plot of each response, draw ylab, otherwise, no ylab
-        plot_list[[i]] <- plot_list[[i]] + ylab("")
+  if (is.null(model_id)) { # If the diagnostic model is not specified, return a combined plot.
+    # return a matrix-plot including diagnostics of models.
+    if (output == "qq") {
+      for (i in 1:n_resp) {
+        plot_list[[i]] <-
+          # autoplot(rep_SRs[,1,i], output = output,
+          autoplot(object$fitted.models[[i]], output = output,
+                   resp_name = resp_name[i], ...)
       }
-      if ((i-1) %/% n_adjust != (n_resp-1)) { # last row of plot(last response), draw xlab, otherwise, no xlab
-        plot_list[[i]] <- plot_list[[i]] + xlab("")
+      # Save the combined plot
+      return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
+
+    } else if (output == "fitted") {
+
+      for (i in 1:n_resp) {
+        plot_list[[i]] <-
+          autoplot(object$fitted.models[[i]], output = output, resp_name = resp_name[i],
+                   alpha = 0.5, ...)
       }
+      # Save the combined plot
+      return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
+
+    } else {
+      adjust_name <- attr(object, "adjustments")
+      n_adjust <- length(adjust_name)
+      t_lenght <- n_resp*n_adjust
+      adjust_id <- rep(1:n_adjust, times=n_resp) # make index for covariate name in the for loop
+      resp_id <- rep(1:n_resp, each=n_adjust) # make index for response name in the for loop
+
+      for (i in 1:(t_lenght)) {
+        plot_list[[i]] <-
+          autoplot(object$fitted.models[[resp_id[i]]], output = "covariate",
+                   x = object$data[,adjust_name[adjust_id[i]]],
+                   xlab = adjust_name[adjust_id[i]],
+                   # resp_name = resp_name[resp_id[i]], ...)
+                   resp_name = resp_name[resp_id[i]])
+
+        if (i %% n_adjust != 1) { # First plot of each response, draw ylab, otherwise, no ylab
+          plot_list[[i]] <- plot_list[[i]] + ylab("")
+        }
+        if ((i-1) %/% n_adjust != (n_resp-1)) { # last row of plot(last response), draw xlab, otherwise, no xlab
+          plot_list[[i]] <- plot_list[[i]] + xlab("")
+        }
+      }
+      # Save the combined plot
+      return(do.call("grid.arrange", c(plot_list, ncol=n_adjust)))
     }
-    # Save the combined plot
-    print(do.call("grid.arrange", c(plot_list, ncol=n_adjust)))
+  } else if ((model_id > n_resp) | (model_id <= 0)) {
+    stop("'model_id' needs to be between ", 1, " and number of responses ", n_resp, "!")
+  } else { # If the diagnostic model IS specified, return corresponding plot.
+    return(autoplot(object$fitted.models[[model_id]], output = output,
+             resp_name = resp_name[model_id], ...))
   }
 
-  return(plot_list)
 }
 
 #' @rdname diagnostic.plot
