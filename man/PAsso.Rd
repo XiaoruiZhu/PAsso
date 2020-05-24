@@ -30,12 +30,14 @@ be adjusted.}
 \item{data}{A data.frame including responses and adjustments.}
 
 \item{uni.model}{A character string specifying the universal model setting for all
-responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
-refers to cumulative logit model. \code{"acat"} fits an adjacent categories regression model.}
+responses. Default \code{"logit"} refers to cumulative logit model. \code{"probit"}
+refers to cumulative probit model. \code{"acat"} fits an adjacent categories regression model.}
 
 \item{models}{A string vector contains default link functions of fitting models with
-respect to each response variable. If \code{"uni.model"} is provided, this one will
-be generated automaticlly.}
+respect to each response variable. If \code{"models"} is missing or has any one of the model
+unspecified, \code{"uni.model"} is used to specifiy same models for all responses automaticlly.
+But, this argument has higher priority than the \code{"uni.model"} as long as the length of
+\code{"models"} equals to the number of \code{"responses"}.}
 
 \item{method}{A string argument to specify correlation coefficient method.
 Three choices \code{c("kendall", "pearson", "wolfsigma")}. The default is

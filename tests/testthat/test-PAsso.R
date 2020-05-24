@@ -142,7 +142,7 @@ test_that("Check acat: Simple PAsso() for two responses",{
                    data = nes2016,
                    models = c("probit", "acat"))
   links <- attr(PAsso_1, "models")
-  links
+  # links
   # Expectations
   expect_equal(links, c("probit", "acat"))
   expect_equal(PAsso_1$fitted.models[[1]]$family$link, "probit")
@@ -171,6 +171,56 @@ test_that("Check acat: Simple PAsso() for two responses",{
   expect_equal(links, c("logit", "probit"))
   expect_equal(PAsso_1_com$fitted.models[[1]]$family$link, "logit")
   expect_equal(PAsso_1_com$fitted.models[[2]]$method, "probit")
+
+  # Complicated combination: acat + acat + logit
+  PAsso_2_com <- PAsso(responses = c("PID", "selfLR", "Prevote.num"),
+                       adjustments = c("income.num", "age", "edu.year"),
+                       data = nes2016, uni.model = "probit",
+                       models = c("acat", "acat", "logit"))
+
+  links <- attr(PAsso_2_com, "models")
+
+  # Expectations
+  expect_equal(links, c("acat", "acat", "logit"))
+  expect_equal(PAsso_2_com$fitted.models[[1]]@family@vfamily[1], "acat")
+  expect_equal(PAsso_2_com$fitted.models[[2]]@family@vfamily[1], "acat")
+  expect_equal(PAsso_2_com$fitted.models[[3]]$family$link, "logit")
+
+  # Complicated combination: acat + acat + acat
+  PAsso_3_com <- PAsso(responses = c("PID", "selfLR", "Prevote.num"),
+                       adjustments = c("income.num", "age", "edu.year"),
+                       data = nes2016, uni.model = "acat")
+  # summary(PAsso_3_com)
+
+  links <- attr(PAsso_3_com, "models")
+
+  # Expectations
+  expect_equal(links, c("acat", "acat", "acat"))
+  expect_equal(PAsso_3_com$fitted.models[[1]]@family@vfamily[1], "acat")
+  expect_equal(PAsso_3_com$fitted.models[[2]]@family@vfamily[1], "acat")
+  expect_equal(PAsso_3_com$fitted.models[[3]]@family@vfamily[1], "acat")
+})
+
+test_that("Check continuous respones: Simple PAsso() for two responses",{
+  skip_if_not_installed("MASS")
+  skip_if_not_installed("tidyverse")
+
+  # Load data
+  data("nes2016")
+  library(PAsso)
+  library(VGAM)
+  # acat models!
+
+  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+                   adjustments = c("income.num", "age", "edu.year"),
+                   data = nes2016,
+                   models = c("probit", "acat"))
+  links <- attr(PAsso_1, "models")
+  # links
+  # Expectations
+  expect_equal(links, c("probit", "acat"))
+  expect_equal(PAsso_1$fitted.models[[1]]$family$link, "probit")
+  expect_equal(PAsso_1$fitted.models[[2]]@family@vfamily[1], "acat")
 
 })
 

@@ -24,12 +24,15 @@
 #' be adjusted.
 #' @param data A data.frame including responses and adjustments.
 #' @param uni.model A character string specifying the universal model setting for all
-#' responses. Default \code{"probit"} refers to cumulative probit model. \code{"logit"}
-#' refers to cumulative logit model. \code{"acat"} fits an adjacent categories regression model.
+#' responses. Default \code{"logit"} refers to cumulative logit model. \code{"probit"}
+#' refers to cumulative probit model. \code{"acat"} fits an adjacent categories regression model.
 #'
 #' @param models A string vector contains default link functions of fitting models with
-#' respect to each response variable. If \code{"uni.model"} is provided, this one will
-#' be generated automaticlly.
+#' respect to each response variable. If \code{"models"} is missing or has any one of the model
+#' unspecified, \code{"uni.model"} is used to specifiy same models for all responses automaticlly.
+#' But, this argument has higher priority than the \code{"uni.model"} as long as the length of
+#' \code{"models"} equals to the number of \code{"responses"}.
+#'
 #' @param method A string argument to specify correlation coefficient method.
 #' Three choices \code{c("kendall", "pearson", "wolfsigma")}. The default is
 #' \code{"kendall"}
@@ -70,12 +73,6 @@
 #' correlation coefficents are the average of all partial correlation coefficients.
 #' It is the \code{"nsim"} argument in \code{"residuals()"} function.
 #' @param ... Additional optional arguments.
-#'
-#' @import MASS
-#'
-#' @importFrom copBasic wolfCOP
-#'
-#' @importFrom pcaPP cor.fk
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
 #' components. It contains the partial correlation matrix and multiple repeats if
@@ -127,6 +124,15 @@
 #' @importFrom stats qunif runif
 #'
 #' @importFrom stats filter lag
+#'
+#' @import MASS
+#'
+#' @importFrom copBasic wolfCOP
+#'
+#' @importFrom pcaPP cor.fk
+#'
+#' @importFrom VGAM vglm acat summary
+#'
 #'
 #' @export
 #'
@@ -284,7 +290,7 @@ PAsso <- function(responses, adjustments, data,
       adjustments <- conf_temp[[1]]; n_adjustments <- length(adjustments)
     }
 
-    data <- data.frame(mods_ys, model.frame(fitted.models[[1]])[,-1]) # Make sure data is data.frame to avoid issue!
+    data <- data.frame(mods_ys, getCovariates(fitted.models[[1]])) # Make sure data is data.frame to avoid issue!
     colnames(data) <- c(responses, adjustments)
 
     # Obtain models(links) from the "fitted.models", and update "models"
@@ -329,7 +335,18 @@ PAsso <- function(responses, adjustments, data,
     # NEEDED FEATURE: Test for other packages.
     fitted.models <- list()
     for (i in 1:n_responses) {
-      if (length(unique(data[,responses[i]])) > 2) {
+
+      if (models[i] %in% "acat") { # Conduct Adjacent Categories regression model.
+        data[,responses[i]] <- as.numeric(data[,responses[i]])
+        fitted_temp <- do.call("vglm",
+                               list(formula = as.formula(formulaAll[i]),
+                                    data = quote(data),
+                                    family = quote(acat(reverse = TRUE, parallel = TRUE))))
+
+        # need to change the response back to factor to avoid issue!
+        data[,responses[i]] <- as.factor(data[,responses[i]])
+
+      } else if (length(unique(data[,responses[i]])) > 2) {
         # If response has more than 2 levels, use "polr" or "VGAM::acat", otherwise "glm".
 
         temp_model <- ifelse(models[i]=="logit", "logistic", models[i])
@@ -339,29 +356,20 @@ PAsso <- function(responses, adjustments, data,
           fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
                                               Hess = TRUE, # Need this to draw coefficients and t-values as output
                                               method = temp_model, data = quote(data)))
-        } else if (temp_model %in% "acat") { # Conduct Adjacent Categories regression model.
-          fitted_temp <- do.call("vglm",
-                                 list(formula = as.formula(formulaAll[i]),
-                                      data = quote(data),
-                                      family = VGAM::acat(reverse = TRUE, parallel = TRUE)))
         }
 
-        fitted.models[[i]] <- fitted_temp
-        # FIXED: formula now is shown as what it is (by "do.call" and "quote")!
       } else {
         fitted_temp <- do.call("glm",
                                list(formula = as.formula(formulaAll[i]),
                                     family = quote(binomial(link = models[i])),
                                     data = quote(data)))
-
-        fitted.models[[i]] <- fitted_temp
-        # summary(fitted_vote.num)
-        # identical(fitted_temp, fitted_vote.num)
       }
+      fitted.models[[i]] <- fitted_temp
+      # FIXED: formula now is shown as what it is (by "do.call" and "quote")!
     }
 
     # Transfer the data again to obtain numeric responses!!!
-    data <- data.frame(mods_ys, model.frame(fitted.models[[1]])[,-1]) # Make sure data is data.frame to avoid issue!
+    data <- data.frame(mods_ys, data[,adjustments]) # Make sure data is data.frame to avoid issue!
     colnames(data) <- c(responses, adjustments)
   }
 
@@ -379,17 +387,25 @@ PAsso <- function(responses, adjustments, data,
   if (n_draws==1) { # Use just one replication of SR to calcualte partial correlation!
     rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses)) # Keep array for consistency.
 
-    rep_SRs[,1,] <- sapply(fitted.models, function(mod)
-      residuals(object = mod, type = resids.type,
-                jitter = jitter,
-                jitter.uniform.scale = jitter.uniform.scale,
-                nsim = 1L,...))
+    for (i in 1:n_responses) {
+      # print(class(fitted.models[[i]]))
+      if (isS4(fitted.models[[i]]) & inherits(fitted.models[[i]], "vglm")) {
+        use_func <- "residualsAcat"
+      } else {
+        use_func <- "residuals"
+      }
+      temp_resids <- do.call(what = use_func,
+                             args = list(object = fitted.models[[i]],
+                                         type = resids.type, jitter = jitter,
+                                         jitter.uniform.scale = jitter.uniform.scale,
+                                         nsim = n_draws)
+                             )
+      rep_SRs[,1,i] <- temp_resids
+    }
 
     dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
     dimnames(rep_SRs)[[2]] <- seq(n_draws)
     dimnames(rep_SRs)[[3]] <- responses
-
-    # colnames(rep_SRs) <- responses
 
     if (method == "wolfsigma") { # wolfsigma only return one value!
       MatCorr[upper.tri(MatCorr)] <- MatCorr[lower.tri(MatCorr)] <- cor_func(rep_SRs[,1,])
@@ -399,34 +415,21 @@ PAsso <- function(responses, adjustments, data,
     rep_MatCorr <- MatCorr # Save Replication again!
 
   } else { # Repeat n_draws times to get SRs and calcualte average partial correlation!
-    # rep_SRs <- sapply(fitted.models, function(mod)
-    #   attr(
-    #     residuals(object = mod, type = resids.type,
-    #               jitter = jitter,
-    #               jitter.uniform.scale = jitter.uniform.scale,
-    #               nsim = n_draws,...), "draws"),
-    #   simplify = "array") # Use array to save surrogate residuals, rep_SRs[,i,] is i-th simulation
-    # dim(rep_SRs)
     rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses))
     for (i in 1:n_responses) {
       # print(class(fitted.models[[i]]))
       if (isS4(fitted.models[[i]]) & inherits(fitted.models[[i]], "vglm")) {
-        temp_resids <- residualsAcat(object = fitted.models[[i]],
-                                 type = resids.type, jitter = jitter,
-                                 jitter.uniform.scale = jitter.uniform.scale,
-                                 nsim = n_draws)
+        use_func <- "residualsAcat"
       } else {
-        temp_resids <- residuals(object = fitted.models[[i]],
-                                 type = resids.type, jitter = jitter,
-                                 jitter.uniform.scale = jitter.uniform.scale,
-                                 nsim = n_draws)
+        use_func <- "residuals"
       }
-      # print(class(temp_resids))
-
-      # print(head(temp_resids))
-      # print(dim(attr(temp_resids, "draws")))
+      temp_resids <- do.call(what = use_func,
+                             args = list(object = fitted.models[[i]],
+                                         type = resids.type, jitter = jitter,
+                                         jitter.uniform.scale = jitter.uniform.scale,
+                                         nsim = n_draws)
+                             )
       rep_SRs[,,i] <- attr(temp_resids, "draws")
-      # dim(rep_SRs)
     }
 
     dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
@@ -551,10 +554,11 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
 
   for (i in 1:n_resp) {
     # i <- 1
-    # Obtain results from the summary output
-    sumry <- summary(object$fitted.models[[i]])$coefficients
 
     if (inherits(object$fitted.models[[i]], "polr")) {
+      # Obtain results from the summary output
+      sumry <- summary(object$fitted.models[[i]])$coefficients
+
       # Obtain coefficients and standard error
       coefs_se <- sumry[1:(n_adju), ]
       # Obtain p-value
@@ -562,12 +566,28 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
       `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
                   eps = .Machine$double.eps, ...)
     } else if (inherits(object$fitted.models[[i]], "glm")) {
+      # Obtain results from the summary output
+      sumry <- summary(object$fitted.models[[i]])$coefficients
+
       # Obtain coefficients and standard error
       coefs_se <- sumry[-1,1:3]
       # Obtain p-value
       temp_p <- sumry[-1,4]
       `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
                              eps = .Machine$double.eps, ...)
+    } else if (inherits(object$fitted.models[[i]], "vglm")) {
+      # Obtain results from the summary output of "vglm"
+
+      sumry_temp <- summary(object$fitted.models[[i]])
+      sumry <- slot(sumry_temp,"coef3")
+
+      ncat_model <- ncat(object$fitted.models[[i]])
+      # Obtain coefficients and standard error
+      coefs_se <- sumry[-c(1:(ncat_model-1)),1:3]
+      # Obtain p-value
+      temp_p <- sumry[-c(1:(ncat_model-1)),4]
+      `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
+                          eps = .Machine$double.eps, ...)
     }
     Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
                      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
