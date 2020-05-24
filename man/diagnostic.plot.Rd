@@ -22,6 +22,7 @@ diagnostic.plot(object, ...)
   object,
   output = c("qq", "fitted", "covariate"),
   model_id = NULL,
+  x_name = NULL,
   ...
 )
 
@@ -171,6 +172,12 @@ for \code{\link[PAsso]{PAsso}}).}
 \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
 \code{"fitted"} produces a plot matrix between residuals and all corresponding fitted responses.
 \code{"covariates"} produces a plot matrix between residuals and corresponding covariate.}
+
+\item{model_id}{A number refers to the index of the model that needs to be diagnosed. If NULL, all
+models will be diagnosed.}
+
+\item{x_name}{A string refers to the covariate name that needs to be diagnosed. If NULL, all adjustments
+will be diagnosed.}
 }
 \value{
 A \code{"ggplot"} object for supported models. For class "PAsso", it returns a plot in

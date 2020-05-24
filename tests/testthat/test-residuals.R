@@ -206,7 +206,7 @@ test_that("residuals work for \"polr\" objects", {
 })
 
 
-test_that("residuals work for \"vglm\" objects", {
+test_that("residualsAcat work for \"vglm\" objects", {
 
   # Skips
   skip_on_cran()
@@ -222,49 +222,72 @@ test_that("residuals work for \"vglm\" objects", {
                                                 parallel = TRUE))
   )
 
+  resids_1 <- residualsAcat(object = fit,
+                               type = "surrogate", jitter = "latent",
+                               jitter.uniform.scale = "response",
+                               nsim = 1)
+
+  # head(temp_resids)
+
   suppressWarnings(
     fit2 <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
                        family=acat(reverse=TRUE, parallel=TRUE))
   )
-  # responses = c("Prevote.num", "PID")
-  # models = c("probit", "acat")
-  # adjustments <- c("income.num", "age", "edu.year")
-  # association = "partial"; method = "kendall";
-  # rep_num = 30; data = nes2016;
+  resids_2 <- residualsAcat(object = fit2,
+                           type = "surrogate", jitter = "latent",
+                           jitter.uniform.scale = "response",
+                           nsim = 30)
 
   fitted_temp <- do.call("vglm",
                          list(formula = PID ~ income.num + age + edu.year,
                               data = quote(nes2016),
                               family = VGAM::acat(reverse = TRUE, parallel = TRUE)))
 
-  temp_resids <- residuals(object = fitted_temp,
+  temp_resids <- residualsAcat(object = fitted_temp,
                            type = "surrogate", jitter = "latent",
                            jitter.uniform.scale = "response",
                            nsim = 30)
-  dim(attr(temp_resids, "draws"))
-
-  # Compute residuals
-  res1_1 <- residuals(fit)
-  res1_2 <- residuals(fit, type = "surrogate", jitter = "latent",
-                      jitter.uniform.scale = "probability")
-
-  res2_1 <- residuals(fit2)
-  res2_2 <- residuals(fit2, nsim=10)
-  # summary(res2_1)
+  # dim(attr(temp_resids, "draws"))
 
   # Expectations
-  expect_equal(length(res1_1), nrow(df1))
-  expect_equal(length(res1_1), nrow(df1))
-  expect_equal(length(res2_1), nrow(df1))
-  expect_equal(length(res2_2), nrow(df1))
-  expect_null(attr(res1_1, "draws"))
-  expect_null(attr(res1_1, "draws_id"))
-  expect_null(attr(res1_2, "draws"))
-  expect_null(attr(res1_2, "draws_id"))
-  expect_null(attr(res2_1, "draws"))
-  expect_is(attr(res2_2, "draws"), "matrix")
-  expect_equal(dim(attr(res2_2, "draws")), c(nrow(df1), 10))
-  expect_equal(dim(attr(res2_2, "draws_id")), c(nrow(df1), 10))
+  expect_equal(length(resids_1), nrow(df1))
+  expect_equal(length(resids_2), nrow(df1))
+  expect_equal(length(temp_resids), nrow(df1))
+
+  expect_null(attr(resids_1, "draws"))
+  expect_null(attr(resids_1, "draws_id"))
+
+  expect_is(attr(resids_2, "draws"), "matrix")
+  expect_is(attr(resids_2, "draws_id"), "matrix")
+
+  expect_equal(dim(attr(temp_resids, "draws")), c(nrow(nes2016), 30))
+  expect_equal(dim(attr(temp_resids, "draws_id")), c(nrow(nes2016), 30))
+})
+
+test_that("residuals work for \"vglm\" objects", {
+
+  # # Compute residuals
+  # res1_1 <- residuals(fit)
+  # res1_2 <- residuals(fit, type = "surrogate", jitter = "latent",
+  #                     jitter.uniform.scale = "probability")
+  #
+  # res2_1 <- residuals(fit2)
+  # res2_2 <- residuals(fit2, nsim=10)
+  # # summary(res2_1)
+  #
+  # # Expectations
+  # expect_equal(length(res1_1), nrow(df1))
+  # expect_equal(length(res1_1), nrow(df1))
+  # expect_equal(length(res2_1), nrow(df1))
+  # expect_equal(length(res2_2), nrow(df1))
+  # expect_null(attr(res1_1, "draws"))
+  # expect_null(attr(res1_1, "draws_id"))
+  # expect_null(attr(res1_2, "draws"))
+  # expect_null(attr(res1_2, "draws_id"))
+  # expect_null(attr(res2_1, "draws"))
+  # expect_is(attr(res2_2, "draws"), "matrix")
+  # expect_equal(dim(attr(res2_2, "draws")), c(nrow(df1), 10))
+  # expect_equal(dim(attr(res2_2, "draws_id")), c(nrow(df1), 10))
 
 })
 

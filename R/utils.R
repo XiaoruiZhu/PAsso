@@ -568,6 +568,52 @@ getResponseValues.vglm <- function(object, ...) {
 
 
 ################################################################################
+# Generic function to extract the covariates from a cumulative link or
+# general model; returns as a matrix!
+################################################################################
+
+#' @keywords internal
+getCovariates <- function(object, ...) {
+  UseMethod("getCovariates")
+}
+
+
+#' @keywords internal
+getCovariates.clm <- function(object, ...) {
+  object$model[,-1]
+}
+
+
+#' @keywords internal
+getCovariates.glm <- function(object) {
+  # FIXME: What about binomial models with matrix response, etc.?
+  object$model[,-1]
+}
+
+
+#' @keywords internal
+getCovariates.lrm <- function(object) {
+}
+
+
+#' @keywords internal
+getCovariates.orm <- function(object) {
+}
+
+
+#' @keywords internal
+getCovariates.polr <- function(object, ...) {
+  object$model[,-1]
+}
+
+
+#' @keywords internal
+getCovariates.vglm <- function(object, ...) {
+  # head(fit@x)
+  object@x[,-1]
+}
+
+################################################################################
 # Number of response categories
 ################################################################################
 

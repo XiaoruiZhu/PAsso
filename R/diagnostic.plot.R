@@ -78,6 +78,18 @@ diagnostic.plot.resid <- function(
 }
 
 
+#' @param object The object in the support classes (This function is mainly designed
+#' for \code{\link[PAsso]{PAsso}}).
+#'
+#' @param output A character string specifying what type of output to plot. Default is
+#' \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
+#' \code{"fitted"} produces a plot matrix between residuals and all corresponding fitted responses.
+#' \code{"covariates"} produces a plot matrix between residuals and corresponding covariate.
+#' @param model_id A number refers to the index of the model that needs to be diagnosed. If NULL, all
+#' models will be diagnosed.
+#' @param x_name A string refers to the covariate name that needs to be diagnosed. If NULL, all adjustments
+#' will be diagnosed.
+#' @param ...
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot PAsso
 #' @export
@@ -85,6 +97,7 @@ diagnostic.plot.PAsso <- function(
   object,
   output = c("qq", "fitted", "covariate"),
   model_id = NULL,
+  x_name = NULL,
   ...
 ) {
   # object = PAsso_2; output = "covariate"
@@ -93,6 +106,13 @@ diagnostic.plot.PAsso <- function(
   output <- match.arg(output, several.ok = FALSE)
   rep_SRs <- object$rep_SRs
   resp_name <- attr(object, "responses")
+
+  x_name <- if (is.null(x_name)) {
+      attr(object, "adjustments")[1]
+    }
+
+  # do.call("<-", list(x_name, object$data[,x_name]))
+  assign(x = x_name, object$data[,x_name]) # Save covariate in a vector as its name.
 
   n_resp <- length(resp_name)
   nCol <- floor(sqrt(n_resp))
@@ -149,7 +169,7 @@ diagnostic.plot.PAsso <- function(
     stop("'model_id' needs to be between ", 1, " and number of responses ", n_resp, "!")
   } else { # If the diagnostic model IS specified, return corresponding plot.
     return(autoplot(object$fitted.models[[model_id]], output = output,
-             resp_name = resp_name[model_id], ...))
+             resp_name = resp_name[model_id], x = get(x_name), ...))
   }
 
 }

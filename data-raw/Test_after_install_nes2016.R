@@ -97,6 +97,8 @@ plot(x = PAsso_5v)
 
 # diagnostic.plot function -----------------------------------------------------
 
+diagnostic.plot(object = PAsso_1, output = "covariate", x_name = "income.num", model_id = 2)
+
 diagnostic.plot(object = PAsso_2, output = "qq")
 
 class(diagnostic.plot(object = PAsso_2, output = "qq", model_id = 2))
@@ -141,8 +143,19 @@ system.time(Plots_PAsso_5v <- plot3D(object = PAsso_5v))
 
 fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
                family = binomial(link = "probit"))
+fit.vote_test <- vglm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+                      family=acat(reverse=TRUE, parallel=TRUE))
+summary(fit.vote_test)
+head(residuals(fit.vote))
+head(residuals(fit.vote_test))
+
 fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
                method="probit", Hess = TRUE)
+
+fit.PID_test <- vglm(PID ~ income.num+ age + edu.year, data = nes2016,
+                      family=acat(reverse=TRUE, parallel=TRUE))
+summary(fit.PID_test)
+coef(fit.PID_test)
 
 system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
                                 association = c("partial"),

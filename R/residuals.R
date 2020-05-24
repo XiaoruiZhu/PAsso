@@ -188,9 +188,119 @@ residuals.polr <- residuals.clm
 #' @export
 residuals.vglm <- residuals.clm
 
+#' p_adj_cate
+#'
+#' @param Z A numerical vector that inputs the latent variable for generating probabilities of adjacent
+#' categories regresssion model.
+#'
+#' @keywords internal
+p_adj_cate <- function(Z){
+  k <- ncol(Z)
+  p1_pj <- p1_pj_inv<- Z
+  ZZ <- 0
+  for(j in 1:k){
+    ZZ <- ZZ+Z[,j]
+    p1_pj[,j] <- exp(ZZ)
+    p1_pj_inv[,j] <- 1/p1_pj[,j]
+  }
+  p1 <- 1/(rowSums(p1_pj_inv)+1)
+  pj <- p1_pj
+  for(j in 1:k){
+    pj[,j] <- p1/p1_pj[,j]
+  }
+  cbind(1-rowSums(pj), pj)
+}
+
+
+#' generate_residuals_acat
+#'
+#' @param y A vector inputs the response variable.
+#'
+#' @param X A data.frame inputs the covariates.
+#' @param alpha A vector provides the estimated intercepts of adjacent categories model. If the response
+#' has k levels, there should be k+1 numbers in this alpha argument with the k-1 estimated intercepts.
+#' The lower bound and upper bound are "-Inf" and "Inf".
+#' @param beta A vector provides the estimated coefficients.
+#' @param nsim A number to specify the replication of residuals.
+#'
+#' @keywords internal
+generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
+  # y = y; X = X; alpha = alphas; beta = betas; nsim=1
+  # alpha <- matrix(alpha, nrow=1)
+  # beta <- matrix(beta, nrow=1)
+  n <- length(y)
+  z <- sapply(alpha[2:(length(alpha)-1)], function(a) a + tcrossprod(as.matrix(X), beta))
+  p_acat <- p_adj_cate(z)
+  F_acat <- t(apply(p_acat, 1, cumsum))
+  F_acat <- cbind(0, F_acat)
+  if(min(y)==0){
+    R <- sapply(1:n, function(k) runif(nsim, F_acat[k,y[k]+1], F_acat[k,y[k]+2]))
+  }else{
+    R <- sapply(1:n, function(k) runif(nsim, F_acat[k,y[k]], F_acat[k,y[k]+1]))
+  }
+  R - 1/2
+}
 
 #' @export
-residualsAcat <- residuals.clm
+residualsAcat <- function(object,
+                          type = c("surrogate", "sign", "general", "deviance"),
+                          jitter = c("latent", "uniform"),
+                          jitter.uniform.scale = c("probability", "response"),
+                          nsim = 1L, ...)
+{
+  # object <- fit
+  # type = "surrogate"
+  # jitter = "latent"
+  # jitter.uniform.scale = "probability"
+  # nsim = 1L
+
+  # Match arguments -------------
+  type <- match.arg(type)
+  jitter <- match.arg(jitter)
+  jitter.uniform.scale <- match.arg(jitter.uniform.scale)
+
+  # Switch different type of residuals, need to extract "latent" and "jitter" from "surrogate" -------------
+  if (type == "surrogate") {
+    if (jitter == "uniform") {
+      # Issue warning for jittering surrogate method
+      message("Jittering uniform is an experimental feature, use at your own risk!")
+    }
+    gene_method <- jitter
+  } else { # When type is "sign", "general", or "deviance", extract "method" for generate_residuals()
+    gene_method <- type
+  }
+
+  # Generate surrogate response values -------------
+  coefs <- coef(object)
+  alphas <- matrix(c(-Inf, coefs[1:(ncat(object)-1)], Inf), nrow = 1)
+  betas <- matrix(coefs[-c(1:(ncat(object)-1))], nrow = 1)
+  # message(alphas, "  ", betas)
+  y <- getResponseValues(object)
+
+  # X <- as.matrix(model.frame(object)[,-1])
+  X <- as.matrix(object@x[,-1]) # This just work for the "vglm" adjacent categories model!
+
+  r <- generate_residuals_acat(y = y, X = X, alpha = alphas, beta = betas, nsim=1)
+
+  # Multiple samples -------------
+  if (nsim > 1L) {  # multiple draws
+    draws_id <- matrix(seq(nobs(object)), nrow = nobs(object), ncol = nsim, byrow = F)
+
+    draws <-
+      t(generate_residuals_acat(y = y, X = X, alpha = alphas, beta = betas, nsim = nsim))
+
+    attr(r, "draws") <- draws
+    attr(r, "draws_id") <- draws_id
+  }
+  attr(r, "names") <- NULL
+  attr(r, "arguments") <- c(type, jitter, jitter.uniform.scale)
+
+  # Return residuals
+  class(r) <- c("numeric", "resid")
+
+  return(r)
+}
+
 
 
 ################################################################################
