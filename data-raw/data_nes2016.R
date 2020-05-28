@@ -17,9 +17,14 @@ table(nes2016_raw$IntendVote, nes2016_raw$voteResult)
 nes2016_pre <- nes2016.clean(interview = "pre")
 dim(nes2016_pre)
 summary(nes2016_pre)
-table(nes2016_pre$Prevote.num)
-nes2016 <- nes2016_pre
-save(nes2016, file = "data/nes2016.rda", compress='xz')
+ANES2016 <- nes2016_pre %>% rename(PreVote=IntendVote,
+                                   PreVote.num=Prevote.num,
+                                   WeightforPreVote=WeightforPreElection)
+
+table(ANES2016$PreVote.num)
+table(ANES2016$PreVote)
+summary(ANES2016)
+save(ANES2016, file = "data/ANES2016.rda", compress='xz')
 
 # Post: Save observations without any missing in postvote -----------------------------------------------------
 nes2016_post <- nes2016.clean(interview = "post")

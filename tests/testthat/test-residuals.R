@@ -8,12 +8,12 @@ test_that("residuals work for \"PAsso\" objects", {
   skip_if_not_installed("ordinal")
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
   # Load data
-  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016
+                   data = ANES2016
                    # association = c("partial"),
                    # models = c("probit", "probit"),
                    # method = c("kendall"),
@@ -25,10 +25,10 @@ test_that("residuals work for \"PAsso\" objects", {
   res1 <- residuals(PAsso_1)
 
   # Expectations
-  expect_equal(dim(res1)[1], nrow(nes2016))
+  expect_equal(dim(res1)[1], nrow(ANES2016))
   expect_is(attr(res1, "draws"), "array")
   expect_null(attr(res1, "draws_id"))
-  expect_equal(dim(attr(res1, "draws")), c(nrow(nes2016), 20, 2))
+  expect_equal(dim(attr(res1, "draws")), c(nrow(ANES2016), 20, 2))
 
   expect_equal(attr(res1, "arguments"), c("partial", "kendall", "surrogate", "latent", "probability"))
 
@@ -240,7 +240,7 @@ test_that("residualsAcat work for \"vglm\" objects", {
 
   fitted_temp <- do.call("vglm",
                          list(formula = PID ~ income.num + age + edu.year,
-                              data = quote(nes2016),
+                              data = quote(ANES2016),
                               family = VGAM::acat(reverse = TRUE, parallel = TRUE)))
 
   temp_resids <- residualsAcat(object = fitted_temp,
@@ -252,7 +252,7 @@ test_that("residualsAcat work for \"vglm\" objects", {
   # Expectations
   expect_equal(length(resids_1), nrow(df1))
   expect_equal(length(resids_2), nrow(df1))
-  expect_equal(length(temp_resids), nrow(df1))
+  expect_equal(length(temp_resids), nrow(ANES2016))
 
   expect_null(attr(resids_1, "draws"))
   expect_null(attr(resids_1, "draws_id"))
@@ -260,8 +260,8 @@ test_that("residualsAcat work for \"vglm\" objects", {
   expect_is(attr(resids_2, "draws"), "matrix")
   expect_is(attr(resids_2, "draws_id"), "matrix")
 
-  expect_equal(dim(attr(temp_resids, "draws")), c(nrow(nes2016), 30))
-  expect_equal(dim(attr(temp_resids, "draws_id")), c(nrow(nes2016), 30))
+  expect_equal(dim(attr(temp_resids, "draws")), c(nrow(ANES2016), 30))
+  expect_equal(dim(attr(temp_resids, "draws_id")), c(nrow(ANES2016), 30))
 })
 
 test_that("residuals work for \"vglm\" objects", {

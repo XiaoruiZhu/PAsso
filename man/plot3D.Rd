@@ -38,12 +38,11 @@ function in \code{\link{sure}}. Graphics are designed based on
 \code{\link{PAsso}} and \code{"plotly"}.
 }
 \examples{
-data("nes2016")
-PAsso_3v <- PAsso(responses = c("vote.num", "PID", "selfLR"),
+data("ANES2016")
+PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                  adjustments = c("income.num", "age", "edu.year"),
-                 data = nes2016)
+                 data = ANES2016)
 
-plot_all <- plot3D(PAsso_3v)
-plot_all$plot_1
+plot3D(PAsso_3v, y1="PID", y2="selfLR")
 
 }

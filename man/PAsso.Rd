@@ -126,58 +126,25 @@ matrix for comparison purpose.
 # User-friendly way of using
 ###########################################################
 
-# Import nes2016 data in "PAsso"
-data(nes2016)
+# Import ANES2016 data in "PAsso"
+data(ANES2016)
 
 # User-friendly way of using: Parial association analysis
-PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                 adjustments = c("income.num", "age", "edu.year"),
-                data = nes2016,
+                data = ANES2016,
                 method = c("kendall"))
 
 print(PAsso_1, digits = 4)
-
-# --------------------------------------------
-# The partial correlation coefficient matrix:
-#              Prevote.num  PID
-# Prevote.num  1.0000       0.4483
-# PID                       1.0000
-
 summary(PAsso_adv1, digits = 4)
-
-# --------------------------------------------
-# The partial correlation coefficient matrix:
-#              Prevote.num  PID
-# Prevote.num  1.0000       0.4483
-# PID                       1.0000
-# --------------------------------------------
-# The marginal correlation coefficient matrix:
-#              Prevote.num  PID
-# Prevote.num  1.0000       0.7059
-# PID                       1.0000
-
---------------------------------------------
---------------------------------------------
-# The coefficients of fitted models are:
-#              Prevote.num  PID
-# income.num   0.0005       0.0009*
-# Std. Error   0.0005       0.0004
-# ---
-# age          0.0092***    0.0048***
-# Std. Error   0.0016       0.0013
-# ---
-# edu.year    -0.0798***   -0.0459***
-# Std. Error   0.0117       0.0098
-# ---
-# Signif. codes:  0 â€˜***â€™ 0.001 â€˜**â€™ 0.01 â€˜*â€™ 0.05 â€˜.â€™ 0.1 â€˜ â€™ 1
 
 ###########################################################
 # Advanced way of using
 ###########################################################
 
-fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = AANES2016,
                family = binomial(link = "probit"))
-fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
+fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = AANES2016,
                method="probit", Hess = TRUE)
 
 PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),

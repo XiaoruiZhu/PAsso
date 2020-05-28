@@ -10,19 +10,19 @@ test_that("plot3D works for \"PAsso\" objects", {
   library(copula)
   library(plotly)
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
   # multivariate analysis (5 variables) --------------------------------------------------------------------
-  PAsso_2v <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
                     adjustments = c("income.num", "age", "edu.year"),
-                    data = nes2016, uni.model = "logit",
+                    data = ANES2016, uni.model = "logit",
                     method = c("kendall"),
                     resids.type = "surrogate", jitter = "latent")
 
-  testPlots <- plot3D(PAsso_2v)
+  testPlots <- plot3D(PAsso_2v, y1="PreVote.num", y2="PID")
 
   # Expectations
-  expect_s3_class(testPlots$plot_1, "plotly")
+  expect_s3_class(testPlots, "plotly")
 
 })
 

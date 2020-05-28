@@ -6,11 +6,11 @@ test_that("diagnostic.plot works for \"PAsso\" objects", {
   skip_on_cran()
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
-  PAsso_3v <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+  PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016, uni.model = "probit",
+                   data = ANES2016, uni.model = "probit",
                    method = c("kendall"),
                    resids.type = "surrogate", jitter = "latent")
 
@@ -20,11 +20,11 @@ test_that("diagnostic.plot works for \"PAsso\" objects", {
     diag_p3 <- diagnostic.plot(object = PAsso_3v, output = "covariate")
   )
   # Expectations
-  expect_s3_class(diag_p1[[1]], "ggplot")
-  expect_s3_class(diag_p1[[2]], "ggplot")
-  expect_s3_class(diag_p1[[3]], "ggplot")
-  expect_s3_class(diag_p2[[3]], "ggplot")
-  expect_s3_class(diag_p3[[3]], "ggplot")
+  expect_s3_class(diag_p1, "gtable")
+  expect_s3_class(diag_p1, "gtable")
+  expect_s3_class(diag_p1, "gtable")
+  expect_s3_class(diag_p2, "gtable")
+  expect_s3_class(diag_p3, "gtable")
 
   # expect_s3_class(diag_p2, "ggmatrix")
   # expect_s3_class(diag_p3, "ggmatrix")
@@ -37,16 +37,16 @@ test_that("diagnostic.plot works for \"PAsso\" objects with 5 responses", {
   skip_on_cran()
 
   # multivariate analysis (5 variables) --------------------------------------------------------------------
-  PAsso_5v <- PAsso(responses = c("Prevote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
+  PAsso_5v <- PAsso(responses = c("PreVote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
                     adjustments = c("income.num", "age", "edu.year"),
-                    data = nes2016, uni.model = "logit",
+                    data = ANES2016, uni.model = "logit",
                     method = c("kendall"),
                     resids.type = "surrogate", jitter = "latent")
 
   diag_p1 <- diagnostic.plot(object = PAsso_5v, output = "qq")
 
   # Expectations
-  expect_s3_class(diag_p1[[1]], "ggplot")
+  expect_s3_class(diag_p1, "gtable")
 
 })
 
@@ -96,10 +96,10 @@ test_that("diagnostic.plot work for \"glm\" objects", {
   expect_is(plot_cov, "ggplot")
 
 
-  data("nes2016")
+  data("ANES2016")
 
-  fit1 <- ordinal::clm(formula = as.factor(Prevote.num) ~ income.num + age + edu.year,
-                       data = nes2016, link = "logit")
+  fit1 <- ordinal::clm(formula = as.factor(PreVote.num) ~ income.num + age + edu.year,
+                       data = ANES2016, link = "logit")
 
   # diagnostic.plot
   plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")

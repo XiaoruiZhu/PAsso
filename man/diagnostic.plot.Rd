@@ -165,8 +165,8 @@ diagnostic.plot(object, ...)
 \item{object}{The object in the support classes (This function is mainly designed
 for \code{\link[PAsso]{PAsso}}).}
 
-\item{...}{This function is based on a modified version of \code{"autoplot"} function in
-\code{"sure"}. Additional optional arguments can be passed onto for drawing various plots.}
+\item{...}{Additional optional arguments can be passed onto \code{\link[ggplot2]{ggplot}} for drawing
+various plots.}
 
 \item{output}{A character string specifying what type of output to plot. Default is
 \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
@@ -194,11 +194,11 @@ is not supported.
 }
 \examples{
 # Import data for partial association analysis
-data("nes2016")
+data("ANES2016")
 
 PAsso_3v <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
                   adjustments = c("income.num", "age", "edu.year"),
-                  data = nes2016, uni.model = "probit",
+                  data = ANES2016, uni.model = "probit",
                   method = c("kendall"),
                   resids.type = "surrogate", jitter = "latent")
 
@@ -209,7 +209,7 @@ diag_p3 <- diagnostic.plot(object = PAsso_3v, output = "covariate")
 # Simply diagnose a model
 # Fit cumulative link models
 
-fit1 <- ordinal::clm(Prevote.num ~ income.num + age + edu.year, data = nes2016, link = "logit")
+fit1 <- ordinal::clm(Prevote.num ~ income.num + age + edu.year, data = ANES2016, link = "logit")
 
 # diagnostic.plot
 plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")

@@ -280,7 +280,7 @@ to the factor levels.}
 \item{resp_name}{Character string to specifiy the response name that will be
 displayed in the figure.}
 
-\item{...}{Additional optional arguments to be passed onto \code{\link[PAsso]{residuals}}.}
+\item{...}{Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.}
 }
 \value{
 A \code{"ggplot"} object.

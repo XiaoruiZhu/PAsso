@@ -142,58 +142,25 @@
 #' # User-friendly way of using
 #' ###########################################################
 #'
-#' # Import nes2016 data in "PAsso"
-#' data(nes2016)
+#' # Import ANES2016 data in "PAsso"
+#' data(ANES2016)
 #'
 #' # User-friendly way of using: Parial association analysis
-#' PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+#' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
 #'                 adjustments = c("income.num", "age", "edu.year"),
-#'                 data = nes2016,
+#'                 data = ANES2016,
 #'                 method = c("kendall"))
 #'
 #' print(PAsso_1, digits = 4)
-#'
-#' # --------------------------------------------
-#' # The partial correlation coefficient matrix:
-#' #              Prevote.num  PID
-#' # Prevote.num  1.0000       0.4483
-#' # PID                       1.0000
-#'
 #' summary(PAsso_adv1, digits = 4)
-#'
-#' # --------------------------------------------
-#' # The partial correlation coefficient matrix:
-#' #              Prevote.num  PID
-#' # Prevote.num  1.0000       0.4483
-#' # PID                       1.0000
-#' # --------------------------------------------
-#' # The marginal correlation coefficient matrix:
-#' #              Prevote.num  PID
-#' # Prevote.num  1.0000       0.7059
-#' # PID                       1.0000
-#'
-#' --------------------------------------------
-#' --------------------------------------------
-#' # The coefficients of fitted models are:
-#' #              Prevote.num  PID
-#' # income.num   0.0005       0.0009*
-#' # Std. Error   0.0005       0.0004
-#' # ---
-#' # age          0.0092***    0.0048***
-#' # Std. Error   0.0016       0.0013
-#' # ---
-#' # edu.year    -0.0798***   -0.0459***
-#' # Std. Error   0.0117       0.0098
-#' # ---
-#' # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #'
 #' ###########################################################
 #' # Advanced way of using
 #' ###########################################################
 #'
-#' fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+#' fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = AANES2016,
 #'                family = binomial(link = "probit"))
-#' fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
+#' fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = AANES2016,
 #'                method="probit", Hess = TRUE)
 #'
 #' PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
@@ -224,11 +191,11 @@ PAsso <- function(responses, adjustments, data,
   # method = arguments[2]
   # resids.type = arguments[3]
 
-  # responses = c("Prevote.num", "PID")
+  # responses = c("PreVote.num", "PID")
   # models = c("probit", "acat")
   # adjustments <- c("income.num", "age", "edu.year")
   # association = "partial"; method = "kendall";
-  # n_draws = 30; data = nes2016;
+  # n_draws = 30; data = ANES2016;
   # resids.type = "surrogate"; jitter = "latent"
   # jitter.uniform.scale = "response"
   # models = c("probit", "probit")
@@ -495,7 +462,7 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #' @title Summary of partial association analysis
 #' @description This function summarizes the partial association analysis by
 #' providing partial association matrix, marginal association matrix, and a
-#' matrix summarizing the model's coefficients. The partial correlation coefficient
+#' matrix of the models' coefficients. The partial correlation coefficient
 #' matrix displays the partial association between each pair of responses
 #' after adjusting the covariates. While the marginal coefficient matrix displays association
 #' before the adjustment.

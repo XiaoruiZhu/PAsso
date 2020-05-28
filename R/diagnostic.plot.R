@@ -28,11 +28,11 @@
 #'
 #' @examples
 #' # Import data for partial association analysis
-#' data("nes2016")
+#' data("ANES2016")
 #'
 #' PAsso_3v <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
 #'                   adjustments = c("income.num", "age", "edu.year"),
-#'                   data = nes2016, uni.model = "probit",
+#'                   data = ANES2016, uni.model = "probit",
 #'                   method = c("kendall"),
 #'                   resids.type = "surrogate", jitter = "latent")
 #'
@@ -43,7 +43,7 @@
 #' # Simply diagnose a model
 #' # Fit cumulative link models
 #'
-#' fit1 <- ordinal::clm(Prevote.num ~ income.num + age + edu.year, data = nes2016, link = "logit")
+#' fit1 <- ordinal::clm(Prevote.num ~ income.num + age + edu.year, data = ANES2016, link = "logit")
 #'
 #' # diagnostic.plot
 #' plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")
@@ -89,7 +89,8 @@ diagnostic.plot.resid <- function(
 #' models will be diagnosed.
 #' @param x_name A string refers to the covariate name that needs to be diagnosed. If NULL, all adjustments
 #' will be diagnosed.
-#' @param ...
+#' @param ... Additional optional arguments can be passed onto \code{\link[ggplot2]{ggplot}} for drawing
+#' various plots.
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot PAsso
 #' @export

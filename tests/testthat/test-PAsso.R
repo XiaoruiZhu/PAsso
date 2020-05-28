@@ -9,13 +9,13 @@ test_that("Advanced PAsso for two responses", {
   skip_if_not_installed("tidyverse")
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
   # "PAsso" advanced using of the function: The First way (Advanced), input a few models directly ------------------------------
   # Test "PAsso" function: Partial Association by surrogate residuals regression models
-  fit.vote<- glm(Prevote.num ~ income.num+ age + edu.year, data = nes2016,
+  fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
                  family = binomial(link = "probit"))
-  fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = nes2016,
+  fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = ANES2016,
                  method="probit", Hess = TRUE)
 
   PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
@@ -41,9 +41,9 @@ test_that("Simple PAsso() for two responses",{
   skip_if_not_installed("MASS")
   skip_if_not_installed("tidyverse")
 
-  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016
+                   data = ANES2016
                    # association = c("partial"),
                    # models = c("probit", "probit"),
                    # method = c("kendall"),
@@ -61,24 +61,24 @@ test_that("Simple PAsso() for two responses",{
   expect_equal(dim(PAsso_1$corr)[1], 2)
 
   # Expectations
-  expect_error(PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
-                     data = nes2016, uni.model = "probit",
+                     data = ANES2016, uni.model = "probit",
                      method = c("kendall"),
                      resids.type = "surrogate", jitter = "uniform"),
                "only supported for logit-type models")
 
-  expect_error(PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
-                     data = nes2016, uni.model = "probit",
+                     data = ANES2016, uni.model = "probit",
                      method = c("kendall"),
                      resids.type = "surrogate", jitter = "uniform",
                      jitter.uniform.scale = "response"),
                NA)
 
-  expect_error(PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
-                     data = nes2016, uni.model = "logit",
+                     data = ANES2016, uni.model = "logit",
                      method = c("kendall"),
                      resids.type = "surrogate", jitter = "uniform",
                      jitter.uniform.scale = "prob"),
@@ -91,9 +91,9 @@ test_that("Check links: Simple PAsso() for two responses",{
   skip_if_not_installed("tidyverse")
 
   # logit models!
-  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016, uni.model = "logit")
+                   data = ANES2016, uni.model = "logit")
   links <- attr(PAsso_1, "models")
 
   # Expectations
@@ -102,9 +102,9 @@ test_that("Check links: Simple PAsso() for two responses",{
   expect_equal(PAsso_1$fitted.models[[2]]$method, "logistic")
 
   # probit models!
-  PAsso_1_probit <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1_probit <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016, uni.model = "probit")
+                   data = ANES2016, uni.model = "probit")
   links <- attr(PAsso_1_probit, "models")
 
   # Expectations
@@ -113,9 +113,9 @@ test_that("Check links: Simple PAsso() for two responses",{
   expect_equal(PAsso_1_probit$fitted.models[[2]]$method, "probit")
 
   # Complicated combination: logit + probit
-  PAsso_1_com <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1_com <- PAsso(responses = c("PreVote.num", "PID"),
                        adjustments = c("income.num", "age", "edu.year"),
-                       data = nes2016, uni.model = "probit",
+                       data = ANES2016, uni.model = "probit",
                        models = c("logit", "probit"))
 
   links <- attr(PAsso_1_com, "models")
@@ -132,14 +132,14 @@ test_that("Check acat: Simple PAsso() for two responses",{
   skip_if_not_installed("tidyverse")
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
   library(PAsso)
   library(VGAM)
   # acat models!
 
-  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016,
+                   data = ANES2016,
                    models = c("probit", "acat"))
   links <- attr(PAsso_1, "models")
   # links
@@ -149,9 +149,9 @@ test_that("Check acat: Simple PAsso() for two responses",{
   expect_equal(PAsso_1$fitted.models[[2]]@family@vfamily[1], "acat")
 
   # probit models!
-  PAsso_1_probit <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1_probit <- PAsso(responses = c("PreVote.num", "PID"),
                           adjustments = c("income.num", "age", "edu.year"),
-                          data = nes2016, uni.model = "probit")
+                          data = ANES2016, uni.model = "probit")
   links <- attr(PAsso_1_probit, "models")
 
   # Expectations
@@ -160,9 +160,9 @@ test_that("Check acat: Simple PAsso() for two responses",{
   expect_equal(PAsso_1_probit$fitted.models[[2]]$method, "probit")
 
   # Complicated combination: logit + probit
-  PAsso_1_com <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1_com <- PAsso(responses = c("PreVote.num", "PID"),
                        adjustments = c("income.num", "age", "edu.year"),
-                       data = nes2016, uni.model = "probit",
+                       data = ANES2016, uni.model = "probit",
                        models = c("logit", "probit"))
 
   links <- attr(PAsso_1_com, "models")
@@ -173,9 +173,9 @@ test_that("Check acat: Simple PAsso() for two responses",{
   expect_equal(PAsso_1_com$fitted.models[[2]]$method, "probit")
 
   # Complicated combination: acat + acat + logit
-  PAsso_2_com <- PAsso(responses = c("PID", "selfLR", "Prevote.num"),
+  PAsso_2_com <- PAsso(responses = c("PID", "selfLR", "PreVote.num"),
                        adjustments = c("income.num", "age", "edu.year"),
-                       data = nes2016, uni.model = "probit",
+                       data = ANES2016, uni.model = "probit",
                        models = c("acat", "acat", "logit"))
 
   links <- attr(PAsso_2_com, "models")
@@ -187,9 +187,9 @@ test_that("Check acat: Simple PAsso() for two responses",{
   expect_equal(PAsso_2_com$fitted.models[[3]]$family$link, "logit")
 
   # Complicated combination: acat + acat + acat
-  PAsso_3_com <- PAsso(responses = c("PID", "selfLR", "Prevote.num"),
+  PAsso_3_com <- PAsso(responses = c("PID", "selfLR", "PreVote.num"),
                        adjustments = c("income.num", "age", "edu.year"),
-                       data = nes2016, uni.model = "acat")
+                       data = ANES2016, uni.model = "acat")
   # summary(PAsso_3_com)
 
   links <- attr(PAsso_3_com, "models")
@@ -206,14 +206,14 @@ test_that("Check continuous respones: Simple PAsso() for two responses",{
   skip_if_not_installed("tidyverse")
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
   library(PAsso)
   library(VGAM)
   # acat models!
 
-  PAsso_1 <- PAsso(responses = c("Prevote.num", "PID"),
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016,
+                   data = ANES2016,
                    models = c("probit", "acat"))
   links <- attr(PAsso_1, "models")
   # links

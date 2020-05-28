@@ -82,7 +82,7 @@
 #' @param resp_name Character string to specifiy the response name that will be
 #' displayed in the figure.
 #'
-#' @param ... Additional optional arguments to be passed onto \code{\link[PAsso]{residuals}}.
+#' @param ... Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.
 #'
 #' @return A \code{"ggplot"} object.
 #'
@@ -153,11 +153,11 @@ autoplot.resid <- function(
   if ("covariate"  %in% output) {
     if (is.null(x) & is.null(fit)) {
       message("No covariate to plot. Please supply a vector of covariate values",
-           " via the `x` argument. Or feed the `fit` argument with the fitted model")
+           " via the `x` argument. Or feed the `fit` argument with the fitted model.")
     } else if (is.null(x)) {
       # Fix this bug for more user-friendly design.
       x <- model.frame(fit)[,2]
-      message("If no `x` feed, extract first covariate from `fit`")
+      message("No covariate `x` is specified, extract the first covariate from `fit`.")
     }
 
     if (is.null(xlab)) {
@@ -208,7 +208,8 @@ autoplot.resid <- function(
                  size = qqpoint.size) +
       geom_abline(slope = slope, intercept = int, color = qqline.color,
                   linetype = qqline.linetype, size = qqline.size) +
-      labs(x = "Theoretical quantile", y = "Sample quantile", title = resp_name, ...) # Add availability for title
+      labs(x = "Theoretical quantile", y = "Sample quantile",
+           title = paste("Residuals of the model for ", resp_name , sep = ""), ...) # Add availability for title
   } else {
     NULL
   }
@@ -258,21 +259,21 @@ autoplot.resid <- function(
   if (length(output) == 1) {  # return a single plot
     if (output == "qq") {
       p1 +
-        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
     } else if (output == "fitted") {
       p2 +
-        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
     } else {
       p3 +
-        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+        ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
     }
   } else {  # return multiple plots
     p1 <- p1 +
-      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
     p2 <- p2 +
-      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
     p3 <- p3 +
-      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.5)))
+      ggplot2::theme(plot.title = element_text(hjust = 0.5, size = rel(1.0)))
 
     plots <- list(p1, p2, p3)
     grid.arrange(grobs = plots[!unlist(lapply(plots, FUN = is.null))],

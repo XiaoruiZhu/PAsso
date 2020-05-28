@@ -6,12 +6,12 @@ test_that("plot works for \"PAsso\" objects", {
   skip_on_cran()
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
   # multivariate analysis (5 variables) --------------------------------------------------------------------
-  PAsso_5v <- PAsso(responses = c("Prevote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
+  PAsso_5v <- PAsso(responses = c("PreVote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
                     adjustments = c("income.num", "age", "edu.year"),
-                    data = nes2016, uni.model = "logit",
+                    data = ANES2016, uni.model = "logit",
                     method = c("kendall"),
                     resids.type = "surrogate", jitter = "latent")
 

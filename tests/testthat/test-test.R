@@ -10,16 +10,16 @@ test_that("test() for 'PAsso' object without parallel", {
   skip_if_not_installed("progress")
 
   # Load data
-  data("nes2016")
+  data("ANES2016")
 
-  PAsso_2 <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+  PAsso_2 <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                    adjustments = c("income.num", "age", "edu.year"),
-                   data = nes2016, uni.model = "probit",
+                   data = ANES2016, uni.model = "probit",
                    method = c("kendall"),
                    resids.type = "surrogate", jitter = "latent")
 
   # test.PAsso function: Conduct inference fo object of "PAsso" class ----------------------------
-  system.time(PAsso_2_test <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
+  system.time(PAsso_2_test <- test(object = PAsso_2, bootstrap_rep=100, H0=0, parallel=F))
 
   # Expectations
   expect_s3_class(PAsso_2_test, "PAsso.test")

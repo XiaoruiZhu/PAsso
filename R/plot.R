@@ -21,18 +21,18 @@
 #' @export
 #'
 #' @examples
-#' data(nes2016)
+#' data(ANES2016)
 #'
-#' summary(nes2016)
+#' summary(ANES2016)
 #'
-#' PAsso_2v <- PAsso(responses = c("Prevote.num", "PID"),
+#' PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
 #'                  adjustments = c("income.num", "age", "edu.year"),
-#'                  data = nes2016)
+#'                  data = ANES2016)
 #'
 #' plot(PAsso_2v)
 #'
 plot.PAsso <- function(
-  x, color="blue", ...
+  x, color="#444444", ...
 ) {
   resid_Mat <- as.data.frame(x$rep_SRs[,1,])
   cor_method <- attr(x, "arguments")[2]
@@ -41,7 +41,8 @@ plot.PAsso <- function(
   } else {
     ggpairs(resid_Mat,
             upper = list(
-              continuous = wrap("smooth_loess", colour=color, ...)),
+              continuous = wrap("smooth_loess", colour=color,
+                                shape = 19, size = 2, alpha = 0.5, ...)),
             # diag = list(continuous = wrap("barDiag", colour = color)),
             # lower = list(continuous = GGally::wrap("cor", method="kendall")),
             lower = list(continuous = wrap("cor", method = cor_method, ...)),
