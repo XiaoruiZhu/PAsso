@@ -8,7 +8,7 @@ p_adj_cate(Z)
 }
 \arguments{
 \item{Z}{A numerical vector that inputs the latent variable for generating probabilities of adjacent
-categories regresssion model.}
+categories regression model.}
 }
 \description{
 p_adj_cate

@@ -11,7 +11,7 @@
 #' surrogate response values. Current options are \code{"latent"} and
 #' \code{"uniform"}. Default is \code{"latent"}.
 #'
-#' @param jitter.uniform.scale Character string specifyint the scale on which to perform
+#' @param jitter.uniform.scale Character string specifying the scale on which to perform
 #' the jittering whenever \code{method = "uniform"}. Current options are
 #' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
 #'

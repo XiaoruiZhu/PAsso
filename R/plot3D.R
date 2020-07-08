@@ -77,7 +77,7 @@ plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles) {
 #'
 #' @param y1 A string to specify the first response for the 3D plot.
 #' @param y2 A string to specify the second response for the 3D plot. If either one of the
-#' y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.
+#' y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responses.
 #' @param ... Additional optional arguments.
 #'
 #' @rdname plot3D

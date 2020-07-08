@@ -33,7 +33,7 @@
 #'   \item{\code{uniform}}{jittering uniform approach.}
 #' }
 #'
-#' @param jitter.uniform.scale A character string specifyint the scale on which to perform
+#' @param jitter.uniform.scale A character string specifying the scale on which to perform
 #' the jittering whenever \code{jitter = "uniform"}. Current options are
 #' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
 #'
@@ -191,7 +191,7 @@ residuals.vglm <- residuals.clm
 #' p_adj_cate
 #'
 #' @param Z A numerical vector that inputs the latent variable for generating probabilities of adjacent
-#' categories regresssion model.
+#' categories regression model.
 #'
 #' @keywords internal
 p_adj_cate <- function(Z){
@@ -260,7 +260,7 @@ generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
 #'   \item{\code{latent}}{latent approach;}
 #'   \item{\code{uniform}}{jittering uniform approach.}
 #' }
-#' @param jitter.uniform.scale A character string specifyint the scale on which to perform
+#' @param jitter.uniform.scale A character string specifying the scale on which to perform
 #' the jittering whenever \code{jitter = "uniform"}. Current options are
 #' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
 #' @param nsim An integer specifying the number of replicates to use.

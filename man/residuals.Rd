@@ -88,7 +88,7 @@ surrogate response values. Current options are \code{"latent"} and
   \item{\code{uniform}}{jittering uniform approach.}
 }}
 
-\item{jitter.uniform.scale}{A character string specifyint the scale on which to perform
+\item{jitter.uniform.scale}{A character string specifying the scale on which to perform
 the jittering whenever \code{jitter = "uniform"}. Current options are
 \code{"response"} and \code{"probability"}. Default is \code{"response"}.}
 

@@ -254,7 +254,7 @@ diagnostic.plot.PAsso <- function(
 #' \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 #' to the factor levels.
 #'
-#' @param resp_name Character string to specifiy the response name that will be
+#' @param resp_name Character string to specify the response name that will be
 #' displayed in the figure.
 #'
 #' @param ... Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.

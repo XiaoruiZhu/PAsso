@@ -146,7 +146,7 @@ the boxplots for residual-by-covariate plots when \code{x} is of class
 \code{"factor"}. Default is \code{NULL} which colors the boxplots according
 to the factor levels.}
 
-\item{resp_name}{Character string to specifiy the response name that will be
+\item{resp_name}{Character string to specify the response name that will be
 displayed in the figure.}
 }
 \value{

@@ -29,7 +29,7 @@
 #'
 #' @param models A string vector contains default link functions of fitting models with
 #' respect to each response variable. If \code{"models"} is missing or has any one of the model
-#' unspecified, \code{"uni.model"} is used to specifiy same models for all responses automaticlly.
+#' unspecified, \code{"uni.model"} is used to specify same models for all responses automatically.
 #' But, this argument has higher priority than the \code{"uni.model"} as long as the length of
 #' \code{"models"} equals to the number of \code{"responses"}.
 #'
@@ -69,11 +69,11 @@
 #' \code{\link[MASS]{polr}}, \code{\link[VGAM]{vglm}}.
 #'
 #' @param n_draws A number to specify draws of surrogate residuls
-#' such that the partial correlation coefficients are calculated repeatly. The final
-#' correlation coefficents are the average of all partial correlation coefficients.
+#' such that the partial correlation coefficients are calculated repeatedly. The final
+#' correlation coefficients are the average of all partial correlation coefficients.
 #' It is the \code{"nsim"} argument in \code{"residuals()"} function.
 #' @param association An default argument to specify the partial association. Leave this
-#' further development of package such that other association analses can be embedded.
+#' further development of package such that other association analyses can be embedded.
 #' @param ... Additional optional arguments.
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following

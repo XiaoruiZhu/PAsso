@@ -9,7 +9,7 @@
 #'
 #' The Pre-election preference is recorded as "PreVote" and the "PreVote.num"
 #' is the numeric of it. Observations with missing values, or "No thought"
-#' responses have been removed. Responsdents expressing a voting preference
+#' responses have been removed. Respondents expressing a voting preference
 #' other than Clinton or Trump have been removed.
 #'
 #' @docType data
@@ -90,7 +90,7 @@
 #'   \item \code{PID} Party identification: a numeric variable with value from 1 to 7
 #'   representing strong Democrat, \code{strDem} < weak Democrat, \code{weakDem} <
 #'   independent Democrat, \code{indDem} < independent independent \code{indind} <
-#'   indepedent Republican, \code{indRep} < weak Republican, \code{weakRep} <
+#'   independent Republican, \code{indRep} < weak Republican, \code{weakRep} <
 #'   strong Republican, \code{strRep}.
 
 #'   \item \code{selfLR} The respondent' self-placement about own left-right in 7 ordinal levels

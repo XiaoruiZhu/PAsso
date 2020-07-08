@@ -18,7 +18,7 @@ plot3D(object, y1, y2, ...)
 \item{y1}{A string to specify the first response for the 3D plot.}
 
 \item{y2}{A string to specify the second response for the 3D plot. If either one of the
-y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.}
+y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responses.}
 
 \item{...}{Additional optional arguments.}
 }
