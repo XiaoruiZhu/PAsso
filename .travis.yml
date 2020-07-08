@@ -1,5 +1,6 @@
 language: r
-sudo: false
+sudo: required
+warnings_are_errors: true
 cache: packages
 dist: trusty
 
@@ -7,3 +8,11 @@ r:
   - oldrel
   - release
   - devel
+
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+    - libgsl-dev
+    - libgdal-dev
+    - libproj-dev
