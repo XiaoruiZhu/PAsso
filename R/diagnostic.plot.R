@@ -9,7 +9,7 @@
 #' is not supported.
 #'
 #' @param object The object in the support classes (This function is mainly designed
-#' for \code{\link[PAsso]{PAsso}}).
+#' for \code{PAsso}).
 #'
 #' @param output A character string specifying what type of output to plot. Default is
 #' \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
@@ -29,8 +29,9 @@
 #' @examples
 #' # Import data for partial association analysis
 #' data("ANES2016")
+#' ANES2016$PreVote.num <- as.factor(ANES2016$PreVote.num)
 #'
-#' PAsso_3v <- PAsso(responses = c("Prevote.num", "PID", "selfLR"),
+#' PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
 #'                   adjustments = c("income.num", "age", "edu.year"),
 #'                   data = ANES2016, uni.model = "probit",
 #'                   method = c("kendall"),
@@ -43,7 +44,7 @@
 #' # Simply diagnose a model
 #' # Fit cumulative link models
 #'
-#' fit1 <- ordinal::clm(Prevote.num ~ income.num + age + edu.year, data = ANES2016, link = "logit")
+#' fit1 <- ordinal::clm(PreVote.num ~ income.num + age + edu.year, data = ANES2016, link = "logit")
 #'
 #' # diagnostic.plot
 #' plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")
@@ -79,7 +80,7 @@ diagnostic.plot.resid <- function(
 
 
 #' @param object The object in the support classes (This function is mainly designed
-#' for \code{\link[PAsso]{PAsso}}).
+#' for \code{PAsso}).
 #'
 #' @param output A character string specifying what type of output to plot. Default is
 #' \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.

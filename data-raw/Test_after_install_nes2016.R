@@ -5,8 +5,8 @@ library(MASS)
 
 library(PAsso)
 # import data -------------------------------------------------------------
-data("nes2016")
-summary(nes2016)
+data("ANES2016")
+summary(ANES2016)
 
 # Partial association between "Prevote.num" and "PID" after adjusting ----------------------------
 # "income.num", "age", "edu.year"

@@ -65,7 +65,7 @@ Current options are \code{"latent"} and \code{"uniform"}. Default is \code{"late
 }}
 
 \item{jitter.uniform.scale}{A character string specifying the scale on which to perform
-the jittering whenever \code{jitter = "uniform"}. More details: \code{\link[Passo]{residuals}}.}
+the jittering whenever \code{jitter = "uniform"}. More details: \code{PAsso::residuals}.}
 
 \item{fitted.models}{A list contains all the models (S3 objects) you want to
 assess for the partial association between ordinal responses after adjusting
@@ -79,6 +79,9 @@ list can be an object of class \code{\link[ordinal]{clm}},
 such that the partial correlation coefficients are calculated repeatly. The final
 correlation coefficents are the average of all partial correlation coefficients.
 It is the \code{"nsim"} argument in \code{"residuals()"} function.}
+
+\item{association}{An default argument to specify the partial association. Leave this
+further development of package such that other association analses can be embedded.}
 
 \item{...}{Additional optional arguments.}
 }
@@ -125,6 +128,7 @@ matrix for comparison purpose.
 ###########################################################
 # User-friendly way of using
 ###########################################################
+library(MASS)
 
 # Import ANES2016 data in "PAsso"
 data(ANES2016)
@@ -136,15 +140,15 @@ PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                 method = c("kendall"))
 
 print(PAsso_1, digits = 4)
-summary(PAsso_adv1, digits = 4)
+summary(PAsso_1, digits = 4)
 
 ###########################################################
 # Advanced way of using
 ###########################################################
 
-fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = AANES2016,
+fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
                family = binomial(link = "probit"))
-fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = AANES2016,
+fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = ANES2016,
                method="probit", Hess = TRUE)
 
 PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),

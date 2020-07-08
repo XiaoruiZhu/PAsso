@@ -10,6 +10,13 @@
 
 \method{print}{PAsso.test}(x, digits = max(3L, getOption("digits") - 3L), ...)
 }
+\arguments{
+\item{x}{A PAsso object for printing out results.}
+
+\item{digits}{A default number to specify decimal digit values.}
+
+\item{...}{Additional optional arguments.}
+}
 \description{
 Print partial association matrix
 }

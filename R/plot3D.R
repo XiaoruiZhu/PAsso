@@ -5,15 +5,15 @@
 #' copula trained from the surrogate residuals of a pair of responses.
 #'
 #' @param object The input object should be a "PAsso" class that is generated
-#' by "Passo" or "test".
+#' by "PAsso" or "test".
 #' @param y1 A string to specify the first response for the 3D plot.
 #' @param y2 A string to specify the second response for the 3D plot. If either one of the
 #' y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.
-#' @param ...
+#' @param ... Additional optional arguments.
 #'
 #' @details All the plots are based on surrogate residuals generated from \code{"resides"}
-#' function in \code{\link{sure}}. Graphics are designed based on
-#' \code{\link{PAsso}} and \code{"plotly"}.
+#' function in \code{sure}. Graphics are designed based on
+#' PAsso and \code{"plotly"}.
 #'
 #' @return If response y1 or y2 is not specified, a list of \code{"plotly"} objects includes
 #' all pairs of responses will be returned (with name "response 1 v.s. response 2" etc.). If
@@ -78,7 +78,7 @@ plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles) {
 #' @param y1 A string to specify the first response for the 3D plot.
 #' @param y2 A string to specify the second response for the 3D plot. If either one of the
 #' y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.
-#' @param ...
+#' @param ... Additional optional arguments.
 #'
 #' @rdname plot3D
 #' @method plot3D PAsso

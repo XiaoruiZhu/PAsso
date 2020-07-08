@@ -7,6 +7,14 @@
 \usage{
 \method{summary}{PAsso}(object, digits = max(3L, getOption("digits") - 2L), ...)
 }
+\arguments{
+\item{object}{A PAsso object to draw the summarized results, which includes partial association
+matrix and a matrix of the models' coefficients.}
+
+\item{digits}{A default number to specify decimal digit values.}
+
+\item{...}{Additional optional arguments.}
+}
 \description{
 This function summarizes the partial association analysis by
 providing partial association matrix, marginal association matrix, and a

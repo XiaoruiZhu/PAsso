@@ -107,7 +107,7 @@ surrogate <- function(object, method = c("latent", "uniform"),
       boot_id[, i] <- sample(nobs(object), replace = TRUE)
       boot_reps[, i] <-
         generate_surrogate(object, method = method, jitter.uniform.scale = jitter.uniform.scale,
-                           boot_id = boot_id[, i, drop = TRUE])
+                           draws_id = boot_id[, i, drop = TRUE])
     }
     attr(s, "boot_reps") <- boot_reps
     attr(s, "boot_id") <- boot_id

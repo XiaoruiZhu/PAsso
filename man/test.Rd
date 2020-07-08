@@ -30,7 +30,7 @@ PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
 
 summary(PAsso_2v, digits=4)
 
-PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep=20, H0=0, parallel=FALSE))
+PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep=20, H0=0, parallel=FALSE)
 PAsso_2v_test
 
 }

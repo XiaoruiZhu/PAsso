@@ -69,7 +69,7 @@
 \method{residuals}{PAsso}(object, draw_id = 1, ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[PAsso]{PAsso}}.}
+\item{object}{An object of class \code{PAsso}.}
 
 \item{type}{The type of residuals which should be returned. The alternatives
 are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviated.
@@ -114,7 +114,7 @@ then the result will contain the attributes:
 
 A matrix of class \code{c("matrix", "resids")} containing
 the simulated surrogate residuals used for the partial association
-analysis in \code{Passo}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
+analysis in \code{PAsso}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
 then the result will contain the attributes:
 \describe{
   \item{\code{draws}}{An array contains all draws of residuals.}

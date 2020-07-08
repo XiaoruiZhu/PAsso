@@ -86,7 +86,8 @@
 #'
 #' @return A \code{"ggplot"} object.
 #'
-#' @importFrom ggplot2 autoplot
+#' @importFrom ggplot2 autoplot margin element_text rel
+#'
 #' @name autoplot
 #' @method autoplot resid
 #' @export

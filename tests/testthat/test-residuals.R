@@ -211,7 +211,7 @@ test_that("residualsAcat work for \"vglm\" objects", {
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
-  library(PAsso)
+  # library(PAsso)
   # Load data
   data(df1)
 
@@ -265,29 +265,40 @@ test_that("residualsAcat work for \"vglm\" objects", {
 })
 
 test_that("residuals work for \"vglm\" objects", {
+  data(df1)
 
-  # # Compute residuals
-  # res1_1 <- residuals(fit)
-  # res1_2 <- residuals(fit, type = "surrogate", jitter = "latent",
-  #                     jitter.uniform.scale = "probability")
-  #
-  # res2_1 <- residuals(fit2)
-  # res2_2 <- residuals(fit2, nsim=10)
-  # # summary(res2_1)
-  #
-  # # Expectations
-  # expect_equal(length(res1_1), nrow(df1))
-  # expect_equal(length(res1_1), nrow(df1))
-  # expect_equal(length(res2_1), nrow(df1))
-  # expect_equal(length(res2_2), nrow(df1))
-  # expect_null(attr(res1_1, "draws"))
-  # expect_null(attr(res1_1, "draws_id"))
-  # expect_null(attr(res1_2, "draws"))
-  # expect_null(attr(res1_2, "draws_id"))
-  # expect_null(attr(res2_1, "draws"))
-  # expect_is(attr(res2_2, "draws"), "matrix")
-  # expect_equal(dim(attr(res2_2, "draws")), c(nrow(df1), 10))
-  # expect_equal(dim(attr(res2_2, "draws_id")), c(nrow(df1), 10))
+  # Fit cumulative link model
+  suppressWarnings(
+    fit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                      family = VGAM::cumulative(link = "logit",
+                                                parallel = TRUE))
+  )
+  # Compute residuals
+  res1_1 <- residuals(fit)
+  res1_2 <- residuals(fit, type = "surrogate", jitter = "latent",
+                      jitter.uniform.scale = "probability")
+
+  suppressWarnings(
+    fit2 <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
+                       family=acat(reverse=TRUE, parallel=TRUE))
+  )
+  res2_1 <- residuals(fit2)
+  res2_2 <- residuals(fit2, nsim=10)
+  # summary(res2_1)
+
+  # Expectations
+  expect_equal(length(res1_1), nrow(df1))
+  expect_equal(length(res1_1), nrow(df1))
+  expect_equal(length(res2_1), nrow(df1))
+  expect_equal(length(res2_2), nrow(df1))
+  expect_null(attr(res1_1, "draws"))
+  expect_null(attr(res1_1, "draws_id"))
+  expect_null(attr(res1_2, "draws"))
+  expect_null(attr(res1_2, "draws_id"))
+  expect_null(attr(res2_1, "draws"))
+  expect_is(attr(res2_2, "draws"), "matrix")
+  expect_equal(dim(attr(res2_2, "draws")), c(nrow(df1), 10))
+  expect_equal(dim(attr(res2_2, "draws_id")), c(nrow(df1), 10))
 
 })
 

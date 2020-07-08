@@ -241,6 +241,32 @@ generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
   R - 1/2
 }
 
+#' This is a function to deal with the vglm object in S4.
+#'
+#' @param object An object of class \code{\link[VGAM]{vglm}}.
+#'
+#' @param type The type of residuals which should be returned. The alternatives
+#' are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviated.
+#' \describe{
+#'   \item{\code{surrogate}}{surrogate residuals (Liu and Zhang, 2017);}
+#'   \item{\code{sign}}{sign-based residuals;}
+#'   \item{\code{general}}{generalized residuals (Franses and Paap, 2001);}
+#'   \item{\code{deviance}}{deviance residuals (-2*loglik).}
+#' }
+#' @param jitter A character string specifying which method to use to generate the
+#' surrogate response values. Current options are \code{"latent"} and
+#' \code{"uniform"}. Default is \code{"latent"}.
+#' \describe{
+#'   \item{\code{latent}}{latent approach;}
+#'   \item{\code{uniform}}{jittering uniform approach.}
+#' }
+#' @param jitter.uniform.scale A character string specifyint the scale on which to perform
+#' the jittering whenever \code{jitter = "uniform"}. Current options are
+#' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
+#' @param nsim An integer specifying the number of replicates to use.
+#' Default is \code{1L} meaning one simulation only of residuals.
+#' @param ... Additional optional arguments.
+#'
 #' @export
 residualsAcat <- function(object,
                           type = c("surrogate", "sign", "general", "deviance"),
@@ -355,7 +381,7 @@ residuals.glm <- function (
 
 #' Extract Residuals from a Partial Association Analysis
 #'
-#' @param object An object of class \code{\link[PAsso]{PAsso}}.
+#' @param object An object of class \code{PAsso}.
 #'
 #' @param draw_id A number refers to the i-th draw of residuals.
 #'
@@ -363,7 +389,7 @@ residuals.glm <- function (
 #'
 #' @return A matrix of class \code{c("matrix", "resids")} containing
 #' the simulated surrogate residuals used for the partial association
-#' analysis in \code{Passo}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
+#' analysis in \code{PAsso}. Additionally, if \code{rep_num} > 1 in \code{PAsso},
 #' then the result will contain the attributes:
 #' \describe{
 #'   \item{\code{draws}}{An array contains all draws of residuals.}

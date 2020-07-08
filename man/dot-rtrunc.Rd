@@ -22,11 +22,8 @@ such as "mean", "sd" for "qnorm()".}
 A vector contains n random samples from the truncated distribution "spec".
 }
 \description{
-a function to generate truncated distribution.
-}
-\examples{
-## Simulate one random sample from a standard normal distribution
-## truncated to the left in the middle
+a function to generate truncated distribution. Simulate one random sample from
+a standard normal distribution truncated to the left in the middle
 .rtrunc(1, spec = "norm", a = -Inf, b = 0)
 }
 \keyword{internal}

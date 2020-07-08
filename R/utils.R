@@ -14,7 +14,9 @@
 
 #' Simulate sample from truncated distribution
 #'
-#' a function to generate truncated distribution.
+#' a function to generate truncated distribution. Simulate one random sample from
+#' a standard normal distribution truncated to the left in the middle
+#' .rtrunc(1, spec = "norm", a = -Inf, b = 0)
 #'
 #' @param n the number of observations.
 #' @param spec a character string to specify the distribution.
@@ -26,10 +28,6 @@
 #' @import stats
 #' @return A vector contains n random samples from the truncated distribution "spec".
 #'
-#' @examples
-#' ## Simulate one random sample from a standard normal distribution
-#' ## truncated to the left in the middle
-#' .rtrunc(1, spec = "norm", a = -Inf, b = 0)
 #' @keywords internal
 .rtrunc <- function (n, spec, a = -Inf, b = Inf, ...) {
   .qtrunc(runif(n, min = 0, max = 1), spec, a = a, b = b, ...)

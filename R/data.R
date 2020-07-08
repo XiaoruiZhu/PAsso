@@ -135,3 +135,31 @@
 #' @examples
 #' head(ANES2016)
 NULL
+
+#' Simulated quadratic data
+#'
+#' Data simulated from a probit model with a quadratic trend. The data are
+#' described in Example 2 of Liu and Zhang (2017).
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @format A data frame with 2000 rows and 2 variables.
+#' \itemize{
+#'   \item \code{x} The predictor variable.
+#'   \item \code{y} The response variable; an ordered factor.
+#' }
+#'
+#' @references
+#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
+#' Regression Models: A Surrogate Approach. \emph{Journal of the American Statistical Association}
+#'
+#' @name df1
+#'
+#' @usage
+#' data(df1)
+#'
+#' @examples
+#' head(df1)
+NULL

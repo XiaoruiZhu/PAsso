@@ -10,7 +10,9 @@
 #' @param H0 null hypothesis of partial correlation coefficient.
 #' @param parallel logical argument whether conduct parallel for bootstrapping partial association.
 #'
-#' @import doParallel progress
+#' @importFrom progress progress_bar
+#' @importFrom foreach foreach %dopar%
+#'
 #' @importFrom utils combn setTxtProgressBar txtProgressBar
 #'
 #' @export
@@ -24,7 +26,7 @@
 #'
 #' summary(PAsso_2v, digits=4)
 #'
-#' PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep=20, H0=0, parallel=FALSE))
+#' PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep=20, H0=0, parallel=FALSE)
 #' PAsso_2v_test
 #'
 test <- function(object, bootstrap_rep=300, H0=0, parallel=FALSE) {
@@ -74,12 +76,12 @@ test <- function(object, bootstrap_rep=300, H0=0, parallel=FALSE) {
 
       data_temp <- object$data
       boot_Cor_temp <-
-        foreach(j=1:bootstrap_rep,
+        foreach(i=1:bootstrap_rep,
                 .packages = c('MASS', 'stats', 'PAsso'),
                 .export=c("mods_n", "data_temp", "arguments"),
                 .combine=cbind) %dopar% {
                   # ProgressBar
-                  pb$tick(tokens = list(letter = progress_repNo[j]))
+                  pb$tick(tokens = list(letter = progress_repNo[i]))
 
                   # tryCatch({
                     index <- sample(mods_n[1], replace=T)
@@ -116,7 +118,7 @@ test <- function(object, bootstrap_rep=300, H0=0, parallel=FALSE) {
           boot_Cor_temp[,i] <- Pcor_temp$corr[upper.tri(Pcor_temp$corr)]
         }, error=function(e){
           message("Error in bootstrap", i, ":\n")
-          message(error_message)
+          # message(error_message)
         })
         # ProgressBar
         pb$tick(tokens = list(letter = progress_repNo[i]))

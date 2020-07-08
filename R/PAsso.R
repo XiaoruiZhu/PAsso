@@ -58,7 +58,7 @@
 #' }
 #'
 #' @param jitter.uniform.scale A character string specifying the scale on which to perform
-#' the jittering whenever \code{jitter = "uniform"}. More details: \code{\link[Passo]{residuals}}.
+#' the jittering whenever \code{jitter = "uniform"}. More details: \code{PAsso::residuals}.
 #'
 #' @param fitted.models A list contains all the models (S3 objects) you want to
 #' assess for the partial association between ordinal responses after adjusting
@@ -72,6 +72,8 @@
 #' such that the partial correlation coefficients are calculated repeatly. The final
 #' correlation coefficents are the average of all partial correlation coefficients.
 #' It is the \code{"nsim"} argument in \code{"residuals()"} function.
+#' @param association An default argument to specify the partial association. Leave this
+#' further development of package such that other association analses can be embedded.
 #' @param ... Additional optional arguments.
 #'
 #' @return An object of class \code{"PAsso"} is a list containing at least the following
@@ -125,11 +127,13 @@
 #'
 #' @importFrom stats filter lag
 #'
-#' @import MASS
+#' @importFrom MASS polr
 #'
 #' @importFrom copBasic wolfCOP
 #'
 #' @importFrom pcaPP cor.fk
+#'
+#' @importFrom methods slot
 #'
 #' @importFrom VGAM vglm acat summary
 #'
@@ -141,6 +145,7 @@
 #' ###########################################################
 #' # User-friendly way of using
 #' ###########################################################
+#' library(MASS)
 #'
 #' # Import ANES2016 data in "PAsso"
 #' data(ANES2016)
@@ -152,15 +157,15 @@
 #'                 method = c("kendall"))
 #'
 #' print(PAsso_1, digits = 4)
-#' summary(PAsso_adv1, digits = 4)
+#' summary(PAsso_1, digits = 4)
 #'
 #' ###########################################################
 #' # Advanced way of using
 #' ###########################################################
 #'
-#' fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = AANES2016,
+#' fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
 #'                family = binomial(link = "probit"))
-#' fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = AANES2016,
+#' fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = ANES2016,
 #'                method="probit", Hess = TRUE)
 #'
 #' PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
@@ -432,7 +437,13 @@ PAsso <- function(responses, adjustments, data,
 } ## end of function
 
 
+
 #' @title Print partial association matrix
+#' @param x A PAsso object for printing out results.
+#'
+#' @param digits A default number to specify decimal digit values.
+#' @param ... Additional optional arguments.
+#'
 #' @name print
 #' @method print PAsso
 #'
@@ -466,6 +477,12 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #' matrix displays the partial association between each pair of responses
 #' after adjusting the covariates. While the marginal coefficient matrix displays association
 #' before the adjustment.
+#'
+#' @param object A PAsso object to draw the summarized results, which includes partial association
+#' matrix and a matrix of the models' coefficients.
+#'
+#' @param digits A default number to specify decimal digit values.
+#' @param ... Additional optional arguments.
 #'
 #' @name summary
 #' @method summary PAsso

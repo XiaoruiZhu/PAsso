@@ -20,7 +20,7 @@ plot3D(object, y1, y2, ...)
 \item{y2}{A string to specify the second response for the 3D plot. If either one of the
 y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responeses.}
 
-\item{...}{}
+\item{...}{Additional optional arguments.}
 }
 \value{
 If response y1 or y2 is not specified, a list of \code{"plotly"} objects includes
@@ -34,8 +34,8 @@ copula trained from the surrogate residuals of a pair of responses.
 }
 \details{
 All the plots are based on surrogate residuals generated from \code{"resides"}
-function in \code{\link{sure}}. Graphics are designed based on
-\code{\link{PAsso}} and \code{"plotly"}.
+function in \code{sure}. Graphics are designed based on
+PAsso and \code{"plotly"}.
 }
 \examples{
 data("ANES2016")
