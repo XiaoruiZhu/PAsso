@@ -7,7 +7,7 @@
 \alias{residuals.orm}
 \alias{residuals.polr}
 \alias{residuals.vglm}
-\alias{residuals.glm}
+\alias{residuals.ord}
 \alias{residuals.PAsso}
 \title{Extract Model Residuals}
 \usage{
@@ -56,7 +56,7 @@
   ...
 )
 
-\method{residuals}{glm}(
+\method{residuals}{ord}(
   object,
   type = c("surrogate", "sign", "general", "deviance", "pearson", "working",
     "response", "partial"),
@@ -111,6 +111,8 @@ then the result will contain the attributes:
   contains the observation number each surrogate residuals corresponds to in
   \code{draws}. (This is used for plotting purposes.)}
 }
+
+
 
 A matrix of class \code{c("matrix", "resids")} containing
 the simulated surrogate residuals used for the partial association

@@ -1,6 +1,5 @@
 context("PAsso: S3 method 'residuals()' for Surrogate residuals")
 
-
 test_that("residuals work for \"PAsso\" objects", {
 
   # Skips
@@ -36,7 +35,6 @@ test_that("residuals work for \"PAsso\" objects", {
   # USE draw_id, in residuals.PAsso
 
 })
-
 
 test_that("residuals work for \"clm\" objects", {
 
@@ -78,8 +76,7 @@ test_that("residuals work for \"clm\" objects", {
 
 })
 
-
-test_that("residuals work for \"glm\" objects", {
+test_that("stats::residuals.glm work for \"glm\" objects with ordinal response, no surrogate approach", {
 
   # Skips
   skip_on_cran()
@@ -89,6 +86,38 @@ test_that("residuals work for \"glm\" objects", {
 
   # Fit cumulative link model
   fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+
+  # Compute residuals
+  res1 <- residuals(fit)
+  res2 <- residuals(fit, nsim = 10)
+
+  # Expectations
+  expect_error(res3 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                                 jitter.unifrom.scale = "probability"))
+  expect_error(res4 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                                 jitter.unifrom.scale = "probability", nsim = 10))
+  expect_equal(length(res1), nrow(df1))
+  expect_equal(length(res2), nrow(df1))
+  expect_null(attr(res1, "draws")) # Since use residuals.glm, return a vector of numerical values
+  expect_null(attr(res1, "draws_id"))
+  expect_null(attr(res2, "draws"), "matrix")
+  expect_null(attr(res2, "draws_id"), "matrix")
+
+})
+
+test_that("Surrogate approach: residuals.ord work for \"glm\" objects with ordinal response", {
+
+  # Skips
+  skip_on_cran()
+
+  # Load data
+  data(df1)
+
+  # Fit cumulative link model
+  fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+
+  # Try to add "ord" class to the fitted model
+  class(fit) <- c("ord", class(fit))
 
   # Compute residuals
   res1 <- residuals(fit)
@@ -118,7 +147,6 @@ test_that("residuals work for \"glm\" objects", {
 
 })
 
-
 test_that("residuals work for \"lrm\" objects", {
 
   # Skips
@@ -146,7 +174,6 @@ test_that("residuals work for \"lrm\" objects", {
   expect_equal(dim(attr(res2, "draws_id")), c(nrow(df1), 10))
 
 })
-
 
 test_that("residuals work for \"orm\" objects", {
 
@@ -176,7 +203,6 @@ test_that("residuals work for \"orm\" objects", {
 
 })
 
-
 test_that("residuals work for \"polr\" objects", {
 
   # Skips
@@ -204,7 +230,6 @@ test_that("residuals work for \"polr\" objects", {
   expect_equal(dim(attr(res2, "draws_id")), c(nrow(df1), 10))
 
 })
-
 
 test_that("residualsAcat work for \"vglm\" objects", {
 
@@ -301,7 +326,6 @@ test_that("residuals work for \"vglm\" objects", {
   expect_equal(dim(attr(res2_2, "draws_id")), c(nrow(df1), 10))
 
 })
-
 
 test_that("residuals work for \"clm\" objects with different link functions", {
 

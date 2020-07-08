@@ -269,6 +269,12 @@ PAsso <- function(responses, adjustments, data,
     distName <- c()
     for (i in 1:n_responses) {
       distName[i] <- getDistributionName(fitted.models[[i]])
+
+      # Add "ord" as "ordinal response model"
+      # Use "ord" as an extend of "glm", "clm", "lrm", "orm", "polr", "vglm"
+      # class object such that "residuals.ord" can recognize them all.
+      # Here is a test for other model objects: polr, vglm etc.
+      class(fitted.models[[i]]) <- c("ord", class(fitted.models[[i]]))
     }
     models <- sapply(X = distName,
                      FUN = function(x) switch(x,
@@ -335,6 +341,11 @@ PAsso <- function(responses, adjustments, data,
                                list(formula = as.formula(formulaAll[i]),
                                     family = quote(binomial(link = models[i])),
                                     data = quote(data)))
+
+        # In order to reregister residuals for the glm class, I add "ord" class as "ordinal response model"
+        # Use "ord" as an extend of "glm" class object such that "residuals.ord" can recognize it
+        # This class of object can be extended to other model objects: polr, vglm etc.
+        class(fitted_temp) <- c("ord", class(fitted_temp))
       }
       fitted.models[[i]] <- fitted_temp
       # FIXED: formula now is shown as what it is (by "do.call" and "quote")!

@@ -86,6 +86,63 @@ test_that("Simple PAsso() for two responses",{
 
 })
 
+test_that("Simple PAsso() for two responses(Choose one binary response to test residuals.ord)",{
+  skip_if_not_installed("MASS")
+  skip_if_not_installed("tidyverse")
+
+  PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
+                   adjustments = c("income.num", "age", "edu.year"),
+                   data = ANES2016
+                   # association = c("partial"),
+                   # models = c("probit", "probit"),
+                   # method = c("kendall"),
+                   # resids.type = "surrogate", fitted.models = NULL,
+                   # rep_num = 30
+  )
+
+  p1 <- plot(PAsso_1)
+
+  # Expectations: PAsso object
+
+
+  # Expectations: PAsso object
+  expect_s3_class(PAsso_1, "PAsso")
+  expect_s3_class(PAsso_1$fitted.models[[1]], "ord")
+  expect_s3_class(PAsso_1$fitted.models[[2]], "polr")
+  expect_equal(dim(PAsso_1$corr), c(2,2))
+  expect_equal(length(attr(PAsso_1, "arguments")), 5)
+  expect_equal(dim(PAsso_1$corr)[1], 2)
+
+  # Expectations: plot
+  expect_is(p1, "ggmatrix")
+
+
+  # Expectations: test compatibility
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
+                     adjustments = c("income.num", "age", "edu.year"),
+                     data = ANES2016, uni.model = "probit",
+                     method = c("kendall"),
+                     resids.type = "surrogate", jitter = "uniform"),
+               "only supported for logit-type models")
+
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
+                     adjustments = c("income.num", "age", "edu.year"),
+                     data = ANES2016, uni.model = "probit",
+                     method = c("kendall"),
+                     resids.type = "surrogate", jitter = "uniform",
+                     jitter.uniform.scale = "response"),
+               NA)
+
+  expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
+                     adjustments = c("income.num", "age", "edu.year"),
+                     data = ANES2016, uni.model = "logit",
+                     method = c("kendall"),
+                     resids.type = "surrogate", jitter = "uniform",
+                     jitter.uniform.scale = "prob"),
+               NA)
+
+})
+
 test_that("Check links: Simple PAsso() for two responses",{
   skip_if_not_installed("MASS")
   skip_if_not_installed("tidyverse")

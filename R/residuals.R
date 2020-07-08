@@ -336,9 +336,13 @@ residualsAcat <- function(object,
 # 3. It has two approaches to generate surrogate residuals: latent and uniform(jittering).
 ################################################################################
 
-#' @rdname residuals
+
+#' @name residuals
+#' @method residuals ord
+#'
+#' @return
 #' @export
-residuals.glm <- function (
+residuals.ord <- function (
   object,
   type = c("surrogate", "sign", "general", "deviance",
            "pearson", "working", "response", "partial"),
