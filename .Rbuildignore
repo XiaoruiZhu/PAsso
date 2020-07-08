@@ -1,4 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 cran-comments.md
-data-raw
+data-raw/*
+## Ignore travis config file
+^\.travis\.yml$
