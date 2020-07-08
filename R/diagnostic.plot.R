@@ -22,9 +22,9 @@
 #' @return A \code{"ggplot"} object for supported models. For class "PAsso", it returns a plot in
 #' \code{"gtable"} object that combines diagnostic plots of all responses.
 #'
-#' @name diagnostic.plot
+#' @export diagnostic.plot
 #'
-#' @export
+#'
 #'
 #' @examples
 #' # Import data for partial association analysis
@@ -55,8 +55,8 @@ diagnostic.plot <- function(object, ...) {
   UseMethod("diagnostic.plot")
 }
 
+
 #' @rdname diagnostic.plot
-#' @method diagnostic.plot default
 #' @export
 diagnostic.plot.default <- function(
   object, ...
@@ -67,8 +67,9 @@ diagnostic.plot.default <- function(
   warning(paste(strwrap(warn_str), collapse = "\n"))
 }
 
+#' @return A "ggplot" object based on the input residuals.
+#'
 #' @rdname diagnostic.plot
-#' @method diagnostic.plot resid
 #' @export
 diagnostic.plot.resid <- function(
   object,
@@ -95,6 +96,7 @@ diagnostic.plot.resid <- function(
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot PAsso
 #' @export
+#' @return A plot in "gtable" object that combines diagnostic plots of all responses.
 diagnostic.plot.PAsso <- function(
   object,
   output = c("qq", "fitted", "covariate"),
@@ -176,30 +178,191 @@ diagnostic.plot.PAsso <- function(
 
 }
 
-#' @rdname diagnostic.plot
-#' @method diagnostic.plot clm
-#' @export
-diagnostic.plot.clm <- autoplot.clm
-
+#' @param object An object of class \code{\link[stats]{glm}}. This generic
+#' method also support \code{\link[ordinal]{clm}}, \code{\link[rms]{lrm}},
+#' \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
+#' Details of the argument of this function is similar to the \code{sure::autoplot},
+#'
+#' @param output Character string specifying what to plot. Default is \code{"qq"}
+#' which produces a quantile-quantile plots of the residuals.
+#'
+#' @param x A vector giving the covariate values to use for residual-by-
+#' covariate plots (i.e., when \code{output = "covariate"}).
+#'
+#' @param fit The fitted model from which the residuals were extracted. (Only
+#' required if \code{output = "fitted"} and \code{object} inherits from class
+#' \code{"resid"}.)
+#'
+#' @param distribution Function that computes the quantiles for the reference
+#' distribution to use in the quantile-quantile plot. Default is \code{qnorm}
+#' which is only appropriate for models using a probit link function. When
+#' \code{jitter.scale = "probability"}, the reference distribution is always
+#' U(-0.5, 0.5). (Only
+#' required if \code{object} inherits from class \code{"resid"}.)
+#'
+#' @param ncol Integer specifying the number of columns to use for the plot
+#' layout (if requesting multiple plots). Default is \code{NULL}.
+#'
+#' @param alpha A single values in the interval [0, 1] controlling the opacity
+#' alpha of the plotted points. Only used when \code{nsim} > 1.
+#'
+#' @param xlab Character string giving the text to use for the x-axis label in
+#' residual-by-covariate plots. Default is \code{NULL}.
+#'
+#' @param color Character string or integer specifying what color to use for the
+#' points in the residual vs fitted value/covariate plot.
+#' Default is \code{"black"}.
+#'
+#' @param shape Integer or single character specifying a symbol to be used for
+#' plotting the points in the residual vs fitted value/covariate plot.
+#'
+#' @param size Numeric value specifying the size to use for the points in the
+#' residual vs fitted value/covariate plot.
+#'
+#' @param qqpoint.color Character string or integer specifying what color to use
+#' for the points in the quantile-quantile plot.
+#'
+#' @param qqpoint.shape Integer or single character specifying a symbol to be
+#' used for plotting the points in the quantile-quantile plot.
+#'
+#' @param qqpoint.size Numeric value specifying the size to use for the points
+#' in the quantile-quantile plot.
+#'
+#' @param qqline.color Character string or integer specifying what color to use
+#' for the points in the quantile-quantile plot.
+#'
+#' @param qqline.linetype Integer or character string (e.g., \code{"dashed"})
+#' specifying the type of line to use in the quantile-quantile plot.
+#'
+#' @param qqline.size Numeric value specifying the thickness of the line in the
+#' quantile-quantile plot.
+#'
+#' @param smooth Logical indicating whether or not too add a nonparametric
+#' smooth to certain plots. Default is \code{TRUE}.
+#'
+#' @param smooth.color Character string or integer specifying what color to use
+#' for the nonparametric smooth.
+#'
+#' @param smooth.linetype Integer or character string (e.g., \code{"dashed"})
+#' specifying the type of line to use for the nonparametric smooth.
+#'
+#' @param smooth.size Numeric value specifying the thickness of the line for the
+#' nonparametric smooth.
+#'
+#' @param fill Character string or integer specifying the color to use to fill
+#' the boxplots for residual-by-covariate plots when \code{x} is of class
+#' \code{"factor"}. Default is \code{NULL} which colors the boxplots according
+#' to the factor levels.
+#'
+#' @param resp_name Character string to specifiy the response name that will be
+#' displayed in the figure.
+#'
+#' @param ... Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.
+#'
+#' @return A "ggplot" object based on the residuals generated from glm object.
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot glm
 #' @export
-diagnostic.plot.glm <- autoplot.glm
+diagnostic.plot.glm <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  x = NULL,
+  fit = NULL,
+  distribution = qnorm,
+  ncol = NULL,
+  alpha = 1,
+  xlab = NULL,
+  color = "#444444",
+  shape = 19,
+  size = 2,
+  qqpoint.color = "#444444",
+  qqpoint.shape = 19,
+  qqpoint.size = 2,
+  qqline.color = "#888888",
+  qqline.linetype = "dashed",
+  qqline.size = 1,
+  smooth = TRUE,
+  smooth.color = "red",
+  smooth.linetype = 1,
+  smooth.size = 1,
+  fill = NULL,
+  resp_name = NULL,
+  ...
+) {
+  autoplot.glm(object=object, output= output,
+               x = x,
+               fit = fit,
+               distribution = distribution,
+               ncol = ncol,
+               alpha = alpha,
+               xlab = xlab,
+               color = color,
+               shape = shape,
+               size = size,
+               qqpoint.color = qqpoint.color,
+               qqpoint.shape = qqpoint.shape,
+               qqpoint.size = qqpoint.size,
+               qqline.color = qqline.color,
+               qqline.linetype = qqline.linetype,
+               qqline.size = qqline.size,
+               smooth = smooth,
+               smooth.color = smooth.color,
+               smooth.linetype = smooth.linetype,
+               smooth.size = smooth.size,
+               fill = fill,
+               resp_name = resp_name, ...)
+}
+
+#' @return A "ggplot" object based on the residuals generated from clm object.
+#'
+#' @rdname diagnostic.plot
+#' @method diagnostic.plot clm
+#' @export
+diagnostic.plot.clm <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  ...
+) {
+  autoplot.clm(object=object, output= output, ...)
+}
 
 
+#' @return A "ggplot" object based on the residuals generated from lrm object.
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot lrm
 #' @export
-diagnostic.plot.lrm <- autoplot.lrm
+diagnostic.plot.lrm <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  ...
+) {
+  autoplot.lrm(object=object, output= output, ...)
+}
 
-
+#' @return A "ggplot" object based on the residuals generated from orm object.
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot orm
 #' @export
-diagnostic.plot.orm <- autoplot.orm
+diagnostic.plot.orm <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  ...
+) {
+  autoplot.orm(object=object, output= output, ...)
+}
 
-
+#' @return A "ggplot" object based on the residuals generated from polr object.
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot polr
 #' @export
-diagnostic.plot.polr <- autoplot.polr
+diagnostic.plot.polr <- function(
+  object,
+  output = c("qq", "fitted", "covariate"),
+  ...
+) {
+  autoplot.polr(object=object, output= output, ...)
+}

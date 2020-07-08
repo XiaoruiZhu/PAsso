@@ -1,3 +1,21 @@
+# PAsso 0.1.8
+
+## Major changes
+
+1. Initialize Travis; 
+
+2. Add cran-comments.md file to record CRAN notes;
+
+3. Fix errors and warnings when building PAsso locally and on Travis;
+
+4. Fix diagnostic.plot documentation;
+
+5. Clean up dependents to speed up loading of the PAsso;
+
+## Bugs fixes
+
+1. Update README and other files.
+
 # PAsso 0.1.7
 
 ## Major changes
