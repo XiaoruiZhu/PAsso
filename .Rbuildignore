@@ -3,5 +3,5 @@
 cran-comments.md
 data-raw/*
 ## Ignore travis config file
-^\.travis\.yml$
+^/.travis/.travis.yml
 

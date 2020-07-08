@@ -1,6 +1,6 @@
 Package: PAsso
 Type: Package
-Title: Assessing the Partial Association between ordinal variables
+Title: Assessing the Partial Association Between Ordinal Variables
 Description: An implementation of the unified framework for assessing partial 
     association between ordinal variables after adjusting a set of covariates
     (Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2020)). This package provides 
@@ -41,6 +41,7 @@ Imports:
   doParallel (>= 1.0.11),
   foreach (>= 1.4.8),
   tidyverse,
+  data.table (>= 1.12.8),
   MASS (>= 7.3-51.0),
   GGally,
   goftest,
