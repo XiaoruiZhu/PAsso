@@ -26,12 +26,13 @@
 #' @export plot3D
 #'
 #' @examples
-#' data("ANES2016")
-#' PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
-#'                  adjustments = c("income.num", "age", "edu.year"),
-#'                  data = ANES2016)
+#' # Did not run this to save time
+#' # data("ANES2016")
+#' # PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
+#' #                   adjustments = c("income.num", "age", "edu.year"),
+#' #                   data = ANES2016)
 #'
-#' plot3D(PAsso_3v, y1="PID", y2="selfLR")
+#' # plot3D(PAsso_3v, y1="PID", y2="selfLR")
 #'
 plot3D <- function(object, y1, y2, ...) {
   UseMethod("plot3D")

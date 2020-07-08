@@ -287,7 +287,7 @@ A \code{"ggplot"} object.
 }
 \description{
 Residual-based diagnostic plots for cumulative link and general
-regression models using \code{\link[ggplot2]{ggplot2}} graphics.
+regression models using \code{\link[ggplot2]{ggplot}} graphics.
 }
 \examples{
 

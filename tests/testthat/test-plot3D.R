@@ -12,7 +12,8 @@ test_that("plot3D works for \"PAsso\" objects", {
   # Load data
   data("ANES2016")
 
-  # multivariate analysis (5 variables) --------------------------------------------------------------------
+  # multivariate analysis (2 variables) --------------------------------------------------------------------
+  skip("Take times and no display")
   PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
                     adjustments = c("income.num", "age", "edu.year"),
                     data = ANES2016, uni.model = "logit",

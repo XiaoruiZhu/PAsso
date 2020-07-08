@@ -10,7 +10,7 @@ Description: An implementation of the unified framework for assessing partial
     approach described in Liu and Zhang (2017) (<https://doi.org/10.1080/01621459.2017.1292915>).
 Version: 0.1.8
 Authors@R: 
-  c(person(given = "Xiaorui", family = "Zhu",
+  c(person(given = "Xiaorui(Jeremy)", family = "Zhu",
            role = c("aut", "cre"),
            email = "zhuxiaorui1989@gmail.com"),
     person(given = "Shaobo", family = "Li", 
@@ -37,7 +37,7 @@ Imports:
   VGAM,
   copBasic, 
   pcaPP (>= 1.9-73),
-  methods (>= 3.6.3), 
+  methods, 
   doParallel (>= 1.0.11),
   foreach (>= 1.4.8),
   tidyverse,
