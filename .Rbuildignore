@@ -5,3 +5,4 @@ data-raw/*
 ## Ignore travis config file
 ^/.travis/.travis.yml
 
+^CRAN-RELEASE$
