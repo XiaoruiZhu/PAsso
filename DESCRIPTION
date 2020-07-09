@@ -3,11 +3,11 @@ Type: Package
 Title: Assessing the Partial Association Between Ordinal Variables
 Description: An implementation of the unified framework for assessing partial 
     association between ordinal variables after adjusting a set of covariates
-    (Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2020)). This package provides 
-    a set of tools to quantify partial association, conduct hypothesis testing for 
-    partial association, visualize partial regression models, and diagnose the 
-    specifications of each fitted model. This framework is based on the surrogate 
-    approach described in Liu and Zhang (2017) (<https://doi.org/10.1080/01621459.2017.1292915>).
+    (Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2020). Accepted by JASA). 
+    This package provides a set of tools to quantify partial association, conduct 
+    hypothesis testing for partial association, visualize partial regression models,
+    and diagnose the specifications of each fitted model. This framework is
+    based on the surrogate approach described in Liu and Zhang (2017) (<doi:10.1080/01621459.2017.1292915>).
 Version: 0.1.8
 Authors@R: 
   c(person(given = "Xiaorui(Jeremy)", family = "Zhu",
