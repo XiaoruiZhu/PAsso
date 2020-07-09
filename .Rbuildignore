@@ -2,6 +2,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 cran-comments.md
-data-raw/*
-^\.travis\.yml$
+data-raw\*
+^\.travis\*
 ^CRAN-RELEASE$
