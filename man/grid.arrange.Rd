@@ -7,6 +7,6 @@
 grid.arrange(..., newpage = TRUE)
 }
 \description{
-See \link[gridExtra]{grid.arrange} for more details.
+See \link[gridExtra]{arrangeGrob} for more details.
 }
 \keyword{internal}
