@@ -1,7 +1,7 @@
 .gitignore
 ^.*\.Rproj$
 ^\.Rproj\.user$
-cran-comments.md
-data-raw\*
-^\.travis\*
 ^CRAN-RELEASE$
+^data-raw$
+^\.travis$
+^cran-comments\.md$
