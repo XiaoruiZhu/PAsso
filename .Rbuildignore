@@ -1,8 +1,7 @@
+.gitignore
 ^.*\.Rproj$
 ^\.Rproj\.user$
 cran-comments.md
 data-raw/*
-## Ignore travis config file
-^/.travis/.travis.yml
-
+^\.travis\.yml$
 ^CRAN-RELEASE$
