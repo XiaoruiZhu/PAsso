@@ -87,6 +87,10 @@ scatter.smooth(x, s2 - fm2$linear.predictors,
                ylab = "Surrogate residual",
                lpars = list(lwd = 3, col = "red2"))
 abline(h = 0, lty = 2, col = "blue2")
+
+
+dev.off() # reset to defaults once finish
+
 }
 \references{
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal

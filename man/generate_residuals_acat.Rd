@@ -19,6 +19,9 @@ The lower bound and upper bound are "-Inf" and "Inf".}
 
 \item{nsim}{A number to specify the replication of residuals.}
 }
+\value{
+A vector or a matrix (nsim>1) of residuals for the adjacent categories model.
+}
 \description{
 generate_residuals_acat
 }

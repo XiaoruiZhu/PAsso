@@ -160,6 +160,14 @@ diagnostic.plot(fm1)
 fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
 diagnostic.plot(fm2)
 
+# Load data
+data("ANES2016")
+PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
+                 adjustments = c("income.num", "age", "edu.year"),
+                 data = ANES2016)
+
+# Compute residuals
+res1 <- residuals(PAsso_1)
 
 }
 \references{

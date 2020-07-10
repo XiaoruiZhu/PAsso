@@ -458,6 +458,8 @@ PAsso <- function(responses, adjustments, data,
 #' @name print
 #' @method print PAsso
 #'
+#' @return Print partial association matrix of a PAsso object
+#'
 #' @export
 #' @examples
 #' # See PAsso for the example.
@@ -497,6 +499,9 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #'
 #' @name summary
 #' @method summary PAsso
+#'
+#' @return For a PAsso object, print its partial association matrix, marginal association
+#' matrix, and a matrix of the models' coefficients.
 #'
 #' @export
 #' @examples

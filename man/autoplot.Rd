@@ -284,6 +284,8 @@ displayed in the figure.}
 }
 \value{
 A \code{"ggplot"} object.
+
+A \code{"ggplot"} object.
 }
 \description{
 Residual-based diagnostic plots for cumulative link and general

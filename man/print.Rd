@@ -17,6 +17,9 @@
 
 \item{...}{Additional optional arguments.}
 }
+\value{
+Print partial association matrix of a PAsso object
+}
 \description{
 Print partial association matrix
 }

@@ -84,6 +84,10 @@
 #'                ylab = "Surrogate residual",
 #'                lpars = list(lwd = 3, col = "red2"))
 #' abline(h = 0, lty = 2, col = "blue2")
+#'
+#'
+#' dev.off() # reset to defaults once finish
+#'
 surrogate <- function(object, method = c("latent", "uniform"),
                       jitter.uniform.scale = c("probability", "response"),
                       nsim = 1L, ...) {

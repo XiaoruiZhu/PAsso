@@ -4,38 +4,38 @@
 * win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
+There were no ERRORs, Notes, or WARNINGs. 
 
-There was 1 NOTEs:
 
-* checking for hidden files and directories ... NOTE
+* [Fixed] checking for hidden files and directories ... NOTE
   Found the following hidden files and directories:
     .travis/.travis.yml
     .travis
   These were most likely included in error. See section 'Package
   structure' in the 'Writing R Extensions' manual.
 
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Xiaorui(Jeremy) Zhu <zhuxiaorui1989@gmail.com>'
+* [Fixed] checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>'
 
-  New submission
-
-  Possibly mis-spelled words in DESCRIPTION:
-    Dungang (6:6)
-    Irini (6:41)
-    Liu (6:14, 10:27)
-    Moustaki (6:47)
-    Shaobo (6:19)
-    Yan (6:30)
-    Yu (6:34)
-    Zhang (10:35)
   
 * [Fixed] checking use of S3 registration ... WARNING
-Registered S3 method from a standard package overwritten by 'PAsso':
+  Registered S3 method from a standard package overwritten by 'PAsso':
   method        from 
   residuals.glm stats
   [An "ord" class is defined for the fitted models with ordinal response such that residuals() can recognize models!]
   
+* [Fixed] Fix comment from CRAN: "You are changing the user's par() settings in your examples. Please 
+reset the settings." by "dev.off()" 
+
+* [Fixed] Add tags for for the follows:
+      PAsso/man/generate_residuals_acat.Rd: \value
+      PAsso/man/grid.arrange.Rd: \arguments,  \value
+      PAsso/man/p_adj_cate.Rd: \value
+      PAsso/man/print.Rd: \value
+      PAsso/man/residualsAcat.Rd: \value
+      PAsso/man/summary.Rd: \value
+      PAsso/man/test.Rd: \value
+
 ## Downstream dependencies
 
 All packages that I could install passed.

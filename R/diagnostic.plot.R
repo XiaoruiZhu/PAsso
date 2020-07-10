@@ -24,8 +24,6 @@
 #'
 #' @export diagnostic.plot
 #'
-#'
-#'
 #' @examples
 #' # Import data for partial association analysis
 #' data("ANES2016")
@@ -55,7 +53,8 @@ diagnostic.plot <- function(object, ...) {
   UseMethod("diagnostic.plot")
 }
 
-
+#' @return A "ggplot" object based on the input residuals.
+#'
 #' @rdname diagnostic.plot
 #' @export
 diagnostic.plot.default <- function(
@@ -68,6 +67,8 @@ diagnostic.plot.default <- function(
 }
 
 #' @return A "ggplot" object based on the input residuals.
+#'
+#' @inheritParams diagnostic.plot
 #'
 #' @rdname diagnostic.plot
 #' @export
@@ -83,20 +84,22 @@ diagnostic.plot.resid <- function(
 #' @param object The object in the support classes (This function is mainly designed
 #' for \code{PAsso}).
 #'
-#' @param output A character string specifying what type of output to plot. Default is
-#' \code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
-#' \code{"fitted"} produces a plot matrix between residuals and all corresponding fitted responses.
-#' \code{"covariates"} produces a plot matrix between residuals and corresponding covariate.
+#' @inheritParams autoplot
+#'
 #' @param model_id A number refers to the index of the model that needs to be diagnosed. If NULL, all
 #' models will be diagnosed.
 #' @param x_name A string refers to the covariate name that needs to be diagnosed. If NULL, all adjustments
 #' will be diagnosed.
 #' @param ... Additional optional arguments can be passed onto \code{\link[ggplot2]{ggplot}} for drawing
 #' various plots.
+#'
 #' @rdname diagnostic.plot
+#'
 #' @method diagnostic.plot PAsso
-#' @export
+#'
 #' @return A plot in "gtable" object that combines diagnostic plots of all responses.
+#'
+#' @export
 diagnostic.plot.PAsso <- function(
   object,
   output = c("qq", "fitted", "covariate"),
@@ -178,86 +181,8 @@ diagnostic.plot.PAsso <- function(
 
 }
 
-#' @param object An object of class \code{\link[stats]{glm}}. This generic
-#' method also support \code{\link[ordinal]{clm}}, \code{\link[rms]{lrm}},
-#' \code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
-#' Details of the argument of this function is similar to the \code{sure::autoplot},
-#'
-#' @param output Character string specifying what to plot. Default is \code{"qq"}
-#' which produces a quantile-quantile plots of the residuals.
-#'
-#' @param x A vector giving the covariate values to use for residual-by-
-#' covariate plots (i.e., when \code{output = "covariate"}).
-#'
-#' @param fit The fitted model from which the residuals were extracted. (Only
-#' required if \code{output = "fitted"} and \code{object} inherits from class
-#' \code{"resid"}.)
-#'
-#' @param distribution Function that computes the quantiles for the reference
-#' distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-#' which is only appropriate for models using a probit link function. When
-#' \code{jitter.scale = "probability"}, the reference distribution is always
-#' U(-0.5, 0.5). (Only
-#' required if \code{object} inherits from class \code{"resid"}.)
-#'
-#' @param ncol Integer specifying the number of columns to use for the plot
-#' layout (if requesting multiple plots). Default is \code{NULL}.
-#'
-#' @param alpha A single values in the interval [0, 1] controlling the opacity
-#' alpha of the plotted points. Only used when \code{nsim} > 1.
-#'
-#' @param xlab Character string giving the text to use for the x-axis label in
-#' residual-by-covariate plots. Default is \code{NULL}.
-#'
-#' @param color Character string or integer specifying what color to use for the
-#' points in the residual vs fitted value/covariate plot.
-#' Default is \code{"black"}.
-#'
-#' @param shape Integer or single character specifying a symbol to be used for
-#' plotting the points in the residual vs fitted value/covariate plot.
-#'
-#' @param size Numeric value specifying the size to use for the points in the
-#' residual vs fitted value/covariate plot.
-#'
-#' @param qqpoint.color Character string or integer specifying what color to use
-#' for the points in the quantile-quantile plot.
-#'
-#' @param qqpoint.shape Integer or single character specifying a symbol to be
-#' used for plotting the points in the quantile-quantile plot.
-#'
-#' @param qqpoint.size Numeric value specifying the size to use for the points
-#' in the quantile-quantile plot.
-#'
-#' @param qqline.color Character string or integer specifying what color to use
-#' for the points in the quantile-quantile plot.
-#'
-#' @param qqline.linetype Integer or character string (e.g., \code{"dashed"})
-#' specifying the type of line to use in the quantile-quantile plot.
-#'
-#' @param qqline.size Numeric value specifying the thickness of the line in the
-#' quantile-quantile plot.
-#'
-#' @param smooth Logical indicating whether or not too add a nonparametric
-#' smooth to certain plots. Default is \code{TRUE}.
-#'
-#' @param smooth.color Character string or integer specifying what color to use
-#' for the nonparametric smooth.
-#'
-#' @param smooth.linetype Integer or character string (e.g., \code{"dashed"})
-#' specifying the type of line to use for the nonparametric smooth.
-#'
-#' @param smooth.size Numeric value specifying the thickness of the line for the
-#' nonparametric smooth.
-#'
-#' @param fill Character string or integer specifying the color to use to fill
-#' the boxplots for residual-by-covariate plots when \code{x} is of class
-#' \code{"factor"}. Default is \code{NULL} which colors the boxplots according
-#' to the factor levels.
-#'
-#' @param resp_name Character string to specify the response name that will be
-#' displayed in the figure.
-#'
-#' @param ... Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.
+
+#' @inheritParams autoplot
 #'
 #' @return A "ggplot" object based on the residuals generated from glm object.
 #'
@@ -316,6 +241,8 @@ diagnostic.plot.glm <- function(
 
 #' @return A "ggplot" object based on the residuals generated from clm object.
 #'
+#' @inheritParams autoplot
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot clm
 #' @export
@@ -330,6 +257,8 @@ diagnostic.plot.clm <- function(
 
 #' @return A "ggplot" object based on the residuals generated from lrm object.
 #'
+#' @inheritParams autoplot
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot lrm
 #' @export
@@ -343,6 +272,8 @@ diagnostic.plot.lrm <- function(
 
 #' @return A "ggplot" object based on the residuals generated from orm object.
 #'
+#' @inheritParams autoplot
+#'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot orm
 #' @export
@@ -355,6 +286,8 @@ diagnostic.plot.orm <- function(
 }
 
 #' @return A "ggplot" object based on the residuals generated from polr object.
+#'
+#' @inheritParams autoplot
 #'
 #' @rdname diagnostic.plot
 #' @method diagnostic.plot polr

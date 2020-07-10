@@ -26,3 +26,4 @@ Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 Regression Models: A Surrogate Approach. \emph{Journal of the American Statistical Association}
 }
 \keyword{datasets}
+\keyword{internal}

@@ -42,6 +42,11 @@ Default is \code{1L} meaning one simulation only of residuals.}
 
 \item{...}{Additional optional arguments.}
 }
+\value{
+A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
+residuals for the adjacent categories model.
+}
 \description{
 This is a function to deal with the vglm object in S4.
 }
+\keyword{internal}

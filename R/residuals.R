@@ -193,6 +193,8 @@ residuals.vglm <- residuals.clm
 #' @param Z A numerical vector that inputs the latent variable for generating probabilities of adjacent
 #' categories regression model.
 #'
+#' @return A matrix (n by level of respones plus 1) of probabilities of the adjacent categories model.
+#'
 #' @keywords internal
 p_adj_cate <- function(Z){
   k <- ncol(Z)
@@ -222,6 +224,8 @@ p_adj_cate <- function(Z){
 #' The lower bound and upper bound are "-Inf" and "Inf".
 #' @param beta A vector provides the estimated coefficients.
 #' @param nsim A number to specify the replication of residuals.
+#'
+#' @return A vector or a matrix (nsim>1) of residuals for the adjacent categories model.
 #'
 #' @keywords internal
 generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
@@ -267,7 +271,11 @@ generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
 #' Default is \code{1L} meaning one simulation only of residuals.
 #' @param ... Additional optional arguments.
 #'
+#' @return A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
+#' residuals for the adjacent categories model.
+#'
 #' @export
+#' @keywords internal
 residualsAcat <- function(object,
                           type = c("surrogate", "sign", "general", "deviance"),
                           jitter = c("latent", "uniform"),
@@ -408,6 +416,14 @@ residuals.ord <- function (
 #' @export
 #'
 #' @examples
+#' # Load data
+#' data("ANES2016")
+#' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
+#'                  adjustments = c("income.num", "age", "edu.year"),
+#'                  data = ANES2016)
+#'
+#' # Compute residuals
+#' res1 <- residuals(PAsso_1)
 #'
 residuals.PAsso <- function(object, draw_id=1, ...) {
   if ((draw_id>=1) & (draw_id<=dim(object$rep_SRs)[2])) {

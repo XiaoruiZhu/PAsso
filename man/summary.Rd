@@ -15,6 +15,10 @@ matrix and a matrix of the models' coefficients.}
 
 \item{...}{Additional optional arguments.}
 }
+\value{
+For a PAsso object, print its partial association matrix, marginal association
+matrix, and a matrix of the models' coefficients.
+}
 \description{
 This function summarizes the partial association analysis by
 providing partial association matrix, marginal association matrix, and a

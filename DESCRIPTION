@@ -10,7 +10,7 @@ Description: An implementation of the unified framework for assessing partial
     based on the surrogate approach described in Liu and Zhang (2017) (<doi:10.1080/01621459.2017.1292915>).
 Version: 0.1.8
 Authors@R: 
-  c(person(given = "Xiaorui(Jeremy)", family = "Zhu",
+  c(person(given = "Xiaorui (Jeremy)", family = "Zhu",
            role = c("aut", "cre"),
            email = "zhuxiaorui1989@gmail.com"),
     person(given = "Shaobo", family = "Li", 
@@ -22,7 +22,7 @@ Authors@R:
     person(given = "Dungang", family = "Liu",
            role = c("ctb"),
            email = "dungang.liu@uc.edu"))
-Maintainer: Xiaorui(Jeremy) Zhu <zhuxiaorui1989@gmail.com>
+Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
 URL: GitHub: https://github.com/XiaoruiZhu/PAsso
 BugReports: https://github.com/XiaoruiZhu/PAsso/issues
 Depends:

@@ -88,8 +88,11 @@
 #'
 #' @importFrom ggplot2 autoplot margin element_text rel
 #'
+#' @importFrom gridExtra grid.arrange
+#'
 #' @name autoplot
 #' @method autoplot resid
+#'
 #' @export
 #'
 #' @examples
@@ -285,6 +288,9 @@ autoplot.resid <- function(
 
 
 #' @rdname autoplot
+#'
+#' @return A \code{"ggplot"} object.
+#'
 #' @export
 #' @keywords internal
 autoplot.glm <- function(
@@ -350,6 +356,7 @@ autoplot.glm <- function(
 
 
 #' @rdname autoplot
+#' @method autoplot clm
 #' @export
 #' @keywords internal
 autoplot.clm <- autoplot.glm

@@ -162,4 +162,6 @@ NULL
 #'
 #' @examples
 #' head(df1)
+#' @keywords internal
+#'
 NULL

@@ -10,6 +10,9 @@ p_adj_cate(Z)
 \item{Z}{A numerical vector that inputs the latent variable for generating probabilities of adjacent
 categories regression model.}
 }
+\value{
+A matrix (n by level of respones plus 1) of probabilities of the adjacent categories model.
+}
 \description{
 p_adj_cate
 }

@@ -62,15 +62,16 @@ diagnostic.plot(object, ...)
 \method{diagnostic.plot}{polr}(object, output = c("qq", "fitted", "covariate"), ...)
 }
 \arguments{
-\item{object}{An object of class \code{\link[stats]{glm}}. This generic
-method also support \code{\link[ordinal]{clm}}, \code{\link[rms]{lrm}},
-\code{\link[rms]{orm}}, \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.
-Details of the argument of this function is similar to the \code{sure::autoplot},}
+\item{object}{The object in the support classes (This function is mainly designed
+for \code{PAsso}).}
 
-\item{...}{Additional optional arguments to be passed onto \code{\link[ggplot2]{ggplot}}.}
+\item{...}{Additional optional arguments can be passed onto \code{\link[ggplot2]{ggplot}} for drawing
+various plots.}
 
-\item{output}{Character string specifying what to plot. Default is \code{"qq"}
-which produces a quantile-quantile plots of the residuals.}
+\item{output}{A character string specifying what type of output to plot. Default is
+\code{"qq"} which produces a plot matrix with quantile-quantile plots of the residuals.
+\code{"fitted"} produces a plot matrix between residuals and all corresponding fitted responses.
+\code{"covariates"} produces a plot matrix between residuals and corresponding covariate.}
 
 \item{model_id}{A number refers to the index of the model that needs to be diagnosed. If NULL, all
 models will be diagnosed.}
@@ -152,6 +153,8 @@ displayed in the figure.}
 \value{
 A \code{"ggplot"} object for supported models. For class "PAsso", it returns a plot in
 \code{"gtable"} object that combines diagnostic plots of all responses.
+
+A "ggplot" object based on the input residuals.
 
 A "ggplot" object based on the input residuals.
 
