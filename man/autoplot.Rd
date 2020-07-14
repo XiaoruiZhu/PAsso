@@ -201,7 +201,7 @@
 )
 }
 \arguments{
-\item{object}{An object of class \code{\link[sure]{resids}},
+\item{object}{An object of class \code{sure:resids},
 \code{\link[ordinal]{clm}},
 \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.}

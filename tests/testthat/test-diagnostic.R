@@ -19,12 +19,20 @@ test_that("diagnostic.plot works for \"PAsso\" objects", {
   suppressWarnings(
     diag_p3 <- diagnostic.plot(object = PAsso_3v, output = "covariate")
   )
+
+  diag_cov1 <- diagnostic.plot(object = PAsso_3v, output = "covariate", x_name = "income.num", model_id = 2)
+  # diagnostic.plot(object = PAsso_1, output = "covariate", x_name = "age", model_id = 2)
+  # diagnostic.plot(object = PAsso_1, output = "covariate", x_name = "edu.year", model_id = 2)
+
+
   # Expectations
   expect_s3_class(diag_p1, "gtable")
   expect_s3_class(diag_p1, "gtable")
   expect_s3_class(diag_p1, "gtable")
   expect_s3_class(diag_p2, "gtable")
   expect_s3_class(diag_p3, "gtable")
+
+  expect_s3_class(diag_cov1, "ggplot")
 
   # expect_s3_class(diag_p2, "ggmatrix")
   # expect_s3_class(diag_p3, "ggmatrix")

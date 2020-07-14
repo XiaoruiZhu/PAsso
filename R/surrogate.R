@@ -37,7 +37,7 @@
 #' consequently, the result will be different with every call to
 #' \code{surrogate}. The internal functions used for sampling from truncated
 #' distributions are based on modified versions of
-#' \code{\link[truncdist]{rtrunc}} and \code{\link[truncdist]{qtrunc}}.
+#' \code{truncdist:rtrunc} and \code{truncdist:qtrunc}.
 #'
 #' For \code{"glm"} objects, only the \code{binomial()} family is supported.
 #'

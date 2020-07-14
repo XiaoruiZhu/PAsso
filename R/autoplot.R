@@ -3,7 +3,7 @@
 #' @description Residual-based diagnostic plots for cumulative link and general
 #' regression models using \code{\link[ggplot2]{ggplot}} graphics.
 #'
-#' @param object An object of class \code{\link[sure]{resids}},
+#' @param object An object of class \code{sure:resids},
 #' \code{\link[ordinal]{clm}},
 #' \code{\link[stats]{glm}}, \code{\link[rms]{lrm}}, \code{\link[rms]{orm}},
 #' \code{\link[MASS]{polr}}, or \code{\link[VGAM]{vglm}}.

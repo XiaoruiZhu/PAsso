@@ -107,19 +107,20 @@ diagnostic.plot.PAsso <- function(
   x_name = NULL,
   ...
 ) {
-  # object = PAsso_2; output = "covariate"
+  # object = PAsso_1; output = "covariate"; x_name = "income.num"; model_id = 2
 
   # What type of output plot to produce
   output <- match.arg(output, several.ok = FALSE)
   rep_SRs <- object$rep_SRs
   resp_name <- attr(object, "responses")
 
-  x_name <- if (is.null(x_name)) {
-      attr(object, "adjustments")[1]
-    }
+  if ((output == "covariate") & (is.null(x_name))) {
+    x_name <- attr(object, "adjustments")[1]
+    message("No covariate is specified, the first covariate(adjustment) is being used.")
 
-  # do.call("<-", list(x_name, object$data[,x_name]))
-  assign(x = x_name, object$data[,x_name]) # Save covariate in a vector as its name.
+    # assign(x = eval(x_name), object$data[,x_name]) # Save covariate in a vector as its name.
+  }
+
 
   n_resp <- length(resp_name)
   nCol <- floor(sqrt(n_resp))
@@ -147,7 +148,7 @@ diagnostic.plot.PAsso <- function(
       # Save the combined plot
       return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
 
-    } else {
+    } else { # output == "covariate"
       adjust_name <- attr(object, "adjustments")
       n_adjust <- length(adjust_name)
       t_lenght <- n_resp*n_adjust
@@ -176,7 +177,8 @@ diagnostic.plot.PAsso <- function(
     stop("'model_id' needs to be between ", 1, " and number of responses ", n_resp, "!")
   } else { # If the diagnostic model IS specified, return corresponding plot.
     return(autoplot(object$fitted.models[[model_id]], output = output,
-             resp_name = resp_name[model_id], x = get(x_name), ...))
+             resp_name = resp_name[model_id], x = object$data[,x_name],
+             xlab = eval(x_name), ...))
   }
 
 }
