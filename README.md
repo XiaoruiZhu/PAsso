@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![](https://www.r-pkg.org/badges/version/PAsso)https://www.r-pkg.org/badges/version/PAsso]
+[![](https://www.r-pkg.org/badges/version/PAsso)](https://www.r-pkg.org/badges/version/PAsso)
 [![CRAN checks](https://cranchecks.info/badges/summary/PAsso)](https://cran.r-project.org/package=PAsso)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
