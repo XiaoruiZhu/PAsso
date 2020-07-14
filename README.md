@@ -141,6 +141,5 @@ Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression mo
 
 Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Liu, D. (2018)
 Residuals and diagnostics for binary and ordinal regression models: An
-introduction to the sure package. *The R Journal*. URL
-<https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>
+introduction to the sure package. *The R Journal*. URL <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>
 
