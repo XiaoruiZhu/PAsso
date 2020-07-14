@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 
+[![](https://www.r-pkg.org/badges/version/PAsso)https://www.r-pkg.org/badges/version/PAsso]
 [![CRAN checks](https://cranchecks.info/badges/summary/PAsso)](https://cran.r-project.org/package=PAsso)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
@@ -28,6 +29,14 @@ install.packages("PAsso")
 # Alternatively, install the development version from GitHub
 if (!requireNamespace("devtools")) install.packages("devtools")
 devtools::install_github("XiaoruiZhu/PAsso")
+
+# For macOS, if you have "error: 'math.h' file not found" for installing PAsso v0.1.8,
+# the solution could be:
+install.packages("https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/PAsso_0.1.8.tgz", 
+                  repos = NULL, type = "source")
+                  
+# If error "there is no package called 'gsl'" comes, try:
+install.packages("gsl", type = "mac.binary")
 ```
 
 ## Example
@@ -125,13 +134,13 @@ summary(PAsso_adv1, digits = 3)
 References
 ----------
 
-Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2020). "Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing", accepted by the *Journal of the American Statistical Association*.
+Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020) Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing, accepted by the *Journal of the American Statistical Association*.
 
-Dungang Liu & Heping Zhang (2018). "Residuals and Diagnostics for Ordinal Regression Models: A Surrogate Approach", Journal of the American Statistical Association, 113:522, 845-854, DOI: 10.1080/01621459.2017.1292915, URL
+Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models: A surrogate approach. *Journal of the American Statistical Association*, 113(522), 845-854. DOI: 10.1080/01621459.2017.1292915, URL
 <http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20>
 
-Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Dungang, L. (2018)
-"Residuals and diagnostics for binary and ordinal regression models: An
-introduction to the sure package." The R Journal. URL
+Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Liu, D. (2018)
+Residuals and diagnostics for binary and ordinal regression models: An
+introduction to the sure package. *The R Journal*. URL
 <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>
 
