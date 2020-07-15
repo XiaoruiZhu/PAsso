@@ -49,7 +49,7 @@ Partial association analysis plays an important role in scientific research. It 
 
 Specifically, let's consider a pair of ordinal variables $\text{PreVote.num}$ and $\text{PID}$, where the $\text{PreVote.num}$ is the respondent’s voting preference between Donald Trump and Hilary Clinton in the 2016 American National Election Studies. $\text{PID}$ is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). 
 
-One may attempt to answer the following question: **Are the respondent’s voting preference still correlated with their party identification after adjusting for their age, education, and income?** 
+One may attempt to answer the following question: **Is the respondent’s voting preference still correlated with their party identification after adjusting for their age, education, and income?** 
 
 To answer this question, we conduct the partial association between $\text{PreVote.num}$ and $\text{PID}$ as an example to illustrate the unified framework implemented in the PAsso package. 
 
