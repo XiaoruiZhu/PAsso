@@ -20,15 +20,11 @@ An implementation of the unified framework for assessing **P**arrtial **Asso**ci
 
 The `PAsso` package is currently available on [PAsso CRAN](https://CRAN.R-project.org/package=PAsso).
 
-### Install the development version from GitHub
+### Install `PAsso` from the CRAN
 
 ``` r
 # Install from CRAN
 install.packages("PAsso")
-
-# Alternatively, install the development version from GitHub
-if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("XiaoruiZhu/PAsso")
 
 # For macOS, if you have "error: 'math.h' file not found" for installing PAsso v0.1.8,
 # the solution could be:
@@ -39,9 +35,23 @@ install.packages("https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/P
 install.packages("gsl", type = "mac.binary")
 ```
 
+### Install `PAsso` development version from GitHub
+
+``` r
+# Alternatively, install the development version from GitHub
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("XiaoruiZhu/PAsso")
+```
+
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Partial association analysis plays an important role in scientific research. It uncovers the dependency between variables after adjusting for a set of covariates, which are often considered as potential confounding factors. For the data recorded in ordinal scales, the regression models, such as the cumulative link models (McCullagh, 1980), do not have well-defined residuals for assessing the partial association. In the `PAsso` package, we provide a set of tools to quantify, visualize, and test partial associations between multiple ordinal variables.
+
+Specifically, let's consider a pair of ordinal variables $\text{PreVote.num}$ and $\text{PID}$, where the $\text{PreVote.num}$ is the respondent’s voting preference between Donald Trump and Hilary Clinton in the 2016 American National Election Studies. $\text{PID}$ is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). 
+
+One may attempt to answer the following question: **Are the respondent’s voting preference still correlated with their party identification after adjusting for their age, education, and income?** 
+
+To answer this question, we conduct the partial association between $\text{PreVote.num}$ and $\text{PID}$ as an example to illustrate the unified framework implemented in the PAsso package. 
 
 ``` r
 library(PAsso)
@@ -50,73 +60,60 @@ PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                  adjustments = c("income.num", "age", "edu.year"),
                  data = ANES2016,
                  uni.model = "probit",
-                 method = c("kendall")
-                )
-                
+                 method = c("kendall"))
+
 # Print the partial association matrix only
 print(PAsso_1, 5)
 
-# Provide partial association matrix, marginal association matrix, and summary of models' coefficients
+# Provide:
+# 1. partial association matrix;
+# 2. marginal association matrix for comparison purpose;
+# 3. summary of models' coefficients for model diagnostics and interpretation
 summary(PAsso_1, 4)
 
 # Plot partial association regression plot: residuals
 plot(PAsso_1)
 
-# Retrieve residuals
+# Retrieve residuals that are used as ingredients for partial assocaition analyses
 test_resids <- residuals(PAsso_1, draw = 1)
 head(test_resids)
-dim(test_resids)
-
-# Association analysis between three ordinal responses ----------
-
-PAsso_2 <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
-                adjustments = c("income.num", "age", "edu.year"),
-                data = ANES2016,
-                uni.model <- "probit",
-                method = c("kendall"),
-                resids.type = "surrogate")
-                
-# Compare marginal correlation and partial correlation.
-summary(PAsso_2, digits=4)
-plot(PAsso_2)
 
 # test function: Conduct inference based on object of "PAsso.test" class ----------------------------
-library(progress); #library(doParallel)
+library(progress);
 
-system.time(Pcor_SR_test1 <- test(object = PAsso_2, boot_SE=100, H0=0, parallel=F))
+system.time(Pcor_SR_test1 <- test(object = PAsso_1, bootstrap_rep = 100, H0 = 0, parallel = F))
 print(Pcor_SR_test1, digits=6)
-print(PAsso_2, 6)
 
 # diagnostic.plot function -----------------------------------------------------
-check_qq <- diagnostic.plot(object = PAsso_2, output = "qq")
+check_qq <- diagnostic.plot(object = PAsso_1, output = "qq")
 
-check_fitted <- diagnostic.plot(object = PAsso_2, output = "fitted")
+check_fitted <- diagnostic.plot(object = PAsso_1, output = "fitted")
 
-check_covar <- diagnostic.plot(object = PAsso_2, output = "covariate")
+check_covar <- diagnostic.plot(object = PAsso_1, output = "covariate")
 
 # Or more specific, draw residual-vs-covariate plot for the second model with
 # response "PID" and covariate "income.num" 
-diagnostic.plot(object = PAsso_2, output = "covariate", x_name = "income.num", model_id = 2)
+diagnostic.plot(object = PAsso_1, output = "covariate", x_name = "income.num", model_id = 2)
 
 # general association measure and 3-D plot for VOTE and PID ------------------
-library("copula")
-library("plotly")
+library("copula"); library("plotly")
 
 # Draw all pairs
 testPlots <- plot3D(PAsso_1)
 testPlots$`PreVote.num v.s. PID`
 
 # Draw just one pair
-testPlots2 <- plot3D(object = PAsso_2, y1 = "selfLR", y2 = "PID")
+testPlots2 <- plot3D(object = PAsso_1, y1 = "PreVote.num", y2 = "PID")
 testPlots2
 
 # "PAsso" advanced using of the function: Input a few models directly ------------------------------
-fit_vote <- glm(PreVote.num ~ income.num + age + edu.year, data = nes2016,
-               family = binomial(link = "probit"))
+fit_vote <- glm(PreVote.num ~ income.num + age + edu.year, data = ANES2016,
+                family = binomial(link = "probit"))
 summary(fit_vote)
 
-fit_PID <- polr(as.factor(PID) ~ income.num + age + edu.year, data = nes2016,
-               method = "probit", Hess = TRUE)
+library(MASS)
+fit_PID <- polr(as.factor(PID) ~ income.num + age + edu.year, data = ANES2016,
+                method = "probit", Hess = TRUE)
 
 summary(fit_PID)
 
@@ -126,7 +123,7 @@ system.time(PAsso_adv1 <- PAsso(fitted.models=list(fit_vote, fit_PID),
                                 resids.type = "surrogate")
 )
 
-# Partial association coefficients (Parts of Table 7 in paper)
+# Partial association coefficients 
 print(PAsso_adv1, digits = 3)
 summary(PAsso_adv1, digits = 3)
 ```

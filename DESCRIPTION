@@ -1,7 +1,7 @@
 Package: PAsso
 Type: Package
 Title: Assessing the Partial Association Between Ordinal Variables
-Description: An implementation of the unified framework for assessing parrtial association 
+Description: An implementation of the unified framework for assessing partial association 
             between ordinal variables after adjusting for a set of covariates (Dungang Liu, Shaobo 
             Li, Yan Yu and Irini Moustaki (2020), accepted by the Journal of the American 
             Statistical Association). This package provides a set of tools to quantify, visualize, 
