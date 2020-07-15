@@ -45,13 +45,7 @@ devtools::install_github("XiaoruiZhu/PAsso")
 
 ## Example
 
-Partial association analysis plays an important role in scientific research. It uncovers the dependency between variables after adjusting for a set of covariates, which are often considered as potential confounding factors. For the data recorded in ordinal scales, the regression models, such as the cumulative link models (McCullagh, 1980), do not have well-defined residuals for assessing the partial association. In the `PAsso` package, we provide a set of tools to quantify, visualize, and test partial associations between multiple ordinal variables.
-
-Specifically, let's consider a pair of ordinal variables $\text{PreVote.num}$ and $\text{PID}$, where the $\text{PreVote.num}$ is the respondent’s voting preference between Donald Trump and Hilary Clinton in the 2016 American National Election Studies. $\text{PID}$ is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). 
-
-One may attempt to answer the following question: **Is the respondent’s voting preference still correlated with their party identification after adjusting for their age, education, and income?** 
-
-To answer this question, we conduct the partial association between $\text{PreVote.num}$ and $\text{PID}$ as an example to illustrate the unified framework implemented in the PAsso package. 
+The following example shows the R code for evaluating the partial association between a binary variable $\text{PreVote.num}$ and a ordinal variable $\text{PID}$, while adjusting for age, education, and income. Specifically, $\text{PreVote.num}$ is the respondent's voting preference between Donald Trump and Hilary Clinton. And $\text{PID}$ is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). The data set is drawn from the [2016 American National Election Study](https://electionstudies.org/data-center/2016-time-series-study/).
 
 ``` r
 library(PAsso)
