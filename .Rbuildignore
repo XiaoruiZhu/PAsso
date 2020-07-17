@@ -5,3 +5,7 @@
 ^data-raw$
 ^\.travis$
 ^cran-comments\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
