@@ -271,7 +271,7 @@ generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
   }else{
     R <- sapply(1:n, function(k) runif(nsim, F_acat[k,y[k]], F_acat[k,y[k]+1]))
   }
-  R - 1/2
+  R
 }
 
 #' This is a function to deal with the vglm object in S4.
