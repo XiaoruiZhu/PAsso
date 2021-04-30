@@ -6,7 +6,6 @@
 \alias{residuals.lrm}
 \alias{residuals.orm}
 \alias{residuals.polr}
-\alias{residuals.vglm}
 \alias{residuals.ord}
 \alias{residuals.PAsso}
 \title{Extract Model Residuals}
@@ -39,15 +38,6 @@
 )
 
 \method{residuals}{polr}(
-  object,
-  type = c("surrogate", "sign", "general", "deviance"),
-  jitter = c("latent", "uniform"),
-  jitter.uniform.scale = c("probability", "response"),
-  nsim = 1L,
-  ...
-)
-
-\method{residuals}{vglm}(
   object,
   type = c("surrogate", "sign", "general", "deviance"),
   jitter = c("latent", "uniform"),

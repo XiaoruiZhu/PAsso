@@ -1,4 +1,33 @@
-context("PAsso: S3 method 'residuals()' for Surrogate residuals")
+context("PAsso: 'residuals()' for Surrogate residuals")
+
+
+test_that("Github reported issue #4", {
+  # Skips
+  skip_on_cran()
+  skip_if_not_installed("VGAM")
+  skip_if_not_installed("MASS")
+
+  # Load data
+  data("ANES2016")
+
+  fit.PID1 <- polr(as.factor(PID)~age+edu.year+income.num, data=ANES2016, method="probit")
+  fit.PID2 <- vglm(as.numeric(PID)~age+edu.year+income.num, data=ANES2016, family=acat(reverse=TRUE, parallel=TRUE))
+
+  # Expectations
+
+  r1 <- residuals(fit.PID2, type = "surrogate", jitter="uniform", jitter.uniform.scale="response", nsim=30)
+
+  r2 <- residuals(fit.PID2, type = "surrogate", jitter="uniform", jitter.uniform.scale="probability", nsim=30)
+
+  # Expectations
+  expect_equal(length(r1), nrow(ANES2016))
+  expect_equal(length(r2), nrow(ANES2016))
+  expect_equal(dim(attr(r1, "draws")), c(nrow(ANES2016), 30))
+  expect_equal(dim(attr(r2, "draws")), c(nrow(ANES2016), 30))
+  expect_equal(dim(attr(r2, "draws_id")), c(nrow(ANES2016), 30))
+
+  expect_is(attr(r1, "draws"), "matrix")
+})
 
 test_that("residuals work for \"PAsso\" objects", {
 
@@ -290,6 +319,10 @@ test_that("residualsAcat work for \"vglm\" objects", {
 })
 
 test_that("residuals work for \"vglm\" objects", {
+  # Skips
+  skip_on_cran()
+  skip_if_not_installed("MASS")
+
   data(df1)
 
   # Fit cumulative link model
@@ -298,6 +331,7 @@ test_that("residuals work for \"vglm\" objects", {
                       family = VGAM::cumulative(link = "logit",
                                                 parallel = TRUE))
   )
+
   # Compute residuals
   res1_1 <- residuals(fit)
   res1_2 <- residuals(fit, type = "surrogate", jitter = "latent",
@@ -309,6 +343,7 @@ test_that("residuals work for \"vglm\" objects", {
   )
   res2_1 <- residuals(fit2)
   res2_2 <- residuals(fit2, nsim=10)
+
   # summary(res2_1)
 
   # Expectations

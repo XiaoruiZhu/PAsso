@@ -137,7 +137,20 @@ residuals.clm <- function(object,
   }
 
   # Generate surrogate response values
-  r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
+  if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
+    use_func <- "residualsAcat"
+
+    r <- do.call(what = use_func,
+                 args = list(object = object,
+                             type = type, jitter = jitter,
+                             jitter.uniform.scale = jitter.uniform.scale,
+                             nsim = nsim, ...)
+    )
+  } else {
+    # Original way, has issue to deal with S4 vglm.
+    r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
+  }
+
 
   # Multiple samples
   if (nsim > 1L) {  # multiple draws
@@ -146,9 +159,24 @@ residuals.clm <- function(object,
       # draws_id[, i] <- sample(nobs(object), replace = TRUE)
       # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
       draws_id[, i] <- seq_along(getResponseValues(object))
-      draws[, i] <-
-        generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-                           draws_id = draws_id[, i, drop = TRUE])
+      # draws[, i] <-
+      #   generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+      #                      draws_id = draws_id[, i, drop = TRUE])
+      if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
+        use_func <- "residualsAcat"
+
+        draws_id[, i] <- do.call(what = use_func,
+                     args = list(object = object,
+                                 type = type, jitter = jitter,
+                                 jitter.uniform.scale = jitter.uniform.scale,
+                                 nsim = nsim, ...)
+        )
+      } else {
+        # Original way, has issue to deal with S4 vglm.
+        draws[, i] <-
+          generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+                             draws_id = draws_id[, i, drop = TRUE])
+      }
     }
     attr(r, "draws") <- draws
     attr(r, "draws_id") <- draws_id
@@ -183,10 +211,11 @@ residuals.orm <- residuals.clm
 residuals.polr <- residuals.clm
 
 
-#' @rdname residuals
-#' @method residuals vglm
-#' @export
-residuals.vglm <- residuals.clm
+#' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
+
+setMethod("residuals",  "vglm",
+          function(object, ...)
+            residualsAcat(object, ...))
 
 #' p_adj_cate
 #'
