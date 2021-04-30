@@ -81,7 +81,7 @@ regression models using ggplot graphics." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -95,7 +95,7 @@ regression models using ggplot graphics." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/XiaoruiZhu/PAsso/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -123,200 +123,200 @@ regression models using <code><a href='https://ggplot2.tidyverse.org/reference/g
     </div>
 
     <pre class="usage"><span class='co'># S3 method for resid</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for glm</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for clm</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for lrm</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for orm</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for polr</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for vglm</span>
-<span class='fu'>autoplot</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>output</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span>),
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqpoint.color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>,
-  <span class='kw'>qqpoint.shape</span> <span class='kw'>=</span> <span class='fl'>19</span>,
-  <span class='kw'>qqpoint.size</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>qqline.color</span> <span class='kw'>=</span> <span class='st'>"#888888"</span>,
-  <span class='kw'>qqline.linetype</span> <span class='kw'>=</span> <span class='st'>"dashed"</span>,
-  <span class='kw'>qqline.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smooth.color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>smooth.linetype</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>smooth.size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>resp_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'>autoplot</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  output <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"qq"</span>, <span class='st'>"fitted"</span>, <span class='st'>"covariate"</span><span class='op'>)</span>,
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit <span class='op'>=</span> <span class='cn'>NULL</span>,
+  distribution <span class='op'>=</span> <span class='va'>qnorm</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  shape <span class='op'>=</span> <span class='fl'>19</span>,
+  size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqpoint.color <span class='op'>=</span> <span class='st'>"#444444"</span>,
+  qqpoint.shape <span class='op'>=</span> <span class='fl'>19</span>,
+  qqpoint.size <span class='op'>=</span> <span class='fl'>2</span>,
+  qqline.color <span class='op'>=</span> <span class='st'>"#888888"</span>,
+  qqline.linetype <span class='op'>=</span> <span class='st'>"dashed"</span>,
+  qqline.size <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  smooth.color <span class='op'>=</span> <span class='st'>"red"</span>,
+  smooth.linetype <span class='op'>=</span> <span class='fl'>1</span>,
+  smooth.size <span class='op'>=</span> <span class='fl'>1</span>,
+  fill <span class='op'>=</span> <span class='cn'>NULL</span>,
+  resp_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -460,14 +460,15 @@ displayed in the figure.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Load data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>df1</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>df1</span><span class='op'>)</span>
 <span class='co'># Fit cumulative link model</span>
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y</span> ~ <span class='no'>x</span> + <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span>(<span class='no'>x</span> ^ <span class='fl'>2</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>df1</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>binomial</span>)
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>^</span> <span class='fl'>2</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>df1</span>, family <span class='op'>=</span> <span class='va'>binomial</span><span class='op'>)</span>
 <span class='co'># Construct residual plots</span>
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>fit</span>, <span class='kw'>jitter.scale</span> <span class='kw'>=</span> <span class='st'>"probability"</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"qq"</span>)
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>fit</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"covariate"</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>df1</span>$<span class='no'>x</span>)
-<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>fit</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"fitted"</span>)
-<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>fit</span>, <span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"fitted"</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div></pre>
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>fit</span>, jitter.scale <span class='op'>=</span> <span class='st'>"probability"</span>, output <span class='op'>=</span> <span class='st'>"qq"</span><span class='op'>)</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>fit</span>, output <span class='op'>=</span> <span class='st'>"covariate"</span>, x <span class='op'>=</span> <span class='va'>df1</span><span class='op'>$</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>fit</span>, output <span class='op'>=</span> <span class='st'>"fitted"</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -483,7 +484,7 @@ displayed in the figure.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

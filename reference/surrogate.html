@@ -81,7 +81,7 @@ using the latent method described in Liu and Zhang (2017)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -95,7 +95,7 @@ using the latent method described in Liu and Zhang (2017)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/XiaoruiZhu/PAsso/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -122,13 +122,13 @@ using the latent method described in Liu and Zhang (2017)." />
 using the latent method described in Liu and Zhang (2017).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>surrogate</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"latent"</span>, <span class='st'>"uniform"</span>),
-  <span class='kw'>jitter.uniform.scale</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"probability"</span>, <span class='st'>"response"</span>),
-  <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>surrogate</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"latent"</span>, <span class='st'>"uniform"</span><span class='op'>)</span>,
+  jitter.uniform.scale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"probability"</span>, <span class='st'>"response"</span><span class='op'>)</span>,
+  nsim <span class='op'>=</span> <span class='fl'>1L</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,7 +166,7 @@ Default is <code>1L</code> meaning no bootstrap samples.</p></td>
 
     <p>A numeric vector of class <code><a href='https://rdrr.io/r/base/c.html'>c("numeric", "surrogate")</a></code> containing
 the simulated surrogate response values. Additionally, if <code>nsim</code> &gt; 1,
-then the result will contain the attributes:</p><dl'>
+then the result will contain the attributes:</p><dl>
   <dt><code>boot_reps</code></dt><dd><p>A matrix  with <code>nsim</code> columns, one for each
   bootstrap replicate of the surrogate values. Note, these are random and do
   not correspond to the original ordering of the data;</p></dd>
@@ -196,34 +196,39 @@ Regression Models: A Surrogate Approach.
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generate data from a quadratic probit model</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>2000</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='no'>n</span>, <span class='kw'>min</span> <span class='kw'>=</span> -<span class='fl'>3</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>6</span>)
-<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span> + <span class='fl'>3</span>*<span class='no'>x</span> - <span class='fl'>1</span>*<span class='no'>x</span>^<span class='fl'>2</span> + <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>n</span>)
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>z</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>, <span class='kw'>yes</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>no</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>101</span><span class='op'>)</span>
+<span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>2000</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='va'>n</span>, min <span class='op'>=</span> <span class='op'>-</span><span class='fl'>3</span>, max <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span>
+<span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fl'>10</span> <span class='op'>+</span> <span class='fl'>3</span><span class='op'>*</span><span class='va'>x</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>*</span><span class='va'>x</span><span class='op'>^</span><span class='fl'>2</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>z</span> <span class='op'>&lt;=</span> <span class='fl'>0</span>, yes <span class='op'>=</span> <span class='fl'>0</span>, no <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'># Scatterplot matrix</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/pairs.html'>pairs</a></span>(~ <span class='no'>x</span> + <span class='no'>y</span> + <span class='no'>z</span>)</div><div class='img'><img src='surrogate-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/pairs.html'>pairs</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>x</span> <span class='op'>+</span> <span class='va'>y</span> <span class='op'>+</span> <span class='va'>z</span><span class='op'>)</span>
+</div><div class='img'><img src='surrogate-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Setup for side-by-side plots</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Misspecified mean structure</span>
-<span class='no'>fm1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y</span> ~ <span class='no'>x</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"probit"</span>))
-<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>surrogate</span>(<span class='no'>fm1</span>)
-<span class='fu'><a href='https://rdrr.io/r/stats/scatter.smooth.html'>scatter.smooth</a></span>(<span class='no'>x</span>, <span class='no'>s1</span> - <span class='no'>fm1</span>$<span class='no'>linear.predictors</span>,
-               <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Misspecified model"</span>,
-               <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Surrogate residual"</span>,
-               <span class='kw'>lpars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red2"</span>))
-<span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue2"</span>)
+<span class='va'>fm1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>x</span>, family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>"probit"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s1</span> <span class='op'>&lt;-</span> <span class='fu'>surrogate</span><span class='op'>(</span><span class='va'>fm1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/scatter.smooth.html'>scatter.smooth</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>s1</span> <span class='op'>-</span> <span class='va'>fm1</span><span class='op'>$</span><span class='va'>linear.predictors</span>,
+               main <span class='op'>=</span> <span class='st'>"Misspecified model"</span>,
+               ylab <span class='op'>=</span> <span class='st'>"Surrogate residual"</span>,
+               lpars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>3</span>, col <span class='op'>=</span> <span class='st'>"red2"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='fl'>0</span>, lty <span class='op'>=</span> <span class='fl'>2</span>, col <span class='op'>=</span> <span class='st'>"blue2"</span><span class='op'>)</span>
 
 <span class='co'># Correctly specified mean structure</span>
-<span class='no'>fm2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>y</span> ~ <span class='no'>x</span> + <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span>(<span class='no'>x</span> ^ <span class='fl'>2</span>), <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"probit"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></div><div class='input'><span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>surrogate</span>(<span class='no'>fm2</span>)
-<span class='fu'><a href='https://rdrr.io/r/stats/scatter.smooth.html'>scatter.smooth</a></span>(<span class='no'>x</span>, <span class='no'>s2</span> - <span class='no'>fm2</span>$<span class='no'>linear.predictors</span>,
-               <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Correctly specified model"</span>,
-               <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Surrogate residual"</span>,
-               <span class='kw'>lpars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red2"</span>))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue2"</span>)</div><div class='img'><img src='surrogate-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>fm2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>x</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/AsIs.html'>I</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>^</span> <span class='fl'>2</span><span class='op'>)</span>, family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>"probit"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</span></div><div class='input'><span class='va'>s2</span> <span class='op'>&lt;-</span> <span class='fu'>surrogate</span><span class='op'>(</span><span class='va'>fm2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/scatter.smooth.html'>scatter.smooth</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>s2</span> <span class='op'>-</span> <span class='va'>fm2</span><span class='op'>$</span><span class='va'>linear.predictors</span>,
+               main <span class='op'>=</span> <span class='st'>"Correctly specified model"</span>,
+               ylab <span class='op'>=</span> <span class='st'>"Surrogate residual"</span>,
+               lpars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>3</span>, col <span class='op'>=</span> <span class='st'>"red2"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='fl'>0</span>, lty <span class='op'>=</span> <span class='fl'>2</span>, col <span class='op'>=</span> <span class='st'>"blue2"</span><span class='op'>)</span>
+</div><div class='img'><img src='surrogate-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
-<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>() <span class='co'># reset to defaults once finish</span></div><div class='output co'>#&gt; null device 
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># reset to defaults once finish</span>
+</div><div class='output co'>#&gt; null device 
 #&gt;           1 </div><div class='input'>
 </div></pre>
   </div>
@@ -241,7 +246,7 @@ Regression Models: A Surrogate Approach.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
