@@ -138,14 +138,19 @@ residuals.clm <- function(object,
 
   # Generate surrogate response values
   if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
-    use_func <- "residualsAcat"
+    # use_func <- "residualsAcat"
+    r <- residuals.vglm(object = object,
+                        type = type,
+                        jitter = jitter,
+                        jitter.uniform.scale = jitter.uniform.scale,
+                        nsim = nsim,...)
 
-    r <- do.call(what = use_func,
-                 args = list(object = object,
-                             type = type, jitter = jitter,
-                             jitter.uniform.scale = jitter.uniform.scale,
-                             nsim = nsim, ...)
-    )
+    # r <- do.call(what = use_func,
+    #              args = list(object = object,
+    #                          type = type, jitter = jitter,
+    #                          jitter.uniform.scale = jitter.uniform.scale,
+    #                          nsim = nsim, ...)
+    # )
   } else {
     # Original way, has issue to deal with S4 vglm.
     r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
@@ -163,14 +168,20 @@ residuals.clm <- function(object,
       #   generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
       #                      draws_id = draws_id[, i, drop = TRUE])
       if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
-        use_func <- "residualsAcat"
+        # use_func <- "residualsAcat"
+        #
+        # draws_id[, i] <- do.call(what = use_func,
+        #              args = list(object = object,
+        #                          type = type, jitter = jitter,
+        #                          jitter.uniform.scale = jitter.uniform.scale,
+        #                          nsim = nsim, ...)
+        # )
 
-        draws_id[, i] <- do.call(what = use_func,
-                     args = list(object = object,
-                                 type = type, jitter = jitter,
-                                 jitter.uniform.scale = jitter.uniform.scale,
-                                 nsim = nsim, ...)
-        )
+        draws_id[, i] <- residuals.vglm(object = object,
+                                        type = type,
+                                        jitter = jitter,
+                                        jitter.uniform.scale = jitter.uniform.scale,
+                                        nsim = nsim,...)
       } else {
         # Original way, has issue to deal with S4 vglm.
         draws[, i] <-
