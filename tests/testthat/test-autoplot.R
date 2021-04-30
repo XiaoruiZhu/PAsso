@@ -157,16 +157,14 @@ test_that("autoplot works for \"vglm\" objects", {
   )
 
   # Construct residual plots
-  p1 <- ggplot2::autoplot(fit, output = "qq")
-  p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
-  p3 <- ggplot2::autoplot(fit, output = "fitted")
-  p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
+  p1 <- autoplot(fit, output = "qq")
+  p2 <- autoplot(fit, output = "covariate", x = df1$x)
+  p3 <- autoplot(fit, output = "fitted")
 
 
   # Expectations
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-  expect_is(p4, "ggplot")
 
 })

@@ -105,7 +105,6 @@
 #' p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
 #' p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
 #' p3 <- ggplot2::autoplot(fit, output = "fitted")
-#' p4 <- ggplot2::autoplot(fit, output = "fitted", nsim = 10)
 #'
 autoplot.resid <- function(
   object,
