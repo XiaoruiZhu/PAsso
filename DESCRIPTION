@@ -6,8 +6,8 @@ Description: An implementation of the unified framework for assessing partial as
             Li, Yan Yu and Irini Moustaki (2020), accepted by the Journal of the American 
             Statistical Association). This package provides a set of tools to quantify, visualize, 
             and test partial associations between multiple ordinal variables. It can produce a number
-            of \phi measures, partial regression plots, 3-D plots, and p-values for testing 
-            H_0: \phi=0 or H_0: \phi <= \delta.
+            of $phi$ measures, partial regression plots, 3-D plots, and $p$-values for testing 
+            $H_0: phi=0$ or $H_0: phi <= delta$.
 Version: 0.1.9
 Authors@R: 
   c(person(given = "Xiaorui (Jeremy)", family = "Zhu",
