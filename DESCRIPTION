@@ -16,12 +16,12 @@ Authors@R:
     person(given = "Shaobo", family = "Li", 
            role = c("aut"), 
            email = "shaobo.li@ku.edu"),
+    person(given = "Dungang", family = "Liu",
+           role = c("ctb", "aut"),
+           email = "dungang.liu@uc.edu"),
     person(given = "Yuejie ", family = "Chen", 
            role = c("ctb"), 
-           email = "chen4y9@mail.uc.edu"),
-    person(given = "Dungang", family = "Liu",
-           role = c("ctb"),
-           email = "dungang.liu@uc.edu"))
+           email = "chen4y9@mail.uc.edu"))
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
 URL: GitHub: https://github.com/XiaoruiZhu/PAsso
 BugReports: https://github.com/XiaoruiZhu/PAsso/issues
