@@ -61,13 +61,15 @@ test_that("Simple PAsso() for two responses",{
   expect_equal(dim(PAsso_1$corr)[1], 2)
 
   # Expectations
+  # Jittering now works for probit uniform
   expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
                      data = ANES2016, uni.model = "probit",
                      method = c("kendall"),
                      resids.type = "surrogate", jitter = "uniform"),
-               "only supported for logit-type models")
+                 NA)
 
+  # Jittering now works for probit uniform response scale
   expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
                      data = ANES2016, uni.model = "probit",
@@ -76,6 +78,7 @@ test_that("Simple PAsso() for two responses",{
                      jitter.uniform.scale = "response"),
                NA)
 
+  # Jittering now works for probit uniform probability scale
   expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),
                      data = ANES2016, uni.model = "logit",
@@ -123,7 +126,7 @@ test_that("Simple PAsso() for two responses(Choose one binary response to test r
                      data = ANES2016, uni.model = "probit",
                      method = c("kendall"),
                      resids.type = "surrogate", jitter = "uniform"),
-               "only supported for logit-type models")
+               NA)
 
   expect_error(PAsso(responses = c("PreVote.num", "PID", "selfLR"),
                      adjustments = c("income.num", "age", "edu.year"),

@@ -25,17 +25,18 @@
 #'   \item{\code{deviance}}{deviance residuals (-2*loglik).}
 #' }
 #'
-#' @param jitter A character string specifying which method to use to generate the
-#' surrogate response values. Current options are \code{"latent"} and
-#' \code{"uniform"}. Default is \code{"latent"}.
+#' @param jitter When the \code{type = "surrogate"}, this argument is a character string
+#' specifying which method to use to generate the surrogate response values. Current
+#' options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
 #' \describe{
 #'   \item{\code{latent}}{latent approach;}
 #'   \item{\code{uniform}}{jittering uniform approach.}
 #' }
 #'
-#' @param jitter.uniform.scale A character string specifying the scale on which to perform
-#' the jittering whenever \code{jitter = "uniform"}. Current options are
-#' \code{"response"} and \code{"probability"}. Default is \code{"response"}.
+#' @param jitter.uniform.scale When the \code{jitter = "uniform"}, this is a character
+#' string specifying the scale on which to perform the jittering whenever
+#' \code{jitter = "uniform"}. Current options are \code{"response"} and \code{"probability"}.
+#' Default is \code{"response"}.
 #'
 #' @param nsim An integer specifying the number of replicates to use.
 #' Default is \code{1L} meaning one simulation only of residuals.
@@ -138,13 +139,13 @@ residuals.clm <- function(object,
 
   # Generate surrogate response values
   if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
-    # use_func <- "residualsAcat"
     r <- residuals.vglm(object = object,
                         type = type,
                         jitter = jitter,
                         jitter.uniform.scale = jitter.uniform.scale,
                         nsim = nsim,...)
-
+    # Below is another way to solve the S4 issue, but redundant now.
+    # use_func <- "residualsAcat"
     # r <- do.call(what = use_func,
     #              args = list(object = object,
     #                          type = type, jitter = jitter,
@@ -168,6 +169,13 @@ residuals.clm <- function(object,
       #   generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
       #                      draws_id = draws_id[, i, drop = TRUE])
       if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
+        draws_id[, i] <- residuals.vglm(object = object,
+                                        type = type,
+                                        jitter = jitter,
+                                        jitter.uniform.scale = jitter.uniform.scale,
+                                        nsim = nsim,...)
+
+        # Below is another way to solve the S4 issue, but redundant now.
         # use_func <- "residualsAcat"
         #
         # draws_id[, i] <- do.call(what = use_func,
@@ -176,12 +184,6 @@ residuals.clm <- function(object,
         #                          jitter.uniform.scale = jitter.uniform.scale,
         #                          nsim = nsim, ...)
         # )
-
-        draws_id[, i] <- residuals.vglm(object = object,
-                                        type = type,
-                                        jitter = jitter,
-                                        jitter.uniform.scale = jitter.uniform.scale,
-                                        nsim = nsim,...)
       } else {
         # Original way, has issue to deal with S4 vglm.
         draws[, i] <-
@@ -223,7 +225,7 @@ residuals.polr <- residuals.clm
 
 
 #' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
-
+#' @export
 setMethod("residuals",  "vglm",
           function(object, ...)
             residualsAcat(object, ...))

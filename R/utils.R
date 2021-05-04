@@ -669,11 +669,11 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
   # Match arguments
   method <- match.arg(method)
 
+  # Get distribution name (for sampling)
+  distribution <- getDistributionName(object)  # distribution name
+
   # Generate surrogate response values
   s <- if (method == "latent") {  # latent variable approach
-
-    # Get distribution name (for sampling)
-    distribution <- getDistributionName(object)  # distribution name
 
     # Simulate surrogate response values from the appropriate truncated
     # distribution
@@ -715,13 +715,23 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1)
     } else {  # jittering on the probability scale
-      if (getDistributionName(object) != "logis") {
+      if (distribution == "logis") {
+        # stop("Jittering on the probability scale is currently only supported",
+             # " for logit-type models.", call. = FALSE)
+        .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+        .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+      } else if (distribution == "norm") {
+        # This is for Issue #6. Keep this in mind, this may have issues due to different settings in different packages!
+        .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y-1)
+        .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y)
+        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+      } else {
         stop("Jittering on the probability scale is currently only supported",
-             " for logit-type models.", call. = FALSE)
+        " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.", call. = FALSE)
       }
-      .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-      .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
-      runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+
+
     }
 
   }
@@ -748,11 +758,11 @@ generate_residuals <-
     draws_id <- seq_along(y)
   }
 
+  # Get distribution name (for sampling)
+  distribution <- getDistributionName(object)  # distribution name
+
   # Generate surrogate response values
   r <- if (method == "latent") {  # latent variable approach
-
-    # Get distribution name (for sampling)
-    distribution <- getDistributionName(object)  # distribution name
 
     # Simulate surrogate response values from the appropriate truncated
     # distribution
@@ -786,13 +796,23 @@ generate_residuals <-
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
     } else {  # jittering on the probability scale
-      if (getDistributionName(object) != "logis") {
+
+      if (distribution == "logis") {
+        # stop("Jittering on the probability scale is currently only supported",
+        # " for logit-type models.", call. = FALSE)
+        .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
+        .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
+        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+      } else if (distribution == "norm") {
+        # This is for Issue #6. Keep this in mind, this may have issues due to different settings in different packages!
+        .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y-1)
+        .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y)
+        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+      } else {
         stop("Jittering on the probability scale is currently only supported",
-             " for logit-type models.", call. = FALSE)
+             " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.", call. = FALSE)
       }
-      .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-      .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
-      runif(length(y), min = .min, max = .max) - 0.5  # S|Y=y - E(S|X)
+
     }
   } else if (method == "sign") { # sign-based residuals
     n <- length(y)
@@ -803,7 +823,7 @@ generate_residuals <-
     pyej <- prob[cbind(1:n, y)]
     pysj <- sapply(1:n, function(x) sum(prob[x,1:y[x]])) - pyej
     PR <- -1 + 2*pysj + pyej
-    PR
+    PR # Return sign-based residuals
   } else if (method == "general") { # generalized residuals
     n <- length(y); y <- y[draws_id]
     prob <- getFittedProbs(object)[draws_id, ]
@@ -827,7 +847,7 @@ generate_residuals <-
     n <- length(y); y <- y[draws_id]
     prob <- getFittedProbs(object)[draws_id, ]
 
-    -2*log(prob[cbind(1:n, y)])
+    -2*log(prob[cbind(1:n, y)]) # Return deviance residuals
   }
 
   # Return results

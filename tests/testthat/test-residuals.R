@@ -1,5 +1,34 @@
 context("PAsso: 'residuals()' for Surrogate residuals")
 
+test_that("Github reported issue #6", {
+  # Skips
+  skip_on_cran()
+  skip_if_not_installed("VGAM")
+  skip_if_not_installed("MASS")
+
+  # Load data
+  data("ANES2016")
+
+  fit.PID1 <- polr(as.factor(PID)~age+edu.year+income.num, data=ANES2016, method="probit")
+
+  a1 <- residuals(fit.PID1, type = "surrogate", jitter="latent", jitter.uniform.scale="response")
+  a2 <- residuals(fit.PID1, type = "surrogate", jitter="uniform", jitter.uniform.scale="response")
+  a3 <- residuals(fit.PID1, type = "surrogate", jitter="latent", jitter.uniform.scale="probability")
+  a4 <- residuals(fit.PID1, type = "surrogate", jitter="uniform", jitter.uniform.scale="probability")
+
+  a4_30 <- residuals(fit.PID1, type = "surrogate", jitter="uniform", jitter.uniform.scale="probability", nsim = 30)
+
+  # Expectations
+  expect_equal(length(a1), nrow(ANES2016))
+  expect_equal(length(a2), nrow(ANES2016))
+  expect_equal(length(a3), nrow(ANES2016))
+  expect_equal(length(a4), nrow(ANES2016))
+
+  expect_equal(dim(attr(a4_30, "draws")), c(nrow(ANES2016), 30))
+  expect_equal(dim(attr(a4_30, "draws_id")), c(nrow(ANES2016), 30))
+
+  expect_is(attr(a4_30, "draws"), "matrix")
+})
 
 test_that("Github reported issue #4", {
   # Skips

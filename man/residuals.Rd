@@ -70,17 +70,18 @@ are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviate
   \item{\code{deviance}}{deviance residuals (-2*loglik).}
 }}
 
-\item{jitter}{A character string specifying which method to use to generate the
-surrogate response values. Current options are \code{"latent"} and
-\code{"uniform"}. Default is \code{"latent"}.
+\item{jitter}{When the \code{type = "surrogate"}, this argument is a character string
+specifying which method to use to generate the surrogate response values. Current
+options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
 \describe{
   \item{\code{latent}}{latent approach;}
   \item{\code{uniform}}{jittering uniform approach.}
 }}
 
-\item{jitter.uniform.scale}{A character string specifying the scale on which to perform
-the jittering whenever \code{jitter = "uniform"}. Current options are
-\code{"response"} and \code{"probability"}. Default is \code{"response"}.}
+\item{jitter.uniform.scale}{When the \code{jitter = "uniform"}, this is a character
+string specifying the scale on which to perform the jittering whenever
+\code{jitter = "uniform"}. Current options are \code{"response"} and \code{"probability"}.
+Default is \code{"response"}.}
 
 \item{nsim}{An integer specifying the number of replicates to use.
 Default is \code{1L} meaning one simulation only of residuals.}
