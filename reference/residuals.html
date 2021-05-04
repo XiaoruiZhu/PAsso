@@ -202,9 +202,9 @@ are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviate
     </tr>
     <tr>
       <th>jitter</th>
-      <td><p>A character string specifying which method to use to generate the
-surrogate response values. Current options are <code>"latent"</code> and
-<code>"uniform"</code>. Default is <code>"latent"</code>.</p><dl>
+      <td><p>When the <code>type = "surrogate"</code>, this argument is a character string
+specifying which method to use to generate the surrogate response values. Current
+options are <code>"latent"</code> and <code>"uniform"</code>. Default is <code>"latent"</code>.</p><dl>
   <dt><code>latent</code></dt><dd><p>latent approach;</p></dd>
   <dt><code>uniform</code></dt><dd><p>jittering uniform approach.</p></dd>
 
@@ -212,9 +212,10 @@ surrogate response values. Current options are <code>"latent"</code> and
     </tr>
     <tr>
       <th>jitter.uniform.scale</th>
-      <td><p>A character string specifying the scale on which to perform
-the jittering whenever <code>jitter = "uniform"</code>. Current options are
-<code>"response"</code> and <code>"probability"</code>. Default is <code>"response"</code>.</p></td>
+      <td><p>When the <code>jitter = "uniform"</code>, this is a character
+string specifying the scale on which to perform the jittering whenever
+<code>jitter = "uniform"</code>. Current options are <code>"response"</code> and <code>"probability"</code>.
+Default is <code>"response"</code>.</p></td>
     </tr>
     <tr>
       <th>nsim</th>
