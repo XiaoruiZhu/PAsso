@@ -96,7 +96,7 @@ dev.off() # reset to defaults once finish
 Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 Regression Models: A Surrogate Approach.
 \emph{Journal of the American Statistical Association}.
-\url{http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
+\url{https://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
 
 Nadarajah, Saralees and Kotz, Samuel. R Programs for Truncated Distributions.
 \emph{Journal of Statistical Software, Code Snippet}, 16(2), 1-8, 2006.

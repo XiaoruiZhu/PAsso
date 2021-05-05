@@ -96,22 +96,21 @@
 #' @references
 #' Liu, Dungang, Li, Shaobo, Yu, Yan, and Moustaki, Irini. Assessing partial association between
 #' ordinal variables: quantification, visualization, and hypothesis testing, \emph{Journal of the
-#' American Statistical Association}, Revision under review.
+#' American Statistical Association}, in press. \doi{10.1080/01621459.2020.1796394}
 #'
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 #' Regression Models: A Surrogate Approach. \emph{Journal of the American Statistical Association}.
-#' \url{http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
+#' \doi{10.1080/01621459.2017.1292915}
 #'
 #' Li, Chun, and Bryan E. Shepherd. "Test of association between two ordinal variables while
 #' adjusting for covariates." \emph{Journal of the American Statistical Association} 105, no.
-#' 490 (2010): 612-620. \url{https://doi.org/10.1198/jasa.2010.tm09386}
+#' 490 (2010): 612-620. \doi{10.1198/jasa.2010.tm09386}
 #'
 #' Li, Chun, and Bryan E. Shepherd. "A new residual for ordinal outcomes." \emph{Biometrika}
-#' 99, no. 2 (2012): 473-480. \url{https://doi.org/10.1093/biomet/asr073}
+#' 99, no. 2 (2012): 473-480. \doi{10.1093/biomet/asr073}
 #'
 #' Franses, Philip Hans, and Richard Paap. Quantitative models in marketing research.
-#' Cambridge University Press, 2001.
-#' \url{https://pdfs.semanticscholar.org/dad0/820f287a8cf5a4e8039549e35fc111fd86e5.pdf}
+#' Cambridge University Press, 2001. \doi{10.1017/CBO9780511753794}
 #'
 #' @importFrom ggplot2 aes_string geom_abline geom_boxplot geom_point
 #'

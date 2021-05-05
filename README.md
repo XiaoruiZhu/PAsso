@@ -4,10 +4,10 @@
 
 [![](https://www.r-pkg.org/badges/version/PAsso)](https://www.r-pkg.org/badges/version/PAsso)
 [![CRAN checks](https://cranchecks.info/badges/summary/PAsso)](https://cran.r-project.org/web/checks/check_results_PAsso.html)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/PAsso)
-[![](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](http://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
-[![](http://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)](http://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)
-[![](https://travis-ci.com/XiaoruiZhu/PAsso.svg?branch=master)](https://travis-ci.com/XiaoruiZhu/PAsso.svg)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/PAsso)
+[![](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
+[![](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)
+[![](https://api.travis-ci.com/XiaoruiZhu/PAsso.svg?branch=master)](https://api.travis-ci.com/XiaoruiZhu/PAsso.svg)
 
 <!-- badges: end -->
 
@@ -129,7 +129,7 @@ References
 Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020) Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing, accepted by the *Journal of the American Statistical Association*.
 
 Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models: A surrogate approach. *Journal of the American Statistical Association*, 113(522), 845-854. DOI: 10.1080/01621459.2017.1292915, URL
-<http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20>
+<https://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20>
 
 Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Liu, D. (2018)
 Residuals and diagnostics for binary and ordinal regression models: An

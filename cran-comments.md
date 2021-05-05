@@ -6,6 +6,16 @@
 ## R CMD check results
 There were no ERRORs, Notes, or WARNINGs. 
 
+* [Fixed] Found the following URLs which should use \doi (with the DOI name only):
+    File 'PAsso.Rd':
+      https://doi.org/10.1198/jasa.2010.tm09386
+      https://doi.org/10.1093/biomet/asr073
+    File 'residuals.Rd':
+      https://doi.org/10.1198/jasa.2010.tm09386
+
+* [Fixed] Check: R code for possible problems, Result: NOTE
+  residuals.clm: no visible global function definition for
+    'residuals.vglm'
 
 * [Fixed] checking for hidden files and directories ... NOTE
   Found the following hidden files and directories:

@@ -68,16 +68,16 @@
 #' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
 #' Regression Models: A Surrogate Approach.
 #' \emph{Journal of the American Statistical Association}.
-#' \url{http://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
+#' \doi{10.1080/01621459.2017.1292915}
 #'
 #' Li, C., & Shepherd, B. E. (2010). Test of association between two ordinal
 #' variables while adjusting for covariates. \emph{Journal of the American Statistical
-#' Association}, 105(490), 612-620. \url{https://doi.org/10.1198/jasa.2010.tm09386}
+#' Association}, 105(490), 612-620. \doi{10.1198/jasa.2010.tm09386}
 #'
 #'
 #' Franses, Philip Hans, and Richard Paap. Quantitative models in marketing research.
 #' Cambridge University Press, 2001.
-#' \url{https://pdfs.semanticscholar.org/dad0/820f287a8cf5a4e8039549e35fc111fd86e5.pdf}
+#' \doi{10.1017/CBO9780511753794}
 #'
 #' @importFrom stats residuals
 #' @name residuals

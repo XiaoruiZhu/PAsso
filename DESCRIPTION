@@ -57,6 +57,7 @@ Suggests:
   mgcv,
   PResiduals,
   knitr,
-  rmarkdown
+  rmarkdown,
+  truncdist
 LinkingTo: Rcpp
 RoxygenNote: 7.1.0
