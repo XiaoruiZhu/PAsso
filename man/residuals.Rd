@@ -6,6 +6,7 @@
 \alias{residuals.lrm}
 \alias{residuals.orm}
 \alias{residuals.polr}
+\alias{residuals,vglm-method}
 \alias{residuals.ord}
 \alias{residuals.PAsso}
 \title{Extract Model Residuals}
@@ -45,6 +46,8 @@
   nsim = 1L,
   ...
 )
+
+\S4method{residuals}{vglm}(object, ...)
 
 \method{residuals}{ord}(
   object,

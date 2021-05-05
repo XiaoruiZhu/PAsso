@@ -225,6 +225,11 @@ residuals.polr <- residuals.clm
 
 
 #' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
+#' @param object An object of class \code{\link[VGAM]{vglm}}.
+#' @param ... Additional optional arguments (Include all arguments in \code{"residuals"} function).
+#'
+#' @rdname residuals
+#' @method residuals vglm
 #' @export
 setMethod("residuals",  "vglm",
           function(object, ...)
