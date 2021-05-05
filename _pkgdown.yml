@@ -1,1 +1,4 @@
 destination: docs
+template:
+  params:
+    ganalytics: G-4EL8ES18RT

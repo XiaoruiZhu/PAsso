@@ -20,28 +20,29 @@ An implementation of the unified framework for assessing **P**arrtial **Asso**ci
 
 The `PAsso` package is currently available on [PAsso CRAN](https://CRAN.R-project.org/package=PAsso).
 
+### Install `PAsso` development version from GitHub (recommended)
+
+``` r
+# Install the development version from GitHub
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("XiaoruiZhu/PAsso")
+```
+
 ### Install `PAsso` from the CRAN
 
 ``` r
 # Install from CRAN
 install.packages("PAsso")
 
-# For macOS, if you have "error: 'math.h' file not found" for installing PAsso v0.1.8,
+# For macOS, if you have "error: 'math.h' file not found" for installing PAsso v0.1.9,
 # the solution could be:
-install.packages("https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/PAsso_0.1.8.tgz", 
+install.packages("https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/PAsso_0.1.9.tgz", 
                   repos = NULL, type = "source")
                   
 # If error "there is no package called 'gsl'" comes, try:
 install.packages("gsl", type = "mac.binary")
 ```
 
-### Install `PAsso` development version from GitHub
-
-``` r
-# Alternatively, install the development version from GitHub
-if (!requireNamespace("devtools")) install.packages("devtools")
-devtools::install_github("XiaoruiZhu/PAsso")
-```
 
 ## Example
 
