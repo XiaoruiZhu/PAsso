@@ -135,7 +135,7 @@ Lower-triangle contains the partial correlation coefficients adjusted by covaria
     </div>
 
     <pre class="usage"><span class='co'># S3 method for PAsso</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"#444444"</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>plot</span><span class='op'>(</span><span class='va'>x</span>, color <span class='op'>=</span> <span class='st'>"#444444"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,9 +164,10 @@ All the plots are based on surrogate residuals generated from <code>"resides"</c
 Graphics are designed based on <code>ggplot2</code> and <code>"GGally"</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>ANES2016</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ANES2016</span><span class='op'>)</span>
 
-<span class='fu'><a href='summary.html'>summary</a></span>(<span class='no'>ANES2016</span>)</div><div class='output co'>#&gt;       age           edu.year      education     income.num   
+<span class='fu'><a href='summary.html'>summary</a></span><span class='op'>(</span><span class='va'>ANES2016</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       age           edu.year      education     income.num   
 #&gt;  Min.   :18.00   Min.   : 8.00   BAdeg :579   Min.   :  5.0  
 #&gt;  1st Qu.:37.00   1st Qu.:14.00   CCdeg :327   1st Qu.: 37.5  
 #&gt;  Median :53.00   Median :15.00   Coll  :447   Median : 67.5  
@@ -198,11 +199,12 @@ Graphics are designed based on <code>ggplot2</code> and <code>"GGally"</code>.</
 #&gt;  3rd Qu.:1.1347  
 #&gt;  Max.   :6.8139  
 #&gt;                  </div><div class='input'>
-<span class='no'>PAsso_2v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PAsso.html'>PAsso</a></span>(<span class='kw'>responses</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PreVote.num"</span>, <span class='st'>"PID"</span>),
-                 <span class='kw'>adjustments</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"income.num"</span>, <span class='st'>"age"</span>, <span class='st'>"edu.year"</span>),
-                 <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ANES2016</span>)
+<span class='va'>PAsso_2v</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PAsso.html'>PAsso</a></span><span class='op'>(</span>responses <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PreVote.num"</span>, <span class='st'>"PID"</span><span class='op'>)</span>,
+                 adjustments <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"income.num"</span>, <span class='st'>"age"</span>, <span class='st'>"edu.year"</span><span class='op'>)</span>,
+                 data <span class='op'>=</span> <span class='va'>ANES2016</span><span class='op'>)</span>
 
-<span class='fu'>plot</span>(<span class='no'>PAsso_2v</span>)</div><div class='img'><img src='plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot</span><span class='op'>(</span><span class='va'>PAsso_2v</span><span class='op'>)</span>
+</div><div class='img'><img src='plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -219,7 +221,7 @@ Graphics are designed based on <code>ggplot2</code> and <code>"GGally"</code>.</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

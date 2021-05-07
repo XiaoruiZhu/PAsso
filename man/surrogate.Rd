@@ -93,12 +93,14 @@ dev.off() # reset to defaults once finish
 
 }
 \references{
-Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
-Regression Models: A Surrogate Approach.
-\emph{Journal of the American Statistical Association}.
-\url{https://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20}
+Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020). Assessing partial association between
+ordinal variables: quantification, visualization, and hypothesis testing. \emph{Journal
+of the American Statistical Association}, 1-14. \doi{10.1080/01621459.2020.1796394}
 
-Nadarajah, Saralees and Kotz, Samuel. R Programs for Truncated Distributions.
-\emph{Journal of Statistical Software, Code Snippet}, 16(2), 1-8, 2006.
-\url{https://www.jstatsoft.org/v016/c02}.
+Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models:
+A surrogate approach. \emph{Journal of the American Statistical Association}, 113(522), 845-854.
+\doi{10.1080/01621459.2017.1292915}
+
+Nadarajah, S., & Kotz, S. (2006). R Programs for Truncated Distributions. \emph{Journal
+of Statistical Software}, 16(Code Snippet 2), 1 - 8. \doi{10.18637/jss.v016.c02}
 }

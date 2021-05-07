@@ -126,12 +126,9 @@ summary(PAsso_adv1, digits = 3)
 References
 ----------
 
-Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020) Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing, accepted by the *Journal of the American Statistical Association*.
+Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020). Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing. *Journal of the American Statistical Association*, 1-14. <10.1080/01621459.2020.1796394>
 
-Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models: A surrogate approach. *Journal of the American Statistical Association*, 113(522), 845-854. DOI: 10.1080/01621459.2017.1292915, URL
-<https://www.tandfonline.com/doi/abs/10.1080/01621459.2017.1292915?journalCode=uasa20>
+Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models: A surrogate approach. *Journal of the American Statistical Association*, 113(522), 845-854. <10.1080/01621459.2017.1292915>
 
-Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Liu, D. (2018)
-Residuals and diagnostics for binary and ordinal regression models: An
-introduction to the sure package. *The R Journal*. URL <https://journal.r-project.org/archive/2018/RJ-2018-004/index.html>
-
+Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. & Liu, D. (2018) Residuals and diagnostics for binary and ordinal regression models: An
+introduction to the sure package. *The R Journal*. <10.32614/RJ-2018-004>

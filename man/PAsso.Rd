@@ -160,21 +160,21 @@ summary(PAsso_adv1, digits = 4)
 
 }
 \references{
-Liu, Dungang, Li, Shaobo, Yu, Yan, and Moustaki, Irini. Assessing partial association between
-ordinal variables: quantification, visualization, and hypothesis testing, \emph{Journal of the
-American Statistical Association}, in press. \doi{10.1080/01621459.2020.1796394}
+Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020). Assessing partial association between
+ordinal variables: quantification, visualization, and hypothesis testing. \emph{Journal
+of the American Statistical Association}, 1-14. \doi{10.1080/01621459.2020.1796394}
 
-Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
-Regression Models: A Surrogate Approach. \emph{Journal of the American Statistical Association}.
+Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models:
+A surrogate approach. \emph{Journal of the American Statistical Association}, 113(522), 845-854.
 \doi{10.1080/01621459.2017.1292915}
 
-Li, Chun, and Bryan E. Shepherd. "Test of association between two ordinal variables while
-adjusting for covariates." \emph{Journal of the American Statistical Association} 105, no.
-490 (2010): 612-620. \doi{10.1198/jasa.2010.tm09386}
+Li, C., & Shepherd, B. E. (2010). Test of association between two ordinal variables
+while adjusting for covariates. \emph{Journal of the American Statistical Association},
+105(490), 612-620. \doi{10.1198/jasa.2010.tm09386}
 
-Li, Chun, and Bryan E. Shepherd. "A new residual for ordinal outcomes." \emph{Biometrika}
-99, no. 2 (2012): 473-480. \doi{10.1093/biomet/asr073}
+Li, C., & Shepherd, B. E. (2012). A new residual for ordinal outcomes. \emph{Biometrika},
+99(2), 473-480. \doi{10.1093/biomet/asr073}
 
-Franses, Philip Hans, and Richard Paap. Quantitative models in marketing research.
-Cambridge University Press, 2001. \doi{10.1017/CBO9780511753794}
+Franses, P. H., & Paap, R. (2001). \emph{Quantitative models in marketing research}.
+Cambridge University Press. \doi{10.1017/CBO9780511753794}
 }

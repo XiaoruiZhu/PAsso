@@ -65,19 +65,20 @@
 #' For \code{"glm"} objects, only the \code{binomial()} family is supported.
 #'
 #' @references
-#' Liu, Dungang and Zhang, Heping. Residuals and Diagnostics for Ordinal
-#' Regression Models: A Surrogate Approach.
-#' \emph{Journal of the American Statistical Association}.
+#' Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020). Assessing partial association between
+#' ordinal variables: quantification, visualization, and hypothesis testing. \emph{Journal
+#' of the American Statistical Association}, 1-14. \doi{10.1080/01621459.2020.1796394}
+#'
+#' Liu, D., & Zhang, H. (2018). Residuals and diagnostics for ordinal regression models:
+#' A surrogate approach. \emph{Journal of the American Statistical Association}, 113(522), 845-854.
 #' \doi{10.1080/01621459.2017.1292915}
 #'
-#' Li, C., & Shepherd, B. E. (2010). Test of association between two ordinal
-#' variables while adjusting for covariates. \emph{Journal of the American Statistical
-#' Association}, 105(490), 612-620. \doi{10.1198/jasa.2010.tm09386}
+#' Li, C., & Shepherd, B. E. (2010). Test of association between two ordinal variables
+#' while adjusting for covariates. \emph{Journal of the American Statistical Association},
+#' 105(490), 612-620. \doi{10.1198/jasa.2010.tm09386}
 #'
-#'
-#' Franses, Philip Hans, and Richard Paap. Quantitative models in marketing research.
-#' Cambridge University Press, 2001.
-#' \doi{10.1017/CBO9780511753794}
+#' Franses, P. H., & Paap, R. (2001). \emph{Quantitative models in marketing research}.
+#' Cambridge University Press. \doi{10.1017/CBO9780511753794}
 #'
 #' @importFrom stats residuals
 #' @name residuals

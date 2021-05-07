@@ -120,12 +120,12 @@
 #'
 #' @references
 #' DeBell, Matthew, Jon A. Krosnick, Katie Gera, David S. Yeager, and Michael P. McDonald.
-#' The turnout gap in surveys: Explanations and solutions. \emph{Sociological Methods & Research}, 2018:
-#' 0049124118769085.
+#' The turnout gap in surveys: Explanations and solutions. \emph{Sociological Methods & Research}, 2018.
+#' \doi{10.1177/0049124118769085}
 #'
-#' Enamorado, Ted, Benjamin Fifield, and Kosuke Imai. \emph{User’s guide and codebook for the ANES
-#' 2016 time series voter validation supplemental data}. Tech. rep.,
-#' American National Election Studies, 2018.
+#' Enamorado, T., Fifield, B., & Imai, K. (2018). \emph{User’s guide and codebook for the
+#' ANES 2016 time series voter validation supplemental data}. Technical Report, American
+#' National Election Studies.
 #'
 #' @name ANES2016
 #'
