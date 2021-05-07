@@ -1,6 +1,6 @@
 ################################################################################
-# S3 generic functions are developed for the class of "clm", "glm", "lrm", "orm",
-# "polr", "vgam", or "vglm".
+# S3 generic functions are developed for the class of "clm", "lrm", "orm",
+# "polr"
 #################################################################################
 
 #' @title Extract Model Residuals
@@ -115,9 +115,9 @@ residuals.clm <- function(object,
   # nsim = 30
 
   # Sanity check
-  if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr", "vglm"))) {
+  if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr"))) {
     stop(deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
-         "\"lrm\", \"orm\", \"polr\", \"vgam\", or \"vglm\".")
+         "\"lrm\", \"orm\", or \"polr\".")
   }
 
   # Match arguments
@@ -138,24 +138,8 @@ residuals.clm <- function(object,
   }
 
   # Generate surrogate response values
-  if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
-    r <- residuals.vglm(object = object,
-                        type = type,
-                        jitter = jitter,
-                        jitter.uniform.scale = jitter.uniform.scale,
-                        nsim = nsim,...)
-    # Below is another way to solve the S4 issue, but redundant now.
-    # use_func <- "residualsAcat"
-    # r <- do.call(what = use_func,
-    #              args = list(object = object,
-    #                          type = type, jitter = jitter,
-    #                          jitter.uniform.scale = jitter.uniform.scale,
-    #                          nsim = nsim, ...)
-    # )
-  } else {
-    # Original way, has issue to deal with S4 vglm.
-    r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
-  }
+  # Original way, has issue to deal with S4 vglm.
+  r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale)
 
 
   # Multiple samples
@@ -165,31 +149,9 @@ residuals.clm <- function(object,
       # draws_id[, i] <- sample(nobs(object), replace = TRUE)
       # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
       draws_id[, i] <- seq_along(getResponseValues(object))
-      # draws[, i] <-
-      #   generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-      #                      draws_id = draws_id[, i, drop = TRUE])
-      if (isS4(object) & inherits(object, "vglm")) { # If object is S4, need to use "residualsAcat" instead!
-        draws_id[, i] <- residuals.vglm(object = object,
-                                        type = type,
-                                        jitter = jitter,
-                                        jitter.uniform.scale = jitter.uniform.scale,
-                                        nsim = nsim,...)
-
-        # Below is another way to solve the S4 issue, but redundant now.
-        # use_func <- "residualsAcat"
-        #
-        # draws_id[, i] <- do.call(what = use_func,
-        #              args = list(object = object,
-        #                          type = type, jitter = jitter,
-        #                          jitter.uniform.scale = jitter.uniform.scale,
-        #                          nsim = nsim, ...)
-        # )
-      } else {
-        # Original way, has issue to deal with S4 vglm.
-        draws[, i] <-
-          generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-                             draws_id = draws_id[, i, drop = TRUE])
-      }
+      draws[, i] <-
+        generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+                           draws_id = draws_id[, i, drop = TRUE])
     }
     attr(r, "draws") <- draws
     attr(r, "draws_id") <- draws_id
@@ -223,17 +185,6 @@ residuals.orm <- residuals.clm
 #' @export
 residuals.polr <- residuals.clm
 
-
-#' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
-#' @param object An object of class \code{\link[VGAM]{vglm}}.
-#' @param ... Additional optional arguments (Include all arguments in \code{"residuals"} function).
-#'
-#' @rdname residuals
-#' @method residuals vglm
-#' @export
-setMethod("residuals",  "vglm",
-          function(object, ...)
-            residualsAcat(object, ...))
 
 #' p_adj_cate
 #'
@@ -382,6 +333,161 @@ residualsAcat <- function(object,
   return(r)
 }
 
+
+################################################################################
+# S4 generic functions are developed for the class of "vgam", or "vglm".
+#################################################################################
+
+#' @title Extract Residuals from models of VGAM
+#'
+#' @description A internal function to simulate surrogate residuals for models fitted by
+#' \code{\link[VGAM]{vglm}} and \code{\link[VGAM]{vglm}}. Now, this one support \code{"vglm"} and
+#' \code{"vgam"}, and adjacent categories regression model by \code{"vglm"}. This one may
+#' need to update to support more models from VGAM.
+#'
+#' @keywords internal
+#' @export
+residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "deviance"),
+                          jitter = c("latent", "uniform"),
+                          jitter.uniform.scale = c("probability", "response"),
+                          nsim = 1L, ...) {
+  # Sanity check
+  if (!inherits(object, c("vgam", "vglm"))) {
+    stop(deparse(substitute(object)), " should be of class \"vgam\", or \"vglm\".")
+  }
+  # Match arguments
+  type <- match.arg(type)
+  jitter <- match.arg(jitter)
+  jitter.uniform.scale <- match.arg(jitter.uniform.scale)
+
+  # Switch different type of residuals, need to extract "latent" and "jitter" from "surrogate"
+  if (type == "surrogate") {
+    if (jitter == "uniform") {
+      # Issue warning for jittering surrogate method
+      message("Jittering uniform is an experimental feature, use at your own risk!")
+    }
+    gene_method <- jitter
+
+  } else { # When type is "sign", "general", or "deviance", extract "method" for generate_residuals()
+    gene_method <- type
+  }
+
+  if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1]=="acat")) {
+    # If object is S4 and adjacent categories regression model, need to use "residualsAcat" instead!
+    r <- residualsAcat(object, ...)
+
+    # Below is another way to solve the S4 issue, but redundant now.
+    # use_func <- "residualsAcat"
+    # r <- do.call(what = use_func,
+    #              args = list(object = object,
+    #                          type = type, jitter = jitter,
+    #                          jitter.uniform.scale = jitter.uniform.scale,
+    #                          nsim = nsim, ...)
+    # )
+  } else {
+    r <- generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale, ...)
+  }
+
+  # Multiple samples
+  if (nsim > 1L) {  # multiple draws
+    draws <- draws_id <- matrix(nrow = nobs(object), ncol = nsim)
+
+    # If object is S4, need to use "residualsAcat" instead!
+    if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1]=="acat")) {
+
+      for(i in seq_len(nsim)) {
+        # draws_id[, i] <- sample(nobs(object), replace = TRUE)
+        # BUG FIXED: Above original code is not correct! Use same IDs to replicate and get many draws of residuals!
+        draws_id[, i] <- seq_along(getResponseValues(object))
+
+        suppressMessages(
+          draws[, i] <- residualsAcat(object = object,
+                                      type = type,
+                                      jitter = jitter,
+                                      jitter.uniform.scale = jitter.uniform.scale,
+                                      nsim = nsim,...)
+        )
+
+        # Below is another way to solve the S4 issue, but redundant now.
+        # use_func <- "residualsAcat"
+        #
+        # draws_id[, i] <- do.call(what = use_func,
+        #              args = list(object = object,
+        #                          type = type, jitter = jitter,
+        #                          jitter.uniform.scale = jitter.uniform.scale,
+        #                          nsim = nsim, ...)
+        # )
+
+      }
+
+    } else {
+
+      for(i in seq_len(nsim)) {
+        # draws_id[, i] <- sample(nobs(object), replace = TRUE)
+        # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
+        draws_id[, i] <- seq_along(getResponseValues(object))
+
+        draws[, i] <-
+          generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+                             draws_id = draws_id[, i, drop = TRUE])
+      }
+
+    }
+
+    attr(r, "draws") <- draws
+    attr(r, "draws_id") <- draws_id
+  }
+
+  attr(r, "names") <- NULL
+  attr(r, "arguments") <- c(type, jitter, jitter.uniform.scale)
+
+  # Return residuals
+  class(r) <- c("numeric", "resid")
+  r
+
+}
+
+#' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
+#' @param object An object of class \code{\link[VGAM]{vglm}}.
+#' @param type The type of residuals which should be returned. The alternatives
+#' are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviated.
+#' \describe{
+#'   \item{\code{surrogate}}{surrogate residuals (Liu and Zhang, 2017);}
+#'   \item{\code{sign}}{sign-based residuals;}
+#'   \item{\code{general}}{generalized residuals (Franses and Paap, 2001);}
+#'   \item{\code{deviance}}{deviance residuals (-2*loglik).}
+#' }
+#'
+#' @param jitter When the \code{type = "surrogate"}, this argument is a character string
+#' specifying which method to use to generate the surrogate response values. Current
+#' options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
+#' \describe{
+#'   \item{\code{latent}}{latent approach;}
+#'   \item{\code{uniform}}{jittering uniform approach.}
+#' }
+#'
+#' @param jitter.uniform.scale When the \code{jitter = "uniform"}, this is a character
+#' string specifying the scale on which to perform the jittering whenever
+#' \code{jitter = "uniform"}. Current options are \code{"response"} and \code{"probability"}.
+#' Default is \code{"response"}.
+#'
+#' @param ... Additional optional arguments (Include all arguments in \code{"residuals"} function).
+#'
+#' @rdname residuals
+#' @method residuals vglm
+#' @export
+setMethod("residuals",  "vglm",
+          definition = residualsVGAM)
+
+#' ref the vgam' adjacent categories regression model to using \code{"residualsAcat"} function.
+#' @param object An object of class \code{\link[VGAM]{vgam}}.
+#' @param ... Additional optional arguments (Include all arguments in \code{"residuals"} function).
+#'
+#' @rdname residuals
+#' @method residuals vgam
+#' @export
+setMethod("residuals",  "vgam",
+          definition = residualsVGAM)
 
 
 ################################################################################

@@ -7,6 +7,7 @@
 \alias{residuals.orm}
 \alias{residuals.polr}
 \alias{residuals,vglm-method}
+\alias{residuals,vgam-method}
 \alias{residuals.ord}
 \alias{residuals.PAsso}
 \title{Extract Model Residuals}
@@ -47,7 +48,23 @@
   ...
 )
 
-\S4method{residuals}{vglm}(object, ...)
+\S4method{residuals}{vglm}(
+  object,
+  type = c("surrogate", "sign", "general", "deviance"),
+  jitter = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
+  nsim = 1L,
+  ...
+)
+
+\S4method{residuals}{vgam}(
+  object,
+  type = c("surrogate", "sign", "general", "deviance"),
+  jitter = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
+  nsim = 1L,
+  ...
+)
 
 \method{residuals}{ord}(
   object,
