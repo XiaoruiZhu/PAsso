@@ -1,4 +1,4 @@
-context("sure: Utility functions")
+context("utils: Utility functions from \"sure\"")
 
 
 test_that("utility functions work for \"clm\" objects", {

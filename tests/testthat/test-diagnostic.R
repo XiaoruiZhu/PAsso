@@ -1,4 +1,4 @@
-context("PAsso: diagnostic.plot")
+context("diagnostic.plot(): Residual-based diagnostic plots")
 
 
 test_that("Test the fix of the Github Issue #5", {

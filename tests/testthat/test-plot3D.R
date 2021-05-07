@@ -1,4 +1,4 @@
-context("PAsso: plot3D")
+context("plot3D(): test plot3D function")
 
 test_that("plot3D works for \"PAsso\" objects", {
 

@@ -1,4 +1,4 @@
-context("PAsso: plot")
+context("plot(): plot function to draw partial regression plots")
 
 test_that("plot works for \"PAsso\" objects", {
 

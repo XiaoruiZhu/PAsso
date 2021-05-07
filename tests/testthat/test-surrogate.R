@@ -1,4 +1,4 @@
-context("sure: Surrogate response values")
+context("surrogate(): generate surrogate response values")
 
 
 test_that("surrogate work for \"polr\" objects", {

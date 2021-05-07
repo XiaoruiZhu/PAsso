@@ -1,4 +1,4 @@
-context("PAsso: Partial association")
+context("PAsso(): test function for the partial association analysis ")
 
 
 test_that("Advanced PAsso for two responses", {

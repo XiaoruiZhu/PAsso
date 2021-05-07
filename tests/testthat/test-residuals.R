@@ -1,4 +1,4 @@
-context("PAsso: 'residuals()' for Surrogate residuals")
+context("residuals(): generate surrogate residuals")
 
 test_that("Github reported issue #6", {
   # Skips
@@ -39,12 +39,15 @@ test_that("Github reported issue #4", {
   # Load data
   data("ANES2016")
 
-  fit.PID1 <- polr(as.factor(PID)~age+edu.year+income.num, data=ANES2016, method="probit")
+  # fit.PID1 <- polr(as.factor(PID)~age+edu.year+income.num, data=ANES2016, method="probit")
   fit.PID2 <- vglm(as.numeric(PID)~age+edu.year+income.num, data=ANES2016, family=acat(reverse=TRUE, parallel=TRUE))
 
   # Expectations
 
-  r1 <- residuals(fit.PID2, type = "surrogate", jitter="uniform", jitter.uniform.scale="response", nsim=30)
+  # suppressMessages(
+    r1 <- residuals(fit.PID2, type = "surrogate", jitter="uniform", jitter.uniform.scale="response", nsim=30)
+  # )
+
 
   r2 <- residuals(fit.PID2, type = "surrogate", jitter="uniform", jitter.uniform.scale="probability", nsim=30)
 

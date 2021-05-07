@@ -1,4 +1,4 @@
-context("PAsso: Data section")
+context("ANES2016: test internal data ANES2016")
 
 test_that("ANES2016", {
   #

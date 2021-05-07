@@ -1,4 +1,4 @@
-context("sure: Truncated distributions")
+context(".rtrunc(): truncated distributions function")
 
 test_that("truncated distributions work", {
   set.seed(101)

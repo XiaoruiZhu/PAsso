@@ -1,4 +1,4 @@
-context("sure: 'autoplot()' Residual plots")
+context("autoplot(): Residual plots")
 
 
 test_that("autoplot works for \"clm\" objects", {

@@ -1,4 +1,4 @@
-context("sure: Gumbel functions")
+context("utils: test Gumbel functions")
 
 # source("R/utils.R")
 

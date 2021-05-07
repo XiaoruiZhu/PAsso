@@ -1,4 +1,4 @@
-context("PAsso: 'test()' for PAsso object")
+context("test(): Hypothesis testing of the partial association coefficients in a PAsso object")
 
 
 test_that("test() for 'PAsso' object without parallel", {
