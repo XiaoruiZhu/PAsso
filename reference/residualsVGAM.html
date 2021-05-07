@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • PAsso</title>
+<title>Extract Residuals from models of VGAM — residualsVGAM • PAsso</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Extract Residuals from models of VGAM — residualsVGAM" />
+<meta property="og:description" content="A internal function to simulate surrogate residuals for models fitted by
+vglm and vglm. Now, this one support &quot;vglm&quot; and
+&quot;vgam&quot;, and adjacent categories regression model by &quot;vglm&quot;. This one may
+need to update to support more models from VGAM." />
 
 
 
@@ -68,7 +72,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -118,96 +122,32 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Extract Residuals from models of VGAM</h1>
+    <small class="dont-index">Source: <a href='https://github.com/XiaoruiZhu/PAsso/blob/master/R/residuals.R'><code>R/residuals.R</code></a></small>
+    <div class="hidden name"><code>residualsVGAM.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>A internal function to simulate surrogate residuals for models fitted by
+<code><a href='https://rdrr.io/pkg/VGAM/man/vglm.html'>vglm</a></code> and <code><a href='https://rdrr.io/pkg/VGAM/man/vglm.html'>vglm</a></code>. Now, this one support <code>"vglm"</code> and
+<code>"vgam"</code>, and adjacent categories regression model by <code>"vglm"</code>. This one may
+need to update to support more models from VGAM.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>residualsVGAM</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"surrogate"</span>, <span class='st'>"sign"</span>, <span class='st'>"general"</span>, <span class='st'>"deviance"</span><span class='op'>)</span>,
+  jitter <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"latent"</span>, <span class='st'>"uniform"</span><span class='op'>)</span>,
+  jitter.uniform.scale <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"probability"</span>, <span class='st'>"response"</span><span class='op'>)</span>,
+  nsim <span class='op'>=</span> <span class='fl'>1L</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="ANES2016.html">ANES2016</a></code> </p>
-        </td>
-        <td><p>The 2016 ANES Time Series Study with pre-election interview</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PAsso.html">PAsso()</a></code> </p>
-        </td>
-        <td><p>Partial association analysis between ordinal responses after adjusting for a set of covariates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="diagnostic.plot.html">diagnostic.plot()</a></code> </p>
-        </td>
-        <td><p>Residual-based diagnostic plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.html">plot(<i>&lt;PAsso&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>A matrix of partial regression plots between responses after adjustments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot3D.html">plot3D()</a></code> </p>
-        </td>
-        <td><p>3-D P-P plot for the inspection of the partial association analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="print.html">print(<i>&lt;PAsso&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;PAsso.test&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Print partial association matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="residuals.html">residuals(<i>&lt;clm&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;lrm&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;orm&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;polr&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;vglm&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;vgam&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;ord&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;PAsso&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Extract Model Residuals</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summary.html">summary(<i>&lt;PAsso&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summary of partial association analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="surrogate.html">surrogate()</a></code> </p>
-        </td>
-        <td><p>Surrogate response</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="test.html">test()</a></code> </p>
-        </td>
-        <td><p>Hypothesis testing of the partial association coefficients</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
