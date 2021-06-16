@@ -78,7 +78,10 @@ test <- function(object, bootstrap_rep=300, H0=0, parallel=FALSE) {
       boot_Cor_temp <-
         foreach(i=1:bootstrap_rep,
                 .packages = c('MASS', 'stats', 'PAsso'),
-                .export=c("mods_n", "data_temp", "arguments"),
+                # .export=c("mods_n", "data_temp", "arguments"),
+                # Remove this for Warning message:
+                  # In e$fun(obj, substitute(ex), parent.frame(), e$data) :
+                  # already exporting variable(s): mods_n, data_temp, arguments
                 .combine=cbind) %dopar% {
                   # ProgressBar
                   pb$tick(tokens = list(letter = progress_repNo[i]))
