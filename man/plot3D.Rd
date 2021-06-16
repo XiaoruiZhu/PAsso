@@ -4,13 +4,13 @@
 \alias{plot3D}
 \alias{plot3D.default}
 \alias{plot3D.PAsso}
-\title{3-D P-P plot for the inspection of the partial association analysis}
+\title{3-D P-P plot and false color level plot for the inspection of the partial association analysis}
 \usage{
 plot3D(object, y1, y2, ...)
 
 \method{plot3D}{default}(object, y1, y2, ...)
 
-\method{plot3D}{PAsso}(object, y1, y2, ...)
+\method{plot3D}{PAsso}(object, y1, y2, type = c("surface3D", "contour"), ...)
 }
 \arguments{
 \item{object}{A PAsso class of object.}
@@ -21,6 +21,9 @@ plot3D(object, y1, y2, ...)
 y1 or y2 is missing. The \code{plot3D} will draw 3D plots for all pairs of responses.}
 
 \item{...}{Additional optional arguments.}
+
+\item{type}{A character string specifying the trace type (e.g. "surface3D", "contour"). "contour" creates a
+2D contour plot between u and v.}
 }
 \value{
 If response y1 or y2 is not specified, a list of \code{"plotly"} objects includes
@@ -28,12 +31,12 @@ all pairs of responses will be returned (with name "response 1 v.s. response 2" 
 responses y1 and y2 are specified, returns a 3D plot as \code{"plotly"} object.
 }
 \description{
-A list of 3-D P-P plots for the inspection of the partial
-association analysis. Each plot is the 3-D P-P plot from an empirical
-copula trained from the surrogate residuals of a pair of responses.
+A list of 3-D P-P plots (or false color level plots when \code{type = "contour"})
+for the inspection of the partial association analysis. Each plot is either 3-D P-P plot or level plot
+from an empirical copula trained from the surrogate residuals of a pair of responses.
 }
 \details{
-All the plots are based on surrogate residuals generated from \code{"resides"}
+All the plots are based on surrogate residuals generated from \code{"residuals"}
 function in \code{sure}. Graphics are designed based on
 PAsso and \code{"plotly"}.
 }

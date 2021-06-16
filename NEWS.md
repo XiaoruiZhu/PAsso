@@ -1,10 +1,18 @@
 # PAsso 0.1.9
 
+## Major changes
+
+1. Add contour plot to the function "plot3D" when argument type = "contour";
+
+2. Fix a warning triggered by the ".export()" in "foreach";
+
 ## Minor changes
 
 1. Revise description of the package; 
 
 2. Update README file;
+
+3. Allow users to specify the values (e.g., alpha, shape, size);
 
 ## Bugs fixes
 
