@@ -21,7 +21,7 @@
 #'
 #' @rdname plot3D
 #' @importFrom copula C.n pobs
-#' @importFrom plotly plotly_build plot_ly add_surface layout
+#' @importFrom plotly plotly_build plot_ly add_surface layout add_annotations
 #' @importFrom dplyr %>%
 #' @export plot3D
 #'
@@ -33,7 +33,7 @@
 #' #                   data = ANES2016)
 #'
 #' # plot3D(PAsso_3v, y1="PID", y2="selfLR")
-#'
+#' # plot3D(PAsso_3v, y1="PID", y2="selfLR", type = "contour")
 plot3D <- function(object, y1, y2, ...) {
   UseMethod("plot3D")
 }
@@ -47,6 +47,7 @@ plot3D.default <- function(object, y1, y2, ...){
                 "and can only be used on classes PAsso"))
 }
 
+#' @title plot3D_one
 #' @param plot_list The list to save plots. Each 3D plot is between one pair of covariates.
 #'
 #' @param rep_SRs The surrogate responses array saved in the PAsso object.
@@ -58,6 +59,7 @@ plot3D.default <- function(object, y1, y2, ...){
 #'
 #' @keywords internal
 #' This is an internal function to draw one plotly (3D surface or contour plot).
+#'
 plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles, type = c("surface3D", "contour")) {
 
   type <- match.arg(type)

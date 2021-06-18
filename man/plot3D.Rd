@@ -48,5 +48,5 @@ PAsso and \code{"plotly"}.
 #                   data = ANES2016)
 
 # plot3D(PAsso_3v, y1="PID", y2="selfLR")
-
+# plot3D(PAsso_3v, y1="PID", y2="selfLR", type = "contour")
 }
