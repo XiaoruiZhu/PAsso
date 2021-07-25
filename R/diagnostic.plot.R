@@ -142,8 +142,7 @@ diagnostic.plot.PAsso <- function(
 
       for (i in 1:n_resp) {
         plot_list[[i]] <-
-          autoplot(object$fitted.models[[i]], output = output, resp_name = resp_name[i],
-                   alpha = 0.5, ...)
+          autoplot(object$fitted.models[[i]], output = output, resp_name = resp_name[i], ...)
       }
       # Save the combined plot
       return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
