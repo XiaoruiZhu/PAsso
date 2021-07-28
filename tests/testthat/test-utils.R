@@ -182,7 +182,7 @@ test_that("utility functions work for \"vglm\" objects", {
   # Fit cumulative link models
   suppressWarnings(
     fit_logit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
-                            family = VGAM::cumulative(link = "logit",
+                            family = VGAM::cumulative(link = "logitlink",
                                                       parallel = TRUE))
   )
   suppressWarnings(
@@ -274,7 +274,7 @@ test_that("generate_residuals function works for different methods", {
                        draws_id = sample(nobs(fit_orm), replace = TRUE))
 
   fit_vglm <- VGAM::vglm(y ~ x, data = df1,
-                         family = VGAM::cumulative(link = "logit",
+                         family = VGAM::cumulative(link = "logitlink",
                                                    parallel = TRUE))
   resids_vglm <- generate_residuals(fit_vglm, method = "sign", draws_id = NULL)
   resids_vglm_boot <-
@@ -320,7 +320,7 @@ test_that("getMeanResponse works", {
   fit_lrm <- rms::lrm(y ~ x, data = df1)
   fit_orm <- rms::orm(y ~ x, data = df1, family = logistic)
   fit_vglm <- VGAM::vglm(y ~ x, data = df1,
-                         family = VGAM::cumulative(link = "logit",
+                         family = VGAM::cumulative(link = "logitlink",
                                                    parallel = TRUE))
   # fit_vglm@misc$reverse
   # unname(stats::coef(fit_clm))

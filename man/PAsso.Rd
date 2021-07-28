@@ -29,7 +29,7 @@ be adjusted.}
 
 \item{data}{A data.frame including responses and adjustments.}
 
-\item{uni.model}{A character string specifying the universal model setting for all
+\item{uni.model}{A character string specifying one single universal model setting for all
 responses. Default \code{"logit"} refers to cumulative logit model. \code{"probit"}
 refers to cumulative probit model. \code{"acat"} fits an adjacent categories regression model.}
 
@@ -133,7 +133,7 @@ library(MASS)
 # Import ANES2016 data in "PAsso"
 data(ANES2016)
 
-# User-friendly way of using: Parial association analysis
+# User-friendly way of the partial association analysis
 PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
                 adjustments = c("income.num", "age", "edu.year"),
                 data = ANES2016,
@@ -143,7 +143,7 @@ print(PAsso_1, digits = 4)
 summary(PAsso_1, digits = 4)
 
 ###########################################################
-# Advanced way of using
+# Advanced way of the partial association analysis
 ###########################################################
 
 fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,

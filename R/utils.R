@@ -229,7 +229,8 @@ getDistributionFunction.polr <- function(object) {
 #' @keywords internal
 getDistributionFunction.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = plogis,
+         "logit" = plogis, # Old "logit" in VGAM
+         "logitlink" = plogis, # "logit" is deprecated, use "logitlink" instead
          "probit" = pnorm,
          "loglog" = pgumbel,
          "cloglog" = pGumbel,
@@ -307,6 +308,7 @@ getDistributionName.polr <- function(object) {
 getDistributionName.vglm <- function(object) {
   switch(object@family@infos()$link,
          "logit" = "logis",
+         "logitlink" = "logis",
          "probit" = "norm",
          "loglog" = "gumbel",
          "cloglog" = "Gumbel",
@@ -501,6 +503,7 @@ getQuantileFunction.polr <- function(object) {
 getQuantileFunction.vglm <- function(object) {
   switch(object@family@infos()$link,
          "logit" = qlogis,
+         "logitlink" = qlogis,
          "probit" = qnorm,
          "loglog" = qgumbel,
          "cloglog" = qGumbel,

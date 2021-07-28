@@ -360,7 +360,7 @@ test_that("residuals work for \"vglm\" objects", {
   # Fit cumulative link model
   suppressWarnings(
     fit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
-                      family = VGAM::cumulative(link = "logit",
+                      family = VGAM::cumulative(link = "logitlink",
                                                 parallel = TRUE))
   )
 

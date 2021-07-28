@@ -23,7 +23,7 @@
 #' @param adjustments A string vector specifies covariates/confounders that need to
 #' be adjusted.
 #' @param data A data.frame including responses and adjustments.
-#' @param uni.model A character string specifying the universal model setting for all
+#' @param uni.model A character string specifying one single universal model setting for all
 #' responses. Default \code{"logit"} refers to cumulative logit model. \code{"probit"}
 #' refers to cumulative probit model. \code{"acat"} fits an adjacent categories regression model.
 #'
@@ -149,7 +149,7 @@
 #' # Import ANES2016 data in "PAsso"
 #' data(ANES2016)
 #'
-#' # User-friendly way of using: Parial association analysis
+#' # User-friendly way of the partial association analysis
 #' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
 #'                 adjustments = c("income.num", "age", "edu.year"),
 #'                 data = ANES2016,
@@ -159,7 +159,7 @@
 #' summary(PAsso_1, digits = 4)
 #'
 #' ###########################################################
-#' # Advanced way of using
+#' # Advanced way of the partial association analysis
 #' ###########################################################
 #'
 #' fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
@@ -185,24 +185,6 @@ PAsso <- function(responses, adjustments, data,
                   fitted.models = NULL,
                   n_draws = 20,
                   association = "partial", ...){
-
-  # TEST HEADER:
-  # data=boot_data
-  # responses = attr(object, "responses")
-  # adjustments = attr(object, "adjustments")
-  # models = attr(object, "models")
-  # association = arguments[1]
-  # method = arguments[2]
-  # resids.type = arguments[3]
-
-  # responses = c("PreVote.num", "PID")
-  # models = c("probit", "acat")
-  # adjustments <- c("income.num", "age", "edu.year")
-  # association = "partial"; method = "kendall";
-  # n_draws = 30; data = ANES2016;
-  # resids.type = "surrogate"; jitter = "latent"
-  # jitter.uniform.scale = "response"
-  # models = c("probit", "probit")
 
   n_resp <- ifelse(missing(responses), length(fitted.models), length(responses))
 
