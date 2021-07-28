@@ -95,7 +95,7 @@ matrix for comparison purpose." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PAsso</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
       </span>
     </div>
 
@@ -191,7 +191,7 @@ be adjusted.</p></td>
     </tr>
     <tr>
       <th>uni.model</th>
-      <td><p>A character string specifying the universal model setting for all
+      <td><p>A character string specifying one single universal model setting for all
 responses. Default <code>"logit"</code> refers to cumulative logit model. <code>"probit"</code>
 refers to cumulative probit model. <code>"acat"</code> fits an adjacent categories regression model.</p></td>
     </tr>
@@ -316,7 +316,7 @@ Cambridge University Press. doi: <a href='https://doi.org/10.1017/CBO97805117537
 <span class='co'># Import ANES2016 data in "PAsso"</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>ANES2016</span><span class='op'>)</span>
 
-<span class='co'># User-friendly way of using: Parial association analysis</span>
+<span class='co'># User-friendly way of the partial association analysis</span>
 <span class='va'>PAsso_1</span> <span class='op'>&lt;-</span> <span class='fu'>PAsso</span><span class='op'>(</span>responses <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PreVote.num"</span>, <span class='st'>"PID"</span><span class='op'>)</span>,
                 adjustments <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"income.num"</span>, <span class='st'>"age"</span>, <span class='st'>"edu.year"</span><span class='op'>)</span>,
                 data <span class='op'>=</span> <span class='va'>ANES2016</span>,
@@ -358,7 +358,7 @@ Cambridge University Press. doi: <a href='https://doi.org/10.1017/CBO97805117537
 #&gt; ---                                
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</div><div class='input'>
 <span class='co'>###########################################################</span>
-<span class='co'># Advanced way of using</span>
+<span class='co'># Advanced way of the partial association analysis</span>
 <span class='co'>###########################################################</span>
 
 <span class='va'>fit.vote</span><span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>PreVote.num</span> <span class='op'>~</span> <span class='va'>income.num</span><span class='op'>+</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>edu.year</span>, data <span class='op'>=</span> <span class='va'>ANES2016</span>,

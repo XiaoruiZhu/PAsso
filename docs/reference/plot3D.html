@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>3-D P-P plot for the inspection of the partial association analysis — plot3D • PAsso</title>
+<title>3-D P-P plot and false color level plot for the inspection of the partial association analysis — plot3D • PAsso</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="3-D P-P plot for the inspection of the partial association analysis — plot3D" />
-<meta property="og:description" content="A list of 3-D P-P plots for the inspection of the partial
-association analysis. Each plot is the 3-D P-P plot from an empirical
-copula trained from the surrogate residuals of a pair of responses." />
+<meta property="og:title" content="3-D P-P plot and false color level plot for the inspection of the partial association analysis — plot3D" />
+<meta property="og:description" content="A list of 3-D P-P plots (or false color level plots when type = &quot;contour&quot;)
+for the inspection of the partial association analysis. Each plot is either 3-D P-P plot or level plot
+from an empirical copula trained from the surrogate residuals of a pair of responses." />
 
 
 
@@ -84,7 +84,7 @@ copula trained from the surrogate residuals of a pair of responses." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PAsso</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
       </span>
     </div>
 
@@ -123,15 +123,15 @@ copula trained from the surrogate residuals of a pair of responses." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>3-D P-P plot for the inspection of the partial association analysis</h1>
+    <h1>3-D P-P plot and false color level plot for the inspection of the partial association analysis</h1>
     <small class="dont-index">Source: <a href='https://github.com/XiaoruiZhu/PAsso/blob/master/R/plot3D.R'><code>R/plot3D.R</code></a></small>
     <div class="hidden name"><code>plot3D.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A list of 3-D P-P plots for the inspection of the partial
-association analysis. Each plot is the 3-D P-P plot from an empirical
-copula trained from the surrogate residuals of a pair of responses.</p>
+    <p>A list of 3-D P-P plots (or false color level plots when <code>type = "contour"</code>)
+for the inspection of the partial association analysis. Each plot is either 3-D P-P plot or level plot
+from an empirical copula trained from the surrogate residuals of a pair of responses.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plot3D</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -140,7 +140,7 @@ copula trained from the surrogate residuals of a pair of responses.</p>
 <span class='fu'>plot3D</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for PAsso</span>
-<span class='fu'>plot3D</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>plot3D</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"surface3D"</span>, <span class='st'>"contour"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,6 +162,11 @@ y1 or y2 is missing. The <code>plot3D</code> will draw 3D plots for all pairs of
       <th>...</th>
       <td><p>Additional optional arguments.</p></td>
     </tr>
+    <tr>
+      <th>type</th>
+      <td><p>A character string specifying the trace type (e.g. "surface3D", "contour"). "contour" creates a
+2D contour plot between u and v.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -171,7 +176,7 @@ all pairs of responses will be returned (with name "response 1 v.s. response 2" 
 responses y1 and y2 are specified, returns a 3D plot as <code>"plotly"</code> object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>All the plots are based on surrogate residuals generated from <code>"resides"</code>
+    <p>All the plots are based on surrogate residuals generated from <code>"residuals"</code>
 function in <code>sure</code>. Graphics are designed based on
 PAsso and <code>"plotly"</code>.</p>
 
@@ -183,7 +188,7 @@ PAsso and <code>"plotly"</code>.</p>
 <span class='co'>#                   data = ANES2016)</span>
 
 <span class='co'># plot3D(PAsso_3v, y1="PID", y2="selfLR")</span>
-
+<span class='co'># plot3D(PAsso_3v, y1="PID", y2="selfLR", type = "contour")</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

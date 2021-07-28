@@ -81,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PAsso</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
       </span>
     </div>
 
@@ -124,6 +124,26 @@
       <small>Source: <a href='https://github.com/XiaoruiZhu/PAsso/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="passo-0110" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.10">
+<a href="#passo-0110" class="anchor"></a>PAsso 0.1.10<small> 2021-06-18 </small>
+</h1>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<ol>
+<li><p>Add contour plot to the function “plot3D” when argument type = “contour”;</p></li>
+<li><p>Allow users to specify the values alpha, shape, size in the function “plot”;</p></li>
+</ol>
+</div>
+<div id="bugs-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugs-fixes" class="anchor"></a>Bugs fixes</h2>
+<ol>
+<li>Fix a warning triggered by the “.export()” in “foreach”;</li>
+</ol>
+</div>
+</div>
     <div id="passo-019" class="section level1">
 <h1 class="page-header" data-toc-text="0.1.9">
 <a href="#passo-019" class="anchor"></a>PAsso 0.1.9<small> 2021-05-07 </small>
@@ -134,11 +154,12 @@
 <ol>
 <li><p>Revise description of the package;</p></li>
 <li><p>Update README file;</p></li>
+<li><p>Allow users to specify the values (e.g., alpha, shape, size);</p></li>
 </ol>
 </div>
-<div id="bugs-fixes" class="section level2">
+<div id="bugs-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugs-fixes" class="anchor"></a>Bugs fixes</h2>
+<a href="#bugs-fixes-1" class="anchor"></a>Bugs fixes</h2>
 <ol>
 <li><p>Fix Issue <a href='https://github.com/XiaoruiZhu/PAsso/issues/2'>#2</a>.</p></li>
 <li><p>Fix Issue <a href='https://github.com/XiaoruiZhu/PAsso/issues/4'>#4</a>, <a href='https://github.com/XiaoruiZhu/PAsso/issues/5'>#5</a>, and <a href='https://github.com/XiaoruiZhu/PAsso/issues/6'>#6</a>.</p></li>
@@ -149,9 +170,9 @@
 <h1 class="page-header" data-toc-text="0.1.8">
 <a href="#passo-018" class="anchor"></a>PAsso 0.1.8<small> 2020-07-13 </small>
 </h1>
-<div id="major-changes" class="section level2">
+<div id="major-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-1" class="anchor"></a>Major changes</h2>
 <ol>
 <li><p>Initialize Travis;</p></li>
 <li><p>Add cran-comments.md file to record CRAN notes;</p></li>
@@ -160,9 +181,9 @@
 <li><p>Clean up dependents to speed up loading of the PAsso;</p></li>
 </ol>
 </div>
-<div id="bugs-fixes-1" class="section level2">
+<div id="bugs-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugs-fixes-1" class="anchor"></a>Bugs fixes</h2>
+<a href="#bugs-fixes-2" class="anchor"></a>Bugs fixes</h2>
 <ol>
 <li>Update README and other files.</li>
 </ol>
@@ -172,9 +193,9 @@
 <h1 class="page-header" data-toc-text="0.1.7">
 <a href="#passo-017" class="anchor"></a>PAsso 0.1.7<small> Unreleased </small>
 </h1>
-<div id="major-changes-1" class="section level2">
+<div id="major-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-1" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-2" class="anchor"></a>Major changes</h2>
 <ol>
 <li><p>Update “PAsso()” to support adjacent categories regression model by using vglm(acat());</p></li>
 <li><p>Update “residuals()” to support acat in VGAM;</p></li>
@@ -182,9 +203,9 @@
 <li><p>Rename attribute “boot_reps” as “draws”.</p></li>
 </ol>
 </div>
-<div id="bugs-fixes-2" class="section level2">
+<div id="bugs-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugs-fixes-2" class="anchor"></a>Bugs fixes</h2>
+<a href="#bugs-fixes-3" class="anchor"></a>Bugs fixes</h2>
 <ol>
 <li>The wolfsigma method of correlation works now even when n_draws&gt;1.</li>
 <li>A issue when n_draws=1 in residuals.PAsso(), save array even if n_draws=1.</li>
@@ -195,9 +216,9 @@
 <h1 class="page-header" data-toc-text="0.1.6">
 <a href="#passo-016" class="anchor"></a>PAsso 0.1.6<small> Unreleased </small>
 </h1>
-<div id="major-changes-2" class="section level2">
+<div id="major-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-2" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-3" class="anchor"></a>Major changes</h2>
 <ol>
 <li><p>Add ‘diagnostic.plot’ to replace ‘check.model’ for the diagnostics of fitted models in PAsso object. ‘autoplot’ become internal S3 method.</p></li>
 <li><p>S3 ‘diagnostic.plot’ method can deal with classes of PAsso, PAsso.test, resid, clm, glm, lrm, orm, polr.</p></li>
@@ -219,9 +240,9 @@
 <h1 class="page-header" data-toc-text="0.1.5">
 <a href="#passo-015" class="anchor"></a>PAsso 0.1.5<small> Unreleased </small>
 </h1>
-<div id="major-changes-3" class="section level2">
+<div id="major-changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-3" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-4" class="anchor"></a>Major changes</h2>
 <ol>
 <li><p>Replace ‘cor’ function by ‘pcaPP::cor.fk(X)’ to speed up the PAsso().</p></li>
 <li><p>Finalize the S3 methods ‘summary.PAsso’ and ‘print.PAsso.test’ to provide clean results.</p></li>
@@ -241,9 +262,9 @@
 <h1 class="page-header" data-toc-text="0.1.4">
 <a href="#passo-014" class="anchor"></a>PAsso 0.1.4<small> Unreleased </small>
 </h1>
-<div id="major-changes-4" class="section level2">
+<div id="major-changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-4" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-5" class="anchor"></a>Major changes</h2>
 <ol>
 <li>Change the name of package to “PAsso”.</li>
 <li>Change the autoplot function as a S3 method.</li>
@@ -254,9 +275,9 @@
 <h1 class="page-header" data-toc-text="0.1.3">
 <a href="#parasol-013" class="anchor"></a>parasol 0.1.3<small> Unreleased </small>
 </h1>
-<div id="major-changes-5" class="section level2">
+<div id="major-changes-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-5" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-6" class="anchor"></a>Major changes</h2>
 <ol>
 <li><p>Rename functions: corr -&gt; PAsso; corr.test -&gt; test; ggpairs -&gt; plot; checkmodel -&gt; check.model.</p></li>
 <li><p>Update print and summary functions for PAsso and test.</p></li>
@@ -270,9 +291,9 @@
 <h1 class="page-header" data-toc-text="0.1.1">
 <a href="#parasol-011" class="anchor"></a>parasol 0.1.1<small> Unreleased </small>
 </h1>
-<div id="major-changes-6" class="section level2">
+<div id="major-changes-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes-6" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-7" class="anchor"></a>Major changes</h2>
 <ol>
 <li>Add <code>corr</code> and <code>corr.test</code> function to estimate and test the partial correlation coefficients;</li>
 <li>Update S3 generic functions (print, summary) for the class “PAsso” generated by “corr”, and “PAsso.test” generated by “corr.test”.</li>
