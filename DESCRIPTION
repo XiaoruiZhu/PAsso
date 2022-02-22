@@ -23,7 +23,8 @@ Authors@R:
            role = c("ctb"), 
            email = "chen4y9@mail.uc.edu"))
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
-URL: GitHub: https://github.com/XiaoruiZhu/PAsso
+URL: https://github.com/XiaoruiZhu/PAsso,
+    https://xiaoruizhu.github.io/PAsso/
 BugReports: https://github.com/XiaoruiZhu/PAsso/issues
 Depends:
   R (>= 3.5.0),
