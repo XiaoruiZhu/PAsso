@@ -2,5 +2,8 @@ pandoc: 2.7.3
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-02-22T02:40Z
+last_built: 2022-02-22T04:55Z
+urls:
+  reference: https://xiaoruizhu.github.io/PAsso/reference
+  article: https://xiaoruizhu.github.io/PAsso/articles
 
