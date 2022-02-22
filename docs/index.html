@@ -31,6 +31,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -43,18 +45,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">PAsso</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.10</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -64,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/XiaoruiZhu/PAsso/">
+  <a href="https://github.com/XiaoruiZhu/PAsso/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -81,57 +77,57 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="passo-an-r-package-for-assessing-partial-association-between-ordinal-variables" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#passo-an-r-package-for-assessing-partial-association-between-ordinal-variables" class="anchor"></a>PAsso: an R Package for Assessing Partial Association between Ordinal Variables</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="passo-an-r-package-for-assessing-partial-association-between-ordinal-variables">PAsso: an R Package for Assessing Partial Association between Ordinal Variables<a class="anchor" aria-label="anchor" href="#passo-an-r-package-for-assessing-partial-association-between-ordinal-variables"></a>
+</h1></div>
 <!-- badges: start -->
 
 <!-- badges: end -->
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p>An implementation of the unified framework for assessing <strong>P</strong>arrtial <strong>Asso</strong>ciation between ordinal variables after adjusting for a set of covariates (Dungang Liu, Shaobo Li, Yan Yu and Irini Moustaki (2020), accepted by the <em>Journal of the American Statistical Association</em>). This package provides a set of tools to quantify, visualize, and test partial associations between multiple ordinal variables. It can produce a number of <span class="math inline"><em>ϕ</em></span> measures, partial regression plots, 3-D plots, and <span class="math inline"><em>p</em></span>-values for testing <span class="math inline"><em>H</em><sub>0</sub> : <em>ϕ</em> = 0</span> or <span class="math inline"><em>H</em><sub>0</sub> : <em>ϕ</em> ≤ <em>δ</em></span></p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>The <code>PAsso</code> package is currently available on <a href="https://CRAN.R-project.org/package=PAsso">PAsso CRAN</a>.</p>
-<div id="install-passo-development-version-from-github-recommended" class="section level3">
-<h3 class="hasAnchor">
-<a href="#install-passo-development-version-from-github-recommended" class="anchor"></a>Install <code>PAsso</code> development version from GitHub (recommended)</h3>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The <code>PAsso</code> package is currently available on <a href="https://CRAN.R-project.org/package=PAsso" class="external-link">PAsso CRAN</a>.</p>
+<div class="section level3">
+<h3 id="install-passo-development-version-from-github-recommended">Install <code>PAsso</code> development version from GitHub (recommended)<a class="anchor" aria-label="anchor" href="#install-passo-development-version-from-github-recommended"></a>
+</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Install the development version from GitHub</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"XiaoruiZhu/PAsso"</span><span class="op">)</span></code></pre></div>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"XiaoruiZhu/PAsso"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="install-passo-from-the-cran" class="section level3">
-<h3 class="hasAnchor">
-<a href="#install-passo-from-the-cran" class="anchor"></a>Install <code>PAsso</code> from the CRAN</h3>
+<div class="section level3">
+<h3 id="install-passo-from-the-cran">Install <code>PAsso</code> from the CRAN<a class="anchor" aria-label="anchor" href="#install-passo-from-the-cran"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Install from CRAN</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"PAsso"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"PAsso"</span><span class="op">)</span>
 
 <span class="co"># For macOS, if you have "error: 'math.h' file not found" for installing PAsso v0.1.9,</span>
 <span class="co"># the solution could be:</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/PAsso_0.1.9.tgz"</span>, 
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"https://cran.r-project.org/bin/macosx/el-capitan/contrib/3.6/PAsso_0.1.9.tgz"</span>, 
                   repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span>
                   
 <span class="co"># If error "there is no package called 'gsl'" comes, try:</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"gsl"</span>, type <span class="op">=</span> <span class="st">"mac.binary"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"gsl"</span>, type <span class="op">=</span> <span class="st">"mac.binary"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>The following example shows the R code for evaluating the partial association between a binary variable <span class="math inline">PreVote.num</span> and a ordinal variable <span class="math inline">PID</span>, while adjusting for age, education, and income. Specifically, <span class="math inline">PreVote.num</span> is the respondent’s voting preference between Donald Trump and Hilary Clinton. And <span class="math inline">PID</span> is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). The data set is drawn from the <a href="https://electionstudies.org/data-center/2016-time-series-study/">2016 American National Election Study</a>.</p>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>The following example shows the R code for evaluating the partial association between a binary variable <span class="math inline">PreVote.num</span> and a ordinal variable <span class="math inline">PID</span>, while adjusting for age, education, and income. Specifically, <span class="math inline">PreVote.num</span> is the respondent’s voting preference between Donald Trump and Hilary Clinton. And <span class="math inline">PID</span> is the respondent’s party identification with 7 ordinal levels from strong democrat (=1) to strong republication (=7). The data set is drawn from the <a href="https://electionstudies.org/data-center/2016-time-series-study/" class="external-link">2016 American National Election Study</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/XiaoruiZhu/PAsso">PAsso</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/XiaoruiZhu/PAsso" class="external-link">PAsso</a></span><span class="op">)</span>
 
-<span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PAsso.html">PAsso</a></span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,
-                 adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,
+<span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PAsso.html">PAsso</a></span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,
+                 adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,
                  data <span class="op">=</span> <span class="va">ANES2016</span>,
                  uni.model <span class="op">=</span> <span class="st">"probit"</span>,
-                 method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span><span class="op">)</span>
+                 method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Print the partial association matrix only</span>
 <span class="fu"><a href="reference/print.html">print</a></span><span class="op">(</span><span class="va">PAsso_1</span>, <span class="fl">5</span><span class="op">)</span>
@@ -147,12 +143,12 @@
 
 <span class="co"># Retrieve residuals that are used as ingredients for partial assocaition analyses</span>
 <span class="va">test_resids</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/residuals.html">residuals</a></span><span class="op">(</span><span class="va">PAsso_1</span>, draw <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">test_resids</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">test_resids</span><span class="op">)</span>
 
 <span class="co"># test function: Conduct inference based on object of "PAsso.test" class ----------------------------</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/progress#readme">progress</a></span><span class="op">)</span>;
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/progress#readme" class="external-link">progress</a></span><span class="op">)</span>;
 
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">Pcor_SR_test1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/test.html">test</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">PAsso_1</span>, bootstrap_rep <span class="op">=</span> <span class="fl">100</span>, H0 <span class="op">=</span> <span class="fl">0</span>, parallel <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">Pcor_SR_test1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/test.html">test</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">PAsso_1</span>, bootstrap_rep <span class="op">=</span> <span class="fl">100</span>, H0 <span class="op">=</span> <span class="fl">0</span>, parallel <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="reference/print.html">print</a></span><span class="op">(</span><span class="va">Pcor_SR_test1</span>, digits<span class="op">=</span><span class="fl">6</span><span class="op">)</span>
 
 <span class="co"># diagnostic.plot function -----------------------------------------------------</span>
@@ -167,7 +163,7 @@
 <span class="fu"><a href="reference/diagnostic.plot.html">diagnostic.plot</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">PAsso_1</span>, output <span class="op">=</span> <span class="st">"covariate"</span>, x_name <span class="op">=</span> <span class="st">"income.num"</span>, model_id <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 
 <span class="co"># general association measure and 3-D plot for VOTE and PID ------------------</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://copula.r-forge.r-project.org/">"copula"</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://plotly-r.com">"plotly"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://copula.r-forge.r-project.org/" class="external-link">"copula"</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://plotly-r.com" class="external-link">"plotly"</a></span><span class="op">)</span>
 
 <span class="co"># Draw all pairs</span>
 <span class="va">testPlots</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/plot3D.html">plot3D</a></span><span class="op">(</span><span class="va">PAsso_1</span><span class="op">)</span>
@@ -178,19 +174,19 @@
 <span class="va">testPlots2</span>
 
 <span class="co"># "PAsso" advanced using of the function: Input a few models directly ------------------------------</span>
-<span class="va">fit_vote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">PreVote.num</span> <span class="op">~</span> <span class="va">income.num</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,
-                family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fit_vote</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">PreVote.num</span> <span class="op">~</span> <span class="va">income.num</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,
+                family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_vote</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
-<span class="va">fit_PID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html">polr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">PID</span><span class="op">)</span> <span class="op">~</span> <span class="va">income.num</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span>
+<span class="va">fit_PID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">polr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">PID</span><span class="op">)</span> <span class="op">~</span> <span class="va">income.num</span> <span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,
                 method <span class="op">=</span> <span class="st">"probit"</span>, Hess <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_PID</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="va">PAsso_adv1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PAsso.html">PAsso</a></span><span class="op">(</span>fitted.models<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">fit_vote</span>, <span class="va">fit_PID</span><span class="op">)</span>,
-                                association <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"partial"</span><span class="op">)</span>,
-                                method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span>,
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">PAsso_adv1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PAsso.html">PAsso</a></span><span class="op">(</span>fitted.models<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">fit_vote</span>, <span class="va">fit_PID</span><span class="op">)</span>,
+                                association <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"partial"</span><span class="op">)</span>,
+                                method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span>,
                                 resids.type <span class="op">=</span> <span class="st">"surrogate"</span><span class="op">)</span>
 <span class="op">)</span>
 
@@ -198,9 +194,9 @@
 <span class="fu"><a href="reference/print.html">print</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="reference/summary.html">summary</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <p>Liu, D., Li, S., Yu, Y., &amp; Moustaki, I. (2020). Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing. <em>Journal of the American Statistical Association</em>, 1-14. &lt;10.1080/01621459.2020.1796394&gt;</p>
 <p>Liu, D., &amp; Zhang, H. (2018). Residuals and diagnostics for ordinal regression models: A surrogate approach. <em>Journal of the American Statistical Association</em>, 113(522), 845-854. &lt;10.1080/01621459.2017.1292915&gt;</p>
 <p>Greenwell, B.M., McCarthy, A.J., Boehmke, B.C. &amp; Liu, D. (2018) Residuals and diagnostics for binary and ordinal regression models: An introduction to the sure package. <em>The R Journal</em>. &lt;10.32614/RJ-2018-004&gt;</p>
@@ -210,53 +206,63 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=PAsso">https://​cloud.r-project.org/​package=PAsso</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/XiaoruiZhu/PAsso/">https://​github.com/​XiaoruiZhu/​PAsso/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/XiaoruiZhu/PAsso/issues">https://​github.com/​XiaoruiZhu/​PAsso/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=PAsso" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/XiaoruiZhu/PAsso/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/XiaoruiZhu/PAsso/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;=2)</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing PAsso</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Xiaorui (Jeremy) Zhu <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Shaobo Li <br><small class="roles"> Author </small>  </li>
 <li>Dungang Liu <br><small class="roles"> Contributor, author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-pkg.org/badges/version/PAsso"><img src="https://www.r-pkg.org/badges/version/PAsso"></a></li>
-<li><a href="https://cran.r-project.org/web/checks/check_results_PAsso.html"><img src="https://cranchecks.info/badges/summary/PAsso" alt="CRAN checks"></a></li>
-<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/PAsso"><img src="https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue"></a></li>
-<li><a href="https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green"><img src="https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green"></a></li>
-<li><a href="https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow"><img src="https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow"></a></li>
-<li><a href="https://api.travis-ci.com/XiaoruiZhu/PAsso.svg"><img src="https://api.travis-ci.com/XiaoruiZhu/PAsso.svg?branch=master"></a></li>
+<li><a href="https://www.r-pkg.org/badges/version/PAsso" class="external-link"><img src="https://www.r-pkg.org/badges/version/PAsso"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_PAsso.html" class="external-link"><img src="https://cranchecks.info/badges/summary/PAsso" alt="CRAN checks"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/PAsso" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow"></a></li>
+<li><a href="https://api.travis-ci.com/XiaoruiZhu/PAsso.svg" class="external-link"><img src="https://api.travis-ci.com/XiaoruiZhu/PAsso.svg?branch=master"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Xiaorui (Jeremy) Zhu, Shaobo Li, Dungang Liu.</p>
+  <p></p>
+<p>Developed by Xiaorui (Jeremy) Zhu, Shaobo Li, Dungang Liu.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -264,6 +270,8 @@
 
   
 
+
+  
 
   </body>
 </html>

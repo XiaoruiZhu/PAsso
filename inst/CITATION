@@ -1,0 +1,15 @@
+citHeader("To cite PAsso in publications use:")
+
+citEntry(
+  entry    = "article",
+  title    = "PAsso: an R Package for Assessing Partial Association between Ordinal Variables",
+  doi      = "10.32614/RJ-2021-088",
+  author   = "Li, Shaobo and Zhu, Xiaorui and Chen, Yuejie and Liu, Dungang",
+  journal  = "The R Journal",
+  year     = 2021,
+  volume   = 13,
+  number   = 2,
+  pages    = 239--252,
+  url      = "https://doi.org/10.32614/RJ-2021-088",
+  textVersion = paste("Li et al. (2021). PAsso: an R Package for Assessing Partial Association between Ordinal Variables. The R Journal, 13(2), 239--252, https://doi.org/10.32614/RJ-2021-088")
+  )
