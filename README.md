@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![](https://www.r-pkg.org/badges/version/PAsso)](https://www.r-pkg.org/badges/version/PAsso)
+[![](https://img.shields.io/cran/v/SPSP?logo=R)](https://cran.r-project.org/package=PAsso)
 [![CRAN checks](https://cranchecks.info/badges/summary/PAsso)](https://cran.r-project.org/web/checks/check_results_PAsso.html)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
@@ -125,6 +125,8 @@ summary(PAsso_adv1, digits = 3)
 
 References
 ----------
+
+Li et al. (2021). PAsso: an R Package for Assessing Partial Association between Ordinal Variables. *The R Journal*, 13(2), 239--252, <10.32614/RJ-2021-088>
 
 Liu, D., Li, S., Yu, Y., & Moustaki, I. (2020). Assessing partial association between ordinal variables: quantification, visualization, and hypothesis testing. *Journal of the American Statistical Association*, 1-14. <10.1080/01621459.2020.1796394>
 

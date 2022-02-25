@@ -23,8 +23,7 @@ Authors@R:
            role = c("ctb"), 
            email = "chen4y9@mail.uc.edu"))
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
-URL: https://github.com/XiaoruiZhu/PAsso,
-    https://xiaoruizhu.github.io/PAsso/
+URL: https://xiaoruizhu.github.io/PAsso/
 BugReports: https://github.com/XiaoruiZhu/PAsso/issues
 Depends:
   R (>= 3.5.0),
@@ -61,4 +60,4 @@ Suggests:
   rmarkdown,
   truncdist
 LinkingTo: Rcpp
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
