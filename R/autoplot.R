@@ -219,7 +219,12 @@ autoplot.resid <- function(
 
   # Residual vs fitted value
   p2 <- if ("fitted" %in% output) {
-    resp_name <- paste("Residual (", resp_name , ")", sep = "")
+    resp_name <- ifelse(is.null(resp_name),
+                        "Residual",
+                        paste("Residual (", resp_name , ")", sep = ""))
+
+    # resp_name <- paste("Residual (", resp_name , ")", sep = "")
+
     p <- ggplot(data.frame("x" = mr, "y" = res), aes_string(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       labs(x = "Fitted value", y = resp_name, ...) # Add availability for title, and revise ylab to show response
@@ -252,7 +257,11 @@ autoplot.resid <- function(
                              method = "gam", formula = y ~ s(x, bs = "cs"))
       }
     }
-    resp_name <- paste("Residual (", resp_name , ")", sep = "")
+    # resp_name <- paste("Residual (", resp_name , ")", sep = "")
+    resp_name <- ifelse(is.null(resp_name),
+                        "Residual",
+                        paste("Residual (", resp_name , ")", sep = ""))
+
     p + labs(x = xlab, y = resp_name, ...) # Add availability for title, and revise ylab to show response
   } else {
     NULL
