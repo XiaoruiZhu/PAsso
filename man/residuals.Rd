@@ -68,8 +68,8 @@
 
 \method{residuals}{ord}(
   object,
-  type = c("surrogate", "sign", "general", "deviance", "pearson", "working",
-    "response", "partial"),
+  type = c("surrogate", "sign", "general", "deviance", "pearson", "working", "response",
+    "partial"),
   jitter = c("latent", "uniform"),
   jitter.uniform.scale = c("probability", "response"),
   nsim = 1L,
@@ -123,7 +123,8 @@ then the result will contain the attributes:
   \code{draws}. (This is used for plotting purposes.)}
 }
 
-
+A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
+residuals for the adjacent categories model.
 
 A matrix of class \code{c("matrix", "resids")} containing
 the simulated surrogate residuals used for the partial association
@@ -132,8 +133,6 @@ then the result will contain the attributes:
 \describe{
   \item{\code{draws}}{An array contains all draws of residuals.}
 }
-
-
 }
 \description{
 A generic function to simulate surrogate residuals for cumulative link

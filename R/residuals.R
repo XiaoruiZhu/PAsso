@@ -502,7 +502,8 @@ setMethod("residuals",  "vgam",
 #' @name residuals
 #' @method residuals ord
 #'
-#' @return
+#' @return A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
+#' residuals for the adjacent categories model.
 #' @export
 residuals.ord <- function (
   object,
@@ -566,7 +567,6 @@ residuals.ord <- function (
 #' @name residuals
 #' @method residuals PAsso
 #'
-#' @return
 #' @export
 #'
 #' @examples
