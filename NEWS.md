@@ -1,12 +1,18 @@
 # PAsso (development version)
 
+# PAsso 0.1.11
+
+## Minor improvements and fixes 
+
+1. Change the y-axis label's naming by removing the extra () when the covariate name is not specified in the diagnostic.plot() function;
+
+2. Allow users to specify the values alpha, shape, size in the function "plot";
+
 # PAsso 0.1.10
 
 ## Major changes
 
 1. Add contour plot to the function "plot3D" when argument type = "contour";
-
-2. Allow users to specify the values alpha, shape, size in the function "plot";
 
 ## Bugs fixes
 

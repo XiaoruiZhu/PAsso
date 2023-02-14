@@ -3,7 +3,7 @@
 <!-- badges: start -->
 
 [![](https://img.shields.io/cran/v/PAsso?logo=R)](https://cran.r-project.org/package=PAsso)
-[![CRAN checks](https://cranchecks.info/badges/summary/PAsso)](https://cran.r-project.org/web/checks/check_results_PAsso.html)
+[![CRAN checks](https://badges.cranchecks.info/worst/PAsso.svg)](https://cran.r-project.org/web/checks/check_results_PAsso.html)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
 [![](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)
