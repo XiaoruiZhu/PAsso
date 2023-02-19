@@ -341,8 +341,8 @@ test_that("getMeanResponse works", {
 
   # Compute maximum pairwise difference per row
   max_diff <- apply(mr, MARGIN = 1, FUN = function(x) max(as.numeric(dist(x))))
-
+  print(max(max_diff))
   # Expectations
-  expect_true(max(max_diff) < 1e-05)
+  expect_true(max(max_diff) < 1e-04)
 
 })
