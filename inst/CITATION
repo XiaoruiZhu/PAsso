@@ -1,6 +1,6 @@
 citHeader("To cite PAsso in publications use:")
 
-citEntry(
+bibentry(
   entry    = "article",
   title    = "PAsso: an R Package for Assessing Partial Association between Ordinal Variables",
   doi      = "10.32614/RJ-2021-088",

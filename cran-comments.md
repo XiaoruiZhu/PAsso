@@ -1,3 +1,8 @@
+## CRAN comments
+
+* [Fixed] Package CITATION file contains call(s) to old-style citEntry().  Please
+   use bibentry() instead.
+   
 ## Test environments
 * local OS X install, R 3.6.3
 * ubuntu 16.04.6 LTS (on travis-ci), R 3.6.3
