@@ -22,7 +22,7 @@
 #' @rdname plot3D
 #' @importFrom copula C.n pobs
 #' @importFrom plotly plotly_build plot_ly add_surface layout add_annotations
-#' @importFrom dplyr %>%
+#' @importFrom magrittr %>%
 #' @export plot3D
 #'
 #' @examples

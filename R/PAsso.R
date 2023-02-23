@@ -37,7 +37,8 @@
 #' Three choices \code{c("kendall", "pearson", "wolfsigma")}. The default is
 #' \code{"kendall"}
 #' @param resids.type A character string specifying which type of residuals to generate
-#' Current options are \code{"latent"} and \code{"uniform"}. Default is \code{"latent"}.
+#' Current options include \code{"surrogate"}, \code{"sign"}, \code{"general"},
+#' and \code{"deviance"}. Default is \code{"surrogate"} residuals.
 #' \describe{
 #'   \item{\code{surrogate}}{surrogate residuals (Liu and Zhang, 2017);}
 #'   \item{\code{sign}}{sign-based residuals (Li and Shepherd, 2010, 2012);}

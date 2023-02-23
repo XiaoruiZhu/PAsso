@@ -8,6 +8,8 @@
 
 2. Allow users to specify the values alpha, shape, size in the function "plot";
 
+3. Avoid using tidyverse as dependent package. close #11
+
 # PAsso 0.1.10
 
 ## Major changes

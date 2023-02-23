@@ -7,7 +7,6 @@
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
 [![](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)
-[![](https://api.travis-ci.com/XiaoruiZhu/PAsso.svg?branch=master)](https://api.travis-ci.com/XiaoruiZhu/PAsso.svg)
 
 <!-- badges: end -->
 
