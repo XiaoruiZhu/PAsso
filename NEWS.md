@@ -1,5 +1,3 @@
-# PAsso (development version)
-
 # PAsso 0.1.11
 
 ## Minor improvements and fixes 
