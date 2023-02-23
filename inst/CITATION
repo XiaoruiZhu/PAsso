@@ -3,13 +3,12 @@ citHeader("To cite PAsso in publications use:")
 bibentry(
   bibtype = "Article",
   title = "PAsso: an R Package for Assessing Partial Association between Ordinal Variables",
-  author = as.person("Xiaorui Zhu [aut, cre, cph], Shaobo Li [aut], Dungang Liu [aut], Yuejie Chen [ctb, aut]"),
+  author = as.person("Shaobo Li [aut], Xiaorui Zhu [aut, cre, cph], Yuejie Chen [ctb, aut], Dungang Liu [aut]"),
   year = "2021",
   journal = "The R Journal",
   volume   = "13",
   number   = "2",
   pages    = "239--252",
   isbn = "0-521-57391-2",
-  url = "https://doi.org/10.32614/RJ-2021-088",
   doi      = "10.32614/RJ-2021-088"
   )
