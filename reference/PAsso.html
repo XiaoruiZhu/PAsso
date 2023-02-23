@@ -12,7 +12,7 @@ It generates an object that has partial association matrix, marginal association
 and some attributes: &quot;arguments&quot; saves c(association, method, resids.type). &quot;responses&quot;
 contains the names of response variables. The attribute &quot;adjustments&quot; contains the names
 of covariates. The &quot;summary&quot; function of &quot;PAsso&quot; class of object provides marginal association '
-matrix for comparison purpose."><title>Partial association analysis between ordinal responses after adjusting for a set of covariates — PAsso • PAsso</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Partial association analysis between ordinal responses after adjusting for a set of covariates — PAsso"><meta property="og:description" content="This function is mainly designed for conducting the partial association analysis.
+matrix for comparison purpose."><title>Partial association analysis between ordinal responses after adjusting for a set of covariates — PAsso • PAsso</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Partial association analysis between ordinal responses after adjusting for a set of covariates — PAsso"><meta property="og:description" content="This function is mainly designed for conducting the partial association analysis.
 It provides two ways of using:
 1. A user-friendly way: only need &quot;responses&quot;, &quot;adjustments&quot;, and
 &quot;data&quot;. All the rest of the argument will be setted as default (see Arguments for details of
@@ -42,7 +42,7 @@ matrix for comparison purpose."><!-- mathjax --><script src="https://cdnjs.cloud
     
     <a class="navbar-brand me-2" href="../index.html">PAsso</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,21 +96,21 @@ matrix for comparison purpose.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PAsso</span><span class="op">(</span>
-  <span class="va">responses</span>,
-  <span class="va">adjustments</span>,
-  <span class="va">data</span>,
-  uni.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probit"</span>, <span class="st">"logit"</span>, <span class="st">"acat"</span><span class="op">)</span>,
-  models <span class="op">=</span> <span class="cn">NULL</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span>, <span class="st">"pearson"</span>, <span class="st">"wolfsigma"</span><span class="op">)</span>,
-  resids.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  fitted.models <span class="op">=</span> <span class="cn">NULL</span>,
-  n_draws <span class="op">=</span> <span class="fl">20</span>,
-  association <span class="op">=</span> <span class="st">"partial"</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PAsso</span><span class="op">(</span></span>
+<span>  <span class="va">responses</span>,</span>
+<span>  <span class="va">adjustments</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  uni.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probit"</span>, <span class="st">"logit"</span>, <span class="st">"acat"</span><span class="op">)</span>,</span>
+<span>  models <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span>, <span class="st">"pearson"</span>, <span class="st">"wolfsigma"</span><span class="op">)</span>,</span>
+<span>  resids.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  fitted.models <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  association <span class="op">=</span> <span class="st">"partial"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -118,28 +118,41 @@ matrix for comparison purpose.</p>
     <dl><dt>responses</dt>
 <dd><p>A string vector that specifies response variables. It requires to be equal
 or greater than two variables in the data frame.</p></dd>
+
+
 <dt>adjustments</dt>
 <dd><p>A string vector specifies covariates/confounders that need to
 be adjusted.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>A data.frame including responses and adjustments.</p></dd>
+
+
 <dt>uni.model</dt>
 <dd><p>A character string specifying one single universal model setting for all
 responses. Default <code>"logit"</code> refers to cumulative logit model. <code>"probit"</code>
 refers to cumulative probit model. <code>"acat"</code> fits an adjacent categories regression model.</p></dd>
+
+
 <dt>models</dt>
 <dd><p>A string vector contains default link functions of fitting models with
 respect to each response variable. If <code>"models"</code> is missing or has any one of the model
 unspecified, <code>"uni.model"</code> is used to specify same models for all responses automatically.
 But, this argument has higher priority than the <code>"uni.model"</code> as long as the length of
 <code>"models"</code> equals to the number of <code>"responses"</code>.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>A string argument to specify correlation coefficient method.
 Three choices <code>c("kendall", "pearson", "wolfsigma")</code>. The default is
 <code>"kendall"</code></p></dd>
+
+
 <dt>resids.type</dt>
 <dd><p>A character string specifying which type of residuals to generate
-Current options are <code>"latent"</code> and <code>"uniform"</code>. Default is <code>"latent"</code>.</p><dl><dt><code>surrogate</code></dt>
+Current options include <code>"surrogate"</code>, <code>"sign"</code>, <code>"general"</code>,
+and <code>"deviance"</code>. Default is <code>"surrogate"</code> residuals.</p><dl><dt><code>surrogate</code></dt>
 <dd><p>surrogate residuals (Liu and Zhang, 2017);</p></dd>
 
   <dt><code>sign</code></dt>
@@ -156,6 +169,8 @@ Current options are <code>"latent"</code> and <code>"uniform"</code>. Default is
 this package, these residuals are problematic for partial association analysis
 between ordinal response (more discussions see Liu, Dungang, Li, Shaobo, Yu, Yan,
 and Moustaki, Irini.(2020))</p></dd>
+
+
 <dt>jitter</dt>
 <dd><p>A character string specifying how to generate surrogate residuals.
 Current options are <code>"latent"</code> and <code>"uniform"</code>. Default is <code>"latent"</code>.</p><dl><dt><code>latent</code></dt>
@@ -166,9 +181,13 @@ Current options are <code>"latent"</code> and <code>"uniform"</code>. Default is
 
 
 </dl></dd>
+
+
 <dt>jitter.uniform.scale</dt>
 <dd><p>A character string specifying the scale on which to perform
 the jittering whenever <code>jitter = "uniform"</code>. More details: <code><a href="residuals.html">PAsso::residuals</a></code>.</p></dd>
+
+
 <dt>fitted.models</dt>
 <dd><p>A list contains all the models (S3 objects) you want to
 assess for the partial association between ordinal responses after adjusting
@@ -177,20 +196,29 @@ same dataset, having same covariates, same sample size etc. The models in this
 list can be an object of class <code><a href="https://rdrr.io/pkg/ordinal/man/clm.html" class="external-link">clm</a></code>,
 <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code>, <code><a href="https://rdrr.io/pkg/rms/man/lrm.html" class="external-link">lrm</a></code>, <code><a href="https://rdrr.io/pkg/rms/man/orm.html" class="external-link">orm</a></code>,
 <code><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">polr</a></code>, <code><a href="https://rdrr.io/pkg/VGAM/man/vglm.html" class="external-link">vglm</a></code>.</p></dd>
+
+
 <dt>n_draws</dt>
 <dd><p>A number to specify draws of surrogate residuls
 such that the partial correlation coefficients are calculated repeatedly. The final
 correlation coefficients are the average of all partial correlation coefficients.
 It is the <code>"nsim"</code> argument in <code>"residuals()"</code> function.</p></dd>
+
+
 <dt>association</dt>
 <dd><p>An default argument to specify the partial association. Leave this
 further development of package such that other association analyses can be embedded.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional optional arguments.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>"PAsso"</code> is a list containing at least the following
+    
+
+<p>An object of class <code>"PAsso"</code> is a list containing at least the following
 components. It contains the partial correlation matrix and multiple repeats if
 <code>n_draws</code> &gt; 1. This object has "arguments"
 attribute saved as c(association, method, resids.type), "responses" attribute, and
@@ -226,53 +254,48 @@ The list contains:</p><dl><dt><code>corr</code></dt>
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Liu, D., Li, S., Yu, Y., &amp; Moustaki, I. (2020). Assessing partial association between
 ordinal variables: quantification, visualization, and hypothesis testing. <em>Journal
-of the American Statistical Association</em>, 1-14. doi: <a href="https://doi.org/10.1080/01621459.2020.1796394" class="external-link">10.1080/01621459.2020.1796394</a></p>
+of the American Statistical Association</em>, 1-14. <a href="https://doi.org/10.1080/01621459.2020.1796394" class="external-link">doi:10.1080/01621459.2020.1796394</a></p>
 <p>Liu, D., &amp; Zhang, H. (2018). Residuals and diagnostics for ordinal regression models:
 A surrogate approach. <em>Journal of the American Statistical Association</em>, 113(522), 845-854.
-doi: <a href="https://doi.org/10.1080/01621459.2017.1292915" class="external-link">10.1080/01621459.2017.1292915</a></p>
+<a href="https://doi.org/10.1080/01621459.2017.1292915" class="external-link">doi:10.1080/01621459.2017.1292915</a></p>
 <p>Li, C., &amp; Shepherd, B. E. (2010). Test of association between two ordinal variables
 while adjusting for covariates. <em>Journal of the American Statistical Association</em>,
-105(490), 612-620. doi: <a href="https://doi.org/10.1198/jasa.2010.tm09386" class="external-link">10.1198/jasa.2010.tm09386</a></p>
+105(490), 612-620. <a href="https://doi.org/10.1198/jasa.2010.tm09386" class="external-link">doi:10.1198/jasa.2010.tm09386</a></p>
 <p>Li, C., &amp; Shepherd, B. E. (2012). A new residual for ordinal outcomes. <em>Biometrika</em>,
-99(2), 473-480. doi: <a href="https://doi.org/10.1093/biomet/asr073" class="external-link">10.1093/biomet/asr073</a></p>
+99(2), 473-480. <a href="https://doi.org/10.1093/biomet/asr073" class="external-link">doi:10.1093/biomet/asr073</a></p>
 <p>Franses, P. H., &amp; Paap, R. (2001). <em>Quantitative models in marketing research</em>.
-Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO9780511753794" class="external-link">10.1017/CBO9780511753794</a></p>
+Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511753794" class="external-link">doi:10.1017/CBO9780511753794</a></p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">###########################################################</span></span>
-<span class="r-in"><span class="co"># User-friendly way of using</span></span>
-<span class="r-in"><span class="co">###########################################################</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘MASS’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:dplyr’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     select</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Import ANES2016 data in "PAsso"</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ANES2016</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># User-friendly way of the partial association analysis</span></span>
-<span class="r-in"><span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu">PAsso</span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,</span>
-<span class="r-in">                adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,</span>
-<span class="r-in">                data <span class="op">=</span> <span class="va">ANES2016</span>,</span>
-<span class="r-in">                method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">PAsso_1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">###########################################################</span></span></span>
+<span class="r-in"><span><span class="co"># User-friendly way of using</span></span></span>
+<span class="r-in"><span><span class="co">###########################################################</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">MASS</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Import ANES2016 data in "PAsso"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ANES2016</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># User-friendly way of the partial association analysis</span></span></span>
+<span class="r-in"><span><span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu">PAsso</span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                data <span class="op">=</span> <span class="va">ANES2016</span>,</span></span>
+<span class="r-in"><span>                method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">PAsso_1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The partial correlation coefficient matrix: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              PreVote.num  PID   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num  1.0000       0.4478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num  1.0000       0.4491</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PID                       1.0000</span>
-<span class="r-in"><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">PAsso_1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">PAsso_1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The partial correlation coefficient matrix: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              PreVote.num  PID   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num  1.0000       0.4478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num  1.0000       0.4491</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PID                       1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The marginal correlation coefficient matrix: </span>
@@ -297,32 +320,32 @@ Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO97805117537
 <span class="r-out co"><span class="r-pr">#&gt;</span> Std. Error   0.0117       0.0098   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---                                </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">###########################################################</span></span>
-<span class="r-in"><span class="co"># Advanced way of the partial association analysis</span></span>
-<span class="r-in"><span class="co">###########################################################</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fit.vote</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">PreVote.num</span> <span class="op">~</span> <span class="va">income.num</span><span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,</span>
-<span class="r-in">               family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fit.PID</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">polr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">PID</span><span class="op">)</span> <span class="op">~</span> <span class="va">income.num</span><span class="op">+</span><span class="va">age</span><span class="op">+</span><span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,</span>
-<span class="r-in">               method<span class="op">=</span><span class="st">"probit"</span>, Hess <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">PAsso_adv1</span> <span class="op">&lt;-</span> <span class="fu">PAsso</span><span class="op">(</span>fitted.models<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">fit.vote</span>, <span class="va">fit.PID</span><span class="op">)</span>,</span>
-<span class="r-in">                    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span>,</span>
-<span class="r-in">                    resids.type <span class="op">=</span> <span class="st">"surrogate"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">###########################################################</span></span></span>
+<span class="r-in"><span><span class="co"># Advanced way of the partial association analysis</span></span></span>
+<span class="r-in"><span><span class="co">###########################################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fit.vote</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">PreVote.num</span> <span class="op">~</span> <span class="va">income.num</span><span class="op">+</span> <span class="va">age</span> <span class="op">+</span> <span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,</span></span>
+<span class="r-in"><span>               family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit.PID</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">polr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">PID</span><span class="op">)</span> <span class="op">~</span> <span class="va">income.num</span><span class="op">+</span><span class="va">age</span><span class="op">+</span><span class="va">edu.year</span>, data <span class="op">=</span> <span class="va">ANES2016</span>,</span></span>
+<span class="r-in"><span>               method<span class="op">=</span><span class="st">"probit"</span>, Hess <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">PAsso_adv1</span> <span class="op">&lt;-</span> <span class="fu">PAsso</span><span class="op">(</span>fitted.models<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">fit.vote</span>, <span class="va">fit.PID</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kendall"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    resids.type <span class="op">=</span> <span class="st">"surrogate"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The partial correlation coefficient matrix: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 PreVote.num  as.factor(PID)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num     1.0000       0.4494        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num     1.0000       0.4502        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> as.factor(PID)               1.0000        </span>
-<span class="r-in"><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="summary.html">summary</a></span><span class="op">(</span><span class="va">PAsso_adv1</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The partial correlation coefficient matrix: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 PreVote.num  as.factor(PID)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num     1.0000       0.4494        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PreVote.num     1.0000       0.4502        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> as.factor(PID)               1.0000        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The marginal correlation coefficient matrix: </span>
@@ -347,7 +370,7 @@ Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO97805117537
 <span class="r-out co"><span class="r-pr">#&gt;</span> Std. Error   0.0117       0.0098       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---                                    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -359,7 +382,7 @@ Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO97805117537
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

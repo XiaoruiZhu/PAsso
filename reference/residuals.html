@@ -3,7 +3,7 @@
 regression models using the latent method described in Liu and Zhang (2017).
 It also support the sign-based residuals (Li and Shepherd, 2010), generalized
 residuals (Franses and Paap, 2001), and deviance residuals for cumulative link
-regression models."><title>Extract Model Residuals — residuals • PAsso</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Extract Model Residuals — residuals"><meta property="og:description" content="A generic function to simulate surrogate residuals for cumulative link
+regression models."><title>Extract Model Residuals — residuals • PAsso</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Extract Model Residuals — residuals"><meta property="og:description" content="A generic function to simulate surrogate residuals for cumulative link
 regression models using the latent method described in Liu and Zhang (2017).
 It also support the sign-based residuals (Li and Shepherd, 2010), generalized
 residuals (Franses and Paap, 2001), and deviance residuals for cumulative link
@@ -24,7 +24,7 @@ regression models."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
     
     <a class="navbar-brand me-2" href="../index.html">PAsso</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,85 +69,87 @@ regression models.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for clm</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for lrm</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for orm</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for polr</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for vglm</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for vgam</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for ord</span>
-<span class="fu">residuals</span><span class="op">(</span>
-  <span class="va">object</span>,
-  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span>, <span class="st">"pearson"</span>, <span class="st">"working"</span>,
-    <span class="st">"response"</span>, <span class="st">"partial"</span><span class="op">)</span>,
-  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,
-  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,
-  nsim <span class="op">=</span> <span class="fl">1L</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for PAsso</span>
-<span class="fu">residuals</span><span class="op">(</span><span class="va">object</span>, draw_id <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for clm</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for lrm</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for orm</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for polr</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for vglm</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for vgam</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ord</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"surrogate"</span>, <span class="st">"sign"</span>, <span class="st">"general"</span>, <span class="st">"deviance"</span>, <span class="st">"pearson"</span>, <span class="st">"working"</span>, <span class="st">"response"</span>,</span>
+<span>    <span class="st">"partial"</span><span class="op">)</span>,</span>
+<span>  jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latent"</span>, <span class="st">"uniform"</span><span class="op">)</span>,</span>
+<span>  jitter.uniform.scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"probability"</span>, <span class="st">"response"</span><span class="op">)</span>,</span>
+<span>  nsim <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for PAsso</span></span>
+<span><span class="fu">residuals</span><span class="op">(</span><span class="va">object</span>, draw_id <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p>An object of class <code>PAsso</code>.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>The type of residuals which should be returned. The alternatives
 are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviated.</p><dl><dt><code>surrogate</code></dt>
@@ -164,6 +166,8 @@ are: "surrogate" (default), "sign", "general", and "deviance". Can be abbreviate
 
 
 </dl></dd>
+
+
 <dt>jitter</dt>
 <dd><p>When the <code>type = "surrogate"</code>, this argument is a character string
 specifying which method to use to generate the surrogate response values. Current
@@ -175,22 +179,33 @@ options are <code>"latent"</code> and <code>"uniform"</code>. Default is <code>"
 
 
 </dl></dd>
+
+
 <dt>jitter.uniform.scale</dt>
 <dd><p>When the <code>jitter = "uniform"</code>, this is a character
 string specifying the scale on which to perform the jittering whenever
 <code>jitter = "uniform"</code>. Current options are <code>"response"</code> and <code>"probability"</code>.
 Default is <code>"response"</code>.</p></dd>
+
+
 <dt>nsim</dt>
 <dd><p>An integer specifying the number of replicates to use.
 Default is <code>1L</code> meaning one simulation only of residuals.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional optional arguments.</p></dd>
+
+
 <dt>draw_id</dt>
 <dd><p>A number refers to the i-th draw of residuals.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric vector of class <code>c("numeric", "resids")</code> containing
+    
+
+<p>A numeric vector of class <code>c("numeric", "resids")</code> containing
 the simulated surrogate residuals. Additionally, if <code>nsim</code> &gt; 1,
 then the result will contain the attributes:</p><dl><dt><code>draws</code></dt>
 <dd><p>A matrix with <code>nsim</code> columns, one for each
@@ -203,7 +218,11 @@ then the result will contain the attributes:</p><dl><dt><code>draws</code></dt>
   <code>draws</code>. (This is used for plotting purposes.)</p></dd>
 
 
-</dl><p>A matrix of class <code>c("matrix", "resids")</code> containing
+</dl><p>A "resid" object with attributes. It contains a vector or a matrix (nsim&gt;1) of
+residuals for the adjacent categories model.</p>
+
+
+<p>A matrix of class <code>c("matrix", "resids")</code> containing
 the simulated surrogate residuals used for the partial association
 analysis in <code>PAsso</code>. Additionally, if <code>rep_num</code> &gt; 1 in <code>PAsso</code>,
 then the result will contain the attributes:</p><dl><dt><code>draws</code></dt>
@@ -217,59 +236,59 @@ then the result will contain the attributes:</p><dl><dt><code>draws</code></dt>
 consequently, the result will be different with every call to
 <code>surrogate</code>. The internal functions used for sampling from truncated
 distributions are based on modified versions of
-<code><a href="https://rdrr.io/pkg/truncdist/man/rtrunc.html" class="external-link">rtrunc</a></code> and <code><a href="https://rdrr.io/pkg/truncdist/man/qtrunc.html" class="external-link">qtrunc</a></code>.</p>
+<code>rtrunc</code> and <code>qtrunc</code>.</p>
 <p>For <code>"glm"</code> objects, only the <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial()</a></code> family is supported.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Liu, D., Li, S., Yu, Y., &amp; Moustaki, I. (2020). Assessing partial association between
 ordinal variables: quantification, visualization, and hypothesis testing. <em>Journal
-of the American Statistical Association</em>, 1-14. doi: <a href="https://doi.org/10.1080/01621459.2020.1796394" class="external-link">10.1080/01621459.2020.1796394</a></p>
+of the American Statistical Association</em>, 1-14. <a href="https://doi.org/10.1080/01621459.2020.1796394" class="external-link">doi:10.1080/01621459.2020.1796394</a></p>
 <p>Liu, D., &amp; Zhang, H. (2018). Residuals and diagnostics for ordinal regression models:
 A surrogate approach. <em>Journal of the American Statistical Association</em>, 113(522), 845-854.
-doi: <a href="https://doi.org/10.1080/01621459.2017.1292915" class="external-link">10.1080/01621459.2017.1292915</a></p>
+<a href="https://doi.org/10.1080/01621459.2017.1292915" class="external-link">doi:10.1080/01621459.2017.1292915</a></p>
 <p>Li, C., &amp; Shepherd, B. E. (2010). Test of association between two ordinal variables
 while adjusting for covariates. <em>Journal of the American Statistical Association</em>,
-105(490), 612-620. doi: <a href="https://doi.org/10.1198/jasa.2010.tm09386" class="external-link">10.1198/jasa.2010.tm09386</a></p>
+105(490), 612-620. <a href="https://doi.org/10.1198/jasa.2010.tm09386" class="external-link">doi:10.1198/jasa.2010.tm09386</a></p>
 <p>Franses, P. H., &amp; Paap, R. (2001). <em>Quantitative models in marketing research</em>.
-Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO9780511753794" class="external-link">10.1017/CBO9780511753794</a></p>
+Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511753794" class="external-link">doi:10.1017/CBO9780511753794</a></p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Generate data from a quadratic probit model</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">101</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, max <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">*</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;=</span> <span class="fl">0</span>, yes <span class="op">=</span> <span class="fl">0</span>, no <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Scatterplot matrix</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">z</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate data from a quadratic probit model</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">101</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">2000</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, max <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span> <span class="op">-</span> <span class="fl">1</span> <span class="op">*</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">z</span> <span class="op">&lt;=</span> <span class="fl">0</span>, yes <span class="op">=</span> <span class="fl">0</span>, no <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Scatterplot matrix</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">z</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="residuals-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Misspecified mean structure</span></span>
-<span class="r-in"><span class="va">fm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="diagnostic.plot.html">diagnostic.plot</a></span><span class="op">(</span><span class="va">fm1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Misspecified mean structure</span></span></span>
+<span class="r-in"><span><span class="va">fm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="diagnostic.plot.html">diagnostic.plot</a></span><span class="op">(</span><span class="va">fm1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No covariate `x` is specified, extract the first covariate from `fit`.</span>
 <span class="r-plt img"><img src="residuals-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Correctly specified mean structure</span></span>
-<span class="r-in"><span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">x</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Correctly specified mean structure</span></span></span>
+<span class="r-in"><span><span class="va">fm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">x</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>glm.fit: fitted probabilities numerically 0 or 1 occurred</span>
-<span class="r-in"><span class="fu"><a href="diagnostic.plot.html">diagnostic.plot</a></span><span class="op">(</span><span class="va">fm2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="diagnostic.plot.html">diagnostic.plot</a></span><span class="op">(</span><span class="va">fm2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> No covariate `x` is specified, extract the first covariate from `fit`.</span>
 <span class="r-plt img"><img src="residuals-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ANES2016"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="PAsso.html">PAsso</a></span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,</span>
-<span class="r-in">                 adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,</span>
-<span class="r-in">                 data <span class="op">=</span> <span class="va">ANES2016</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Compute residuals</span></span>
-<span class="r-in"><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">residuals</span><span class="op">(</span><span class="va">PAsso_1</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ANES2016"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">PAsso_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="PAsso.html">PAsso</a></span><span class="op">(</span>responses <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PreVote.num"</span>, <span class="st">"PID"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 adjustments <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"income.num"</span>, <span class="st">"age"</span>, <span class="st">"edu.year"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 data <span class="op">=</span> <span class="va">ANES2016</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compute residuals</span></span></span>
+<span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu">residuals</span><span class="op">(</span><span class="va">PAsso_1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -281,7 +300,7 @@ Cambridge University Press. doi: <a href="https://doi.org/10.1017/CBO97805117537
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>
