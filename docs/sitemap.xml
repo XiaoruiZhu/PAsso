@@ -16,6 +16,9 @@
     <loc>https://xiaoruizhu.github.io/PAsso/reference/ANES2016.html</loc>
   </url>
   <url>
+    <loc>https://xiaoruizhu.github.io/PAsso/reference/PAsso.html</loc>
+  </url>
+  <url>
     <loc>https://xiaoruizhu.github.io/PAsso/reference/autoplot.html</loc>
   </url>
   <url>
@@ -34,7 +37,7 @@
     <loc>https://xiaoruizhu.github.io/PAsso/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://xiaoruizhu.github.io/PAsso/reference/PAsso.html</loc>
+    <loc>https://xiaoruizhu.github.io/PAsso/reference/p_adj_cate.html</loc>
   </url>
   <url>
     <loc>https://xiaoruizhu.github.io/PAsso/reference/plot.html</loc>
@@ -47,9 +50,6 @@
   </url>
   <url>
     <loc>https://xiaoruizhu.github.io/PAsso/reference/print.html</loc>
-  </url>
-  <url>
-    <loc>https://xiaoruizhu.github.io/PAsso/reference/p_adj_cate.html</loc>
   </url>
   <url>
     <loc>https://xiaoruizhu.github.io/PAsso/reference/residuals.html</loc>
