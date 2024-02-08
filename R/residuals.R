@@ -167,6 +167,45 @@ residuals.clm <- function(object,
 }
 
 
+################################################################################
+# GLM has its own Generic function for cumulative link models;
+# I combine my new features with the recent version of residuals.glm (stats 3.6.3).
+# 1. It can generate "surrogate", "sign", "general", and "deviance" residuals.
+# 3. It has two approaches to generate surrogate residuals: latent and uniform(jittering).
+################################################################################
+
+
+#' @name residuals
+#' @method residuals ord
+#'
+#' @return A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
+#' residuals for the adjacent categories model.
+#' @export
+residuals.ord <- function (
+    object,
+    type = c("surrogate", "sign", "general", "deviance",
+             "pearson", "working", "response", "partial"),
+    jitter = c("latent", "uniform"),
+    jitter.uniform.scale = c("probability", "response"),
+    nsim = 1L, ...)
+{
+  type <- match.arg(type)
+
+  # Sanity check: add our new types of residuals to residuals.glm()
+  if (type %in% c("surrogate", "sign", "general")) {
+    res <- residuals.clm(object = object,
+                         type = type,
+                         jitter = jitter,
+                         jitter.uniform.scale = jitter.uniform.scale,
+                         nsim = nsim,...)
+  } else if (type %in% c("deviance", "pearson", "working", "response", "partial")) { # Keep original below: residuals.glm()
+    res <- stats::residuals.glm(object = object,
+                                type = type,
+                                ...)
+  }
+  return(res)
+}
+
 #' @rdname residuals
 #' @method residuals lrm
 #' @export
@@ -186,6 +225,11 @@ residuals.orm <- residuals.clm
 #' @export
 residuals.polr <- residuals.clm
 
+
+#' @rdname residuals
+#' @method residuals glm
+#' @export
+residuals.glm <- residuals.ord
 
 #' p_adj_cate
 #'
@@ -491,60 +535,6 @@ setMethod("residuals",  "vgam",
           definition = residualsVGAM)
 
 
-################################################################################
-# GLM has its own Generic function for cumulative link models;
-# I combine my new features with the recent version of residuals.glm (stats 3.6.3).
-# 1. It can generate "surrogate", "sign", "general", and "deviance" residuals.
-# 3. It has two approaches to generate surrogate residuals: latent and uniform(jittering).
-################################################################################
-
-
-#' @name residuals
-#' @method residuals ord
-#'
-#' @return A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
-#' residuals for the adjacent categories model.
-#' @export
-residuals.ord <- function (
-  object,
-  type = c("surrogate", "sign", "general", "deviance",
-           "pearson", "working", "response", "partial"),
-  jitter = c("latent", "uniform"),
-  jitter.uniform.scale = c("probability", "response"),
-  nsim = 1L, ...)
-{
-  type <- match.arg(type)
-
-  # Sanity check: add our new types of residuals to residuals.glm()
-  if (type %in% c("surrogate", "sign", "general", "deviance")) {
-    res <- residuals.clm(object = object,
-                         type = type,
-                         jitter = jitter,
-                         jitter.uniform.scale = jitter.uniform.scale,
-                         nsim = nsim,...)
-  } else { # Keep original below: residuals.glm()
-    y <- object$y
-    r <- object$residuals
-    mu <- object$fitted.values
-    wts <- object$prior.weights
-    switch(type, deviance = , pearson = , response = if (is.null(y)) {
-      mu.eta <- object$family$mu.eta
-      eta <- object$linear.predictors
-      y <- mu + r * mu.eta(eta)
-    })
-    res <- switch(type, deviance = if (object$df.residual > 0) {
-      d.res <- sqrt(pmax((object$family$dev.resids)(y, mu,
-                                                    wts), 0))
-      ifelse(y > mu, d.res, -d.res)
-    } else rep.int(0, length(mu)), pearson = (y - mu) * sqrt(wts)/sqrt(object$family$variance(mu)),
-    working = r, response = y - mu, partial = r)
-    if (!is.null(object$na.action))
-      res <- naresid(object$na.action, res)
-    if (type == "partial")
-      res <- res + predict(object, type = "terms")
-    res
-  }
-}
 
 #' Extract Residuals from a Partial Association Analysis
 #'

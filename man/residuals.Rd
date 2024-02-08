@@ -3,18 +3,29 @@
 \name{residuals}
 \alias{residuals}
 \alias{residuals.clm}
+\alias{residuals.ord}
 \alias{residuals.lrm}
 \alias{residuals.orm}
 \alias{residuals.polr}
+\alias{residuals.glm}
 \alias{residuals,vglm-method}
 \alias{residuals,vgam-method}
-\alias{residuals.ord}
 \alias{residuals.PAsso}
 \title{Extract Model Residuals}
 \usage{
 \method{residuals}{clm}(
   object,
   type = c("surrogate", "sign", "general", "deviance"),
+  jitter = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
+  nsim = 1L,
+  ...
+)
+
+\method{residuals}{ord}(
+  object,
+  type = c("surrogate", "sign", "general", "deviance", "pearson", "working", "response",
+    "partial"),
   jitter = c("latent", "uniform"),
   jitter.uniform.scale = c("probability", "response"),
   nsim = 1L,
@@ -48,6 +59,16 @@
   ...
 )
 
+\method{residuals}{glm}(
+  object,
+  type = c("surrogate", "sign", "general", "deviance", "pearson", "working", "response",
+    "partial"),
+  jitter = c("latent", "uniform"),
+  jitter.uniform.scale = c("probability", "response"),
+  nsim = 1L,
+  ...
+)
+
 \S4method{residuals}{vglm}(
   object,
   type = c("surrogate", "sign", "general", "deviance"),
@@ -60,16 +81,6 @@
 \S4method{residuals}{vgam}(
   object,
   type = c("surrogate", "sign", "general", "deviance"),
-  jitter = c("latent", "uniform"),
-  jitter.uniform.scale = c("probability", "response"),
-  nsim = 1L,
-  ...
-)
-
-\method{residuals}{ord}(
-  object,
-  type = c("surrogate", "sign", "general", "deviance", "pearson", "working", "response",
-    "partial"),
   jitter = c("latent", "uniform"),
   jitter.uniform.scale = c("probability", "response"),
   nsim = 1L,

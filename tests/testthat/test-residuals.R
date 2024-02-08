@@ -150,19 +150,80 @@ test_that("stats::residuals.glm work for \"glm\" objects with ordinal response, 
 
   # Compute residuals
   res1 <- residuals(fit)
+  # no arguments: use default
+  # attr(,"arguments")
+  # [1] "surrogate"   "latent"      "probability"
+
   res2 <- residuals(fit, nsim = 10)
 
   # Expectations
-  expect_error(res3 <- residuals(fit, type = "surrogate", jitter = "uniform",
-                                 jitter.unifrom.scale = "probability"))
-  expect_error(res4 <- residuals(fit, type = "surrogate", jitter = "uniform",
-                                 jitter.unifrom.scale = "probability", nsim = 10))
+  res3 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                                 jitter.unifrom.scale = "probability")
+  res4 <- residuals(fit, type = "surrogate", jitter = "uniform",
+                                 jitter.unifrom.scale = "probability", nsim = 10)
+
+  # check same length for residual vector and rows in data
   expect_equal(length(res1), nrow(df1))
   expect_equal(length(res2), nrow(df1))
-  expect_null(attr(res1, "draws")) # Since use residuals.glm, return a vector of numerical values
+  expect_equal(length(res3), nrow(df1))
+  expect_equal(length(res4), nrow(df1))
+
+  # no specifying of nsim, nsim=1, return a vector of numerical values, no multiple draws
+  expect_null(attr(res1, "draws"))
   expect_null(attr(res1, "draws_id"))
-  expect_null(attr(res2, "draws"), "matrix")
-  expect_null(attr(res2, "draws_id"), "matrix")
+  expect_null(attr(res3, "draws"))
+  expect_null(attr(res3, "draws_id"))
+
+  # nsim=10, return a draws matrix with multiple draws
+  expect_is(attr(res2, "draws"), "matrix")
+  expect_is(attr(res2, "draws_id"), "matrix")
+  expect_is(attr(res4, "draws"), "matrix")
+  expect_is(attr(res4, "draws_id"), "matrix")
+
+})
+
+test_that("PAsso::residuals.glm work for \"glm\" objects with binary response", {
+
+  # Skips
+  skip_on_cran()
+
+  # library(PAsso)
+  # Load data
+  data(ANES2016)
+  # summary(ANES2016)
+  # Fit cumulative link model
+  fit.prevote <- glm(PreVote.num ~ age + edu.year + income.num,
+                     data = ANES2016, family = "binomial")
+
+  # Compute residuals
+  res1 <- residuals(fit.prevote, type = "surrogate",
+                    jitter="latent", jitter.uniform.scale="response")
+  res2 <- residuals(fit.prevote, nsim = 10)
+  # class(res2)
+
+  # Expectations
+  res3 <- residuals(fit.prevote, type = "surrogate", jitter = "uniform",
+                    jitter.unifrom.scale = "probability")
+  res4 <- residuals(fit.prevote, type = "surrogate", jitter = "uniform",
+                    jitter.unifrom.scale = "probability", nsim = 10)
+
+  # check same length for residual vector and rows in data
+  expect_equal(length(res1), nrow(ANES2016))
+  expect_equal(length(res2), nrow(ANES2016))
+  expect_equal(length(res3), nrow(ANES2016))
+  expect_equal(length(res4), nrow(ANES2016))
+
+  # no specifying of nsim, nsim=1, return a vector of numerical values, no multiple draws
+  expect_null(attr(res1, "draws"))
+  expect_null(attr(res1, "draws_id"))
+  expect_null(attr(res3, "draws"))
+  expect_null(attr(res3, "draws_id"))
+
+  # nsim=10, return a draws matrix with multiple draws
+  expect_is(attr(res2, "draws"), "matrix")
+  expect_is(attr(res2, "draws_id"), "matrix")
+  expect_is(attr(res4, "draws"), "matrix")
+  expect_is(attr(res4, "draws_id"), "matrix")
 
 })
 
