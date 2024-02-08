@@ -235,6 +235,7 @@ test_that("Surrogate approach: residuals.ord work for \"glm\" objects with ordin
   # Load data
   data(df1)
 
+  df1$y <- as.factor(df1$y)
   # Fit cumulative link model
   fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
 

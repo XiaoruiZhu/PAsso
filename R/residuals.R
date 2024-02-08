@@ -86,34 +86,25 @@
 #' @export
 #'
 #' @examples
-#' # Generate data from a quadratic probit model
-#' set.seed(101)
-#' n <- 2000
-#' x <- runif(n, min = -3, max = 6)
-#' z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
-#' y <- ifelse(z <= 0, yes = 0, no = 1)
+#' # Example 1
+#' # Load data with binary response
+#' data(ANES2016)
+#' # Fit glm model with binomial logit model
+#' fit.prevote <- glm(PreVote.num ~ age + edu.year + income.num,
+#'                    data = ANES2016, family = "binomial")
 #'
-#' # Scatterplot matrix
-#' pairs(~ x + y + z)
-#'
-#' # Misspecified mean structure
-#' fm1 <- glm(y ~ x, family = binomial(link = "probit"))
-#' diagnostic.plot(fm1)
-#'
-#' # Correctly specified mean structure
-#' fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
-#' diagnostic.plot(fm2)
+#' # Simulate surrogate residuals
+#' res1 <- residuals(fit.prevote,
+#'                   type = "surrogate",
+#'                   jitter="latent",
+#'                   jitter.uniform.scale="response")
+#' attr(res1,"arguments")
 #'
 residuals.clm <- function(object,
                           type = c("surrogate", "sign", "general", "deviance"),
                           jitter = c("latent", "uniform"),
                           jitter.uniform.scale = c("probability", "response"),
                           nsim = 1L, ...) {
-  # object=fit;
-  # type = "surrogate"
-  # jitter = "latent"
-  # jitter.uniform.scale = "probability"
-  # nsim = 30
 
   # Sanity check
   if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr"))) {
@@ -560,13 +551,15 @@ setMethod("residuals",  "vgam",
 #' @export
 #'
 #' @examples
+#' # Example 2
+#' # residuals() function can also work for PAsso object
 #' # Load data
 #' data("ANES2016")
 #' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
 #'                  adjustments = c("income.num", "age", "edu.year"),
 #'                  data = ANES2016)
 #'
-#' # Compute residuals
+#' # Extract surrogate residuals from the PAsso object
 #' res1 <- residuals(PAsso_1)
 #'
 residuals.PAsso <- function(object, draw_id=1, ...) {
