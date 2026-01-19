@@ -15,14 +15,14 @@
 
 \item{b}{upper bound.}
 
-\item{...}{any other arguments that can be used for the functions of different distribution
+\item{...}{any other arguments that can be used for the functions of different distributions
 such as "mean", "sd" for "qnorm()".}
 }
 \value{
-A vector contains n random samples from the truncated distribution "spec".
+A vector containing n random samples from the truncated distribution "spec".
 }
 \description{
-a function to generate truncated distribution. Simulate one random sample from
+A function to generate a truncated distribution. Simulate one random sample from
 a standard normal distribution truncated to the left in the middle
 .rtrunc(1, spec = "norm", a = -Inf, b = 0)
 }

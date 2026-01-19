@@ -12,7 +12,7 @@
 
 \item{color}{The color of points.}
 
-\item{shape}{The shapre of points. For more details see the help vignette:
+\item{shape}{The shape of points. For more details see the help vignette:
 \code{vignette("ggplot2-specs", package = "ggplot2")}}
 
 \item{size}{The size of points. For more details see the help vignette:

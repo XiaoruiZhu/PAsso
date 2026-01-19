@@ -1,20 +1,20 @@
 ################################################################################
 # Various internal functions
-# The following functions are taken from "truncdist" and "sure" packages,
+# The following functions are taken from the "truncdist" and "sure" packages,
 # But:
-# 1. A few functions have been modified to not throw warnings.
-# 2. A few bugs are fixed.
+# 1. A few functions have been modified not to throw warnings.
+# 2. A few bugs have been fixed.
 # 3. "generate_residuals" has been modified with new arguments. It can deal with
 #     several other residuals.
 # 4. "generate_surrogate" has been modified with new arguments.
 # 5. The bootstrap procedure for more replications of residuals has been changed
-#    to be consistent with partial association analysis. It conduct multiple
+#    to be consistent with partial association analysis. It conducts multiple
 #    draws for residuals.
 ################################################################################
 
 #' Simulate sample from truncated distribution
 #'
-#' a function to generate truncated distribution. Simulate one random sample from
+#' A function to generate a truncated distribution. Simulate one random sample from
 #' a standard normal distribution truncated to the left in the middle
 #' .rtrunc(1, spec = "norm", a = -Inf, b = 0)
 #'
@@ -22,11 +22,11 @@
 #' @param spec a character string to specify the distribution.
 #' @param a lower bound.
 #' @param b upper bound.
-#' @param ... any other arguments that can be used for the functions of different distribution
+#' @param ... any other arguments that can be used for the functions of different distributions
 #' such as "mean", "sd" for "qnorm()".
 #'
 #' @import stats
-#' @return A vector contains n random samples from the truncated distribution "spec".
+#' @return A vector containing n random samples from the truncated distribution "spec".
 #'
 #' @keywords internal
 .rtrunc <- function (n, spec, a = -Inf, b = Inf, ...) {
@@ -82,7 +82,7 @@ rgumbel <- function (n, location = 0, scale = 1) {
 }
 
 
-# For complimentary log-log link
+# For complementary log-log link
 
 #' @keywords internal
 pGumbel <- function(q, location = 0, scale = 1) {
@@ -558,6 +558,7 @@ getResponseValues.orm <- function(object) {
 
 #' @keywords internal
 getResponseValues.polr <- function(object, ...) {
+  # In polr object, the ordinal response will be saved as 1, 2, 3, ...
   unname(as.integer(model.response(model.frame(object))))
 }
 
@@ -721,14 +722,16 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
       if (distribution == "logis") {
         # stop("Jittering on the probability scale is currently only supported",
              # " for logit-type models.", call. = FALSE)
+        # ISSUE here (borrowed codes from sure package),
+        # Seems not right, does not work when y is ordinal with more than 2 levels
         .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
         .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+        runif(length(y), min = .min, max = .max)  # S|Y=y
       } else if (distribution == "norm") {
         # This is for Issue #6. Keep this in mind, this may have issues due to different settings in different packages!
         .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y-1)
         .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
+        runif(length(y), min = .min, max = .max)  # S|Y=y
       } else {
         stop("Jittering on the probability scale is currently only supported",
         " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.", call. = FALSE)
@@ -767,28 +770,20 @@ generate_residuals <-
   # Generate surrogate response values
   r <- if (method == "latent") {  # latent variable approach
 
-    # Simulate surrogate response values from the appropriate truncated
-    # distribution
-    if (distribution %in% c("norm", "logis", "cauchy", "gumbel", "Gumbel")) {
-      mean_response <- getMeanResponse(object)  # mean response values
-      s <- if (!inherits(object, what = "lrm") &&
-               inherits(object, what = "glm")) {
-        sim_trunc(n = length(y), distribution = distribution,
-                  # {0, 1} -> {1, 2}
-                  a = ifelse(y[draws_id] == 1, yes = -Inf, no = 0),
-                  b = ifelse(y[draws_id] == 2, yes =  Inf, no = 0),
-                  location = mean_response[draws_id], scale = 1)  # surrogate values
-      } else {
-        trunc_bounds <- getBounds(object)  # truncation bounds
-        sim_trunc(n = length(y), distribution = distribution,
-                  a = trunc_bounds[y[draws_id]],
-                  b = trunc_bounds[y[draws_id] + 1L],
-                  location = mean_response[draws_id], scale = 1)  # surrogate values
-      }
-    } else {
-      stop("Distribution not supported.", call. = FALSE)
-    }
+    # 1st: Simulate surrogate response values using generate_surrogate() function directly
+    # This will make the codes cleaner and easier to maintain.
+    # When new distributions needs to support, only need to edit generate_surrogate() function
+    s <-
+      generate_surrogate(object,
+                         method,
+                         jitter.uniform.scale,
+                         draws_id)
+
+    mean_response <- getMeanResponse(object)  # mean response values
+
+    # 2nd: calculate the surrogate residuals r = S|(Y=y) - E(S|X)
     s - mean_response[draws_id]  # surrogate residuals
+
   } else if (method == "uniform") {  # jittering approach
     jitter.uniform.scale <- match.arg(jitter.uniform.scale)
 
@@ -800,21 +795,18 @@ generate_residuals <-
       runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
     } else {  # jittering on the probability scale
 
-      if (distribution == "logis") {
-        # stop("Jittering on the probability scale is currently only supported",
-        # " for logit-type models.", call. = FALSE)
-        .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-        .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
-      } else if (distribution == "norm") {
-        # This is for Issue #6. Keep this in mind, this may have issues due to different settings in different packages!
-        .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y-1)
-        .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y - E(S|X)
-      } else {
-        stop("Jittering on the probability scale is currently only supported",
-             " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.", call. = FALSE)
-      }
+      # 1st: Simulate surrogate response values using generate_surrogate() function directly
+      # This will make the codes cleaner and easier to maintain.
+      # When new distributions needs to support, only need to edit generate_surrogate() function
+      s <-
+        generate_surrogate(object,
+                           method,
+                           jitter.uniform.scale,
+                           draws_id)
+
+      # 2nd: calculate the surrogate residuals r = S|(Y=y) - E(S|X)
+      # When jittering is used, the E(S|X) = 0.5
+      s - 0.5
 
     }
   } else if (method == "sign") { # sign-based residuals
