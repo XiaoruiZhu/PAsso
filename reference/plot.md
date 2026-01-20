@@ -93,9 +93,11 @@ summary(ANES2016)
 #>  Max.   :6.8139  
 #>                  
 
-PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
-                 adjustments = c("income.num", "age", "edu.year"),
-                 data = ANES2016)
+PAsso_2v <- PAsso(
+  responses = c("PreVote.num", "PID"),
+  adjustments = c("income.num", "age", "edu.year"),
+  data = ANES2016
+)
 
 plot(PAsso_2v)
 

@@ -239,10 +239,12 @@ library(MASS)
 data(ANES2016)
 
 # User-friendly way of the partial association analysis
-PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
-                adjustments = c("income.num", "age", "edu.year"),
-                data = ANES2016,
-                method = c("kendall"))
+PAsso_1 <- PAsso(
+  responses = c("PreVote.num", "PID"),
+  adjustments = c("income.num", "age", "edu.year"),
+  data = ANES2016,
+  method = c("kendall")
+)
 
 print(PAsso_1, digits = 4)
 #> -------------------------------------------- 
@@ -285,14 +287,20 @@ summary(PAsso_1, digits = 4)
 # Advanced way of the partial association analysis
 ###########################################################
 
-fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
-               family = binomial(link = "probit"))
-fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = ANES2016,
-               method="probit", Hess = TRUE)
+fit.vote <- glm(PreVote.num ~ income.num + age + edu.year,
+  data = ANES2016,
+  family = binomial(link = "probit")
+)
+fit.PID <- polr(as.factor(PID) ~ income.num + age + edu.year,
+  data = ANES2016,
+  method = "probit", Hess = TRUE
+)
 
-PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
-                    method = c("kendall"),
-                    resids.type = "surrogate")
+PAsso_adv1 <- PAsso(
+  fitted.models = list(fit.vote, fit.PID),
+  method = c("kendall"),
+  resids.type = "surrogate"
+)
 
 print(PAsso_adv1, digits = 4)
 #> -------------------------------------------- 

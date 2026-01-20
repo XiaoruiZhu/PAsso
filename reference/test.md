@@ -35,11 +35,13 @@ test(object, bootstrap_rep = 300, H0 = 0, parallel = FALSE)
 # Import ANES2016 data in "PAsso"
 data(ANES2016)
 # Parial association:
-PAsso_2v <- PAsso(responses = c("PreVote.num", "PID"),
-                adjustments = c("income.num", "age", "edu.year"),
-                data = ANES2016)
+PAsso_2v <- PAsso(
+  responses = c("PreVote.num", "PID"),
+  adjustments = c("income.num", "age", "edu.year"),
+  data = ANES2016
+)
 
-summary(PAsso_2v, digits=4)
+summary(PAsso_2v, digits = 4)
 #> -------------------------------------------- 
 #> The partial correlation coefficient matrix: 
 #> 
@@ -70,7 +72,7 @@ summary(PAsso_2v, digits=4)
 #> ---                                
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep=20, H0=0, parallel=FALSE)
+PAsso_2v_test <- test(object = PAsso_2v, bootstrap_rep = 20, H0 = 0, parallel = FALSE)
 #> The bootstrapping procedure may be slow when bootstrap_rep is large!
 PAsso_2v_test
 #> -------------------------------------------- 

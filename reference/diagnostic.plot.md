@@ -247,11 +247,13 @@ A "ggplot" object based on the residuals generated from polr object.
 data("ANES2016")
 ANES2016$PreVote.num <- as.factor(ANES2016$PreVote.num)
 
-PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
-                  adjustments = c("income.num", "age", "edu.year"),
-                  data = ANES2016, uni.model = "probit",
-                  method = c("kendall"),
-                  resids.type = "surrogate", jitter = "latent")
+PAsso_3v <- PAsso(
+  responses = c("PreVote.num", "PID", "selfLR"),
+  adjustments = c("income.num", "age", "edu.year"),
+  data = ANES2016, uni.model = "probit",
+  method = c("kendall"),
+  resids.type = "surrogate", jitter = "latent"
+)
 
 diag_p1 <- diagnostic.plot(object = PAsso_3v, output = "qq")
 

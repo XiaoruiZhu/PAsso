@@ -352,7 +352,7 @@ A `"ggplot"` object.
 # Load data
 data(df1)
 # Fit cumulative link model
-fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 # Construct residual plots
 p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
 #> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.

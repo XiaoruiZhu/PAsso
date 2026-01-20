@@ -230,23 +230,27 @@ research*. Cambridge University Press.
 data(ANES2016)
 # Fit glm model with binomial logit model
 fit.prevote <- glm(PreVote.num ~ age + edu.year + income.num,
-                   data = ANES2016, family = "binomial")
+  data = ANES2016, family = "binomial"
+)
 
 # Simulate surrogate residuals
 res1 <- residuals(fit.prevote,
-                  type = "surrogate",
-                  jitter="latent",
-                  jitter.uniform.scale="response")
-attr(res1,"arguments")
+  type = "surrogate",
+  jitter = "latent",
+  jitter.uniform.scale = "response"
+)
+attr(res1, "arguments")
 #> [1] "surrogate" "latent"    "response" 
 
 # Example 2
 # residuals() function can also work for PAsso object
 # Load data
 data("ANES2016")
-PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
-                 adjustments = c("income.num", "age", "edu.year"),
-                 data = ANES2016)
+PAsso_1 <- PAsso(
+  responses = c("PreVote.num", "PID"),
+  adjustments = c("income.num", "age", "edu.year"),
+  data = ANES2016
+)
 
 # Extract surrogate residuals from the PAsso object
 res1 <- residuals(PAsso_1)
