@@ -86,7 +86,7 @@
 #'
 #' @return A \code{"ggplot"} object.
 #'
-#' @importFrom ggplot2 autoplot margin element_text rel
+#' @importFrom ggplot2 autoplot margin element_text rel aes
 #'
 #' @importFrom gridExtra grid.arrange
 #'
@@ -211,14 +211,14 @@ autoplot.resid <- function(
     qqline.x <- distribution(c(0.25, 0.75))
     slope <- diff(qqline.y) / diff(qqline.x)
     int <- qqline.y[1L] - slope * qqline.x[1L]
-    ggplot(data.frame(x = xvals, y = res.med), aes_string(x = "x", y = "y")) +
+    ggplot(data.frame(x = xvals, y = res.med), aes(x = "x", y = "y")) +
       geom_point(
         color = qqpoint.color, shape = qqpoint.shape,
         size = qqpoint.size
       ) +
       geom_abline(
         slope = slope, intercept = int, color = qqline.color,
-        linetype = qqline.linetype, size = qqline.size
+        linetype = qqline.linetype, linewidth = qqline.size
       ) +
       labs(
         x = "Theoretical quantile", y = "Sample quantile",
@@ -237,13 +237,13 @@ autoplot.resid <- function(
 
     # resp_name <- paste("Residual (", resp_name , ")", sep = "")
 
-    p <- ggplot(data.frame("x" = mr, "y" = res), aes_string(x = "x", y = "y")) +
+    p <- ggplot(data.frame("x" = mr, "y" = res), aes(x = "x", y = "y")) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       labs(x = "Fitted value", y = resp_name, ...) # Add availability for title, and revise ylab to show response
     if (smooth) {
       p <- p + geom_smooth(
         color = smooth.color, linetype = smooth.linetype,
-        size = smooth.size, se = FALSE,
+        linewidth = smooth.size, se = FALSE,
         method = "gam", formula = y ~ s(x, bs = "cs")
       )
     }
@@ -254,7 +254,7 @@ autoplot.resid <- function(
 
   # Residual vs covariate
   p3 <- if ("covariate" %in% output) {
-    p <- ggplot(data.frame("x" = x, "y" = res), aes_string(x = "x", y = "y"))
+    p <- ggplot(data.frame("x" = x, "y" = res), aes(x = "x", y = "y"))
     if (is.factor(x)) {
       if (is.null(fill)) {
         p <- p + geom_boxplot(aes_string(fill = "x"), alpha = alpha) +
@@ -270,7 +270,7 @@ autoplot.resid <- function(
       if (smooth) {
         p <- p + geom_smooth(
           color = smooth.color, linetype = smooth.linetype,
-          size = smooth.size, se = FALSE,
+          linewidth = smooth.size, se = FALSE,
           method = "gam", formula = y ~ s(x, bs = "cs")
         )
       }
