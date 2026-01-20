@@ -256,20 +256,92 @@ PAsso_3v <- PAsso(
 )
 
 diag_p1 <- diagnostic.plot(object = PAsso_3v, output = "qq")
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
 
 diag_p2 <- diagnostic.plot(object = PAsso_3v, output = "fitted")
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
 
 diag_p3 <- diagnostic.plot(object = PAsso_3v, output = "covariate")
 #> No covariate is specified, the first covariate(adjustment) is being used.
-#> Warning: Failed to fit group -1.
-#> Caused by error in `smooth.construct.cr.smooth.spec()`:
-#> ! x has insufficient unique values to support 10 knots: reduce k.
-#> Warning: Failed to fit group -1.
-#> Caused by error in `smooth.construct.cr.smooth.spec()`:
-#> ! x has insufficient unique values to support 10 knots: reduce k.
-#> Warning: Failed to fit group -1.
-#> Caused by error in `smooth.construct.cr.smooth.spec()`:
-#> ! x has insufficient unique values to support 10 knots: reduce k.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
+#> Warning: All aesthetics have length 1, but the data has 2188 rows.
+#> ℹ Please consider using `annotate()` or provide this layer with data containing
+#>   a single row.
 
 
 # Simply diagnose a model

@@ -355,15 +355,6 @@ data(df1)
 fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 # Construct residual plots
 p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
-#> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
-#> ℹ Please use tidy evaluation idioms with `aes()`.
-#> ℹ See also `vignette("ggplot2-in-packages")` for more information.
-#> ℹ The deprecated feature was likely used in the PAsso package.
-#>   Please report the issue at <https://github.com/XiaoruiZhu/PAsso/issues>.
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the PAsso package.
-#>   Please report the issue at <https://github.com/XiaoruiZhu/PAsso/issues>.
 p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
 p3 <- ggplot2::autoplot(fit, output = "fitted")
 ```
