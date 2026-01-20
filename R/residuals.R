@@ -91,25 +91,28 @@
 #' data(ANES2016)
 #' # Fit glm model with binomial logit model
 #' fit.prevote <- glm(PreVote.num ~ age + edu.year + income.num,
-#'                    data = ANES2016, family = "binomial")
+#'   data = ANES2016, family = "binomial"
+#' )
 #'
 #' # Simulate surrogate residuals
 #' res1 <- residuals(fit.prevote,
-#'                   type = "surrogate",
-#'                   jitter="latent",
-#'                   jitter.uniform.scale="response")
-#' attr(res1,"arguments")
+#'   type = "surrogate",
+#'   jitter = "latent",
+#'   jitter.uniform.scale = "response"
+#' )
+#' attr(res1, "arguments")
 #'
 residuals.clm <- function(object,
                           type = c("surrogate", "sign", "general", "deviance"),
                           jitter = c("latent", "uniform"),
                           jitter.uniform.scale = c("probability", "response"),
                           nsim = 1L, ...) {
-
   # Sanity check
   if (!inherits(object, c("clm", "glm", "lrm", "orm", "polr"))) {
-    stop(deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
-         "\"lrm\", \"orm\", or \"polr\".")
+    stop(
+      deparse(substitute(object)), " should be of class \"clm\", \"glm\", ",
+      "\"lrm\", \"orm\", or \"polr\"."
+    )
   }
 
   # Match arguments
@@ -124,7 +127,6 @@ residuals.clm <- function(object,
       message("Jittering uniform is an experimental feature, use at your own risk!")
     }
     gene_method <- jitter
-
   } else { # When type is "sign", "general", or "deviance", extract "method" for generate_residuals()
     gene_method <- type
   }
@@ -135,15 +137,17 @@ residuals.clm <- function(object,
 
 
   # Multiple samples
-  if (nsim > 1L) {  # multiple draws
+  if (nsim > 1L) { # multiple draws
     draws <- draws_id <- matrix(nrow = nobs(object), ncol = nsim)
-    for(i in seq_len(nsim)) {
+    for (i in seq_len(nsim)) {
       # draws_id[, i] <- sample(nobs(object), replace = TRUE)
       # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
       draws_id[, i] <- seq_along(getResponseValues(object))
       draws[, i] <-
-        generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-                           draws_id = draws_id[, i, drop = TRUE])
+        generate_residuals(object,
+          method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+          draws_id = draws_id[, i, drop = TRUE]
+        )
     }
     attr(r, "draws") <- draws
     attr(r, "draws_id") <- draws_id
@@ -154,7 +158,6 @@ residuals.clm <- function(object,
   # Return residuals
   class(r) <- c("numeric", "resid")
   r
-
 }
 
 
@@ -172,27 +175,32 @@ residuals.clm <- function(object,
 #' @return A "resid" object with attributes. It contains a vector or a matrix (nsim>1) of
 #' residuals for the adjacent categories model.
 #' @export
-residuals.ord <- function (
+residuals.ord <- function(
     object,
-    type = c("surrogate", "sign", "general", "deviance",
-             "pearson", "working", "response", "partial"),
+    type = c(
+      "surrogate", "sign", "general", "deviance",
+      "pearson", "working", "response", "partial"
+    ),
     jitter = c("latent", "uniform"),
     jitter.uniform.scale = c("probability", "response"),
-    nsim = 1L, ...)
-{
+    nsim = 1L, ...) {
   type <- match.arg(type)
 
   # Sanity check: add our new types of residuals to residuals.glm()
   if (type %in% c("surrogate", "sign", "general")) {
-    res <- residuals.clm(object = object,
-                         type = type,
-                         jitter = jitter,
-                         jitter.uniform.scale = jitter.uniform.scale,
-                         nsim = nsim,...)
+    res <- residuals.clm(
+      object = object,
+      type = type,
+      jitter = jitter,
+      jitter.uniform.scale = jitter.uniform.scale,
+      nsim = nsim, ...
+    )
   } else if (type %in% c("deviance", "pearson", "working", "response", "partial")) { # Keep original below: residuals.glm()
-    res <- stats::residuals.glm(object = object,
-                                type = type,
-                                ...)
+    res <- stats::residuals.glm(
+      object = object,
+      type = type,
+      ...
+    )
   }
   return(res)
 }
@@ -230,21 +238,21 @@ residuals.glm <- residuals.ord
 #' @return A matrix (n by level of respones plus 1) of probabilities of the adjacent categories model.
 #'
 #' @keywords internal
-p_adj_cate <- function(Z){
+p_adj_cate <- function(Z) {
   k <- ncol(Z)
-  p1_pj <- p1_pj_inv<- Z
+  p1_pj <- p1_pj_inv <- Z
   ZZ <- 0
-  for(j in 1:k){
-    ZZ <- ZZ+Z[,j]
-    p1_pj[,j] <- exp(ZZ)
-    p1_pj_inv[,j] <- 1/p1_pj[,j]
+  for (j in 1:k) {
+    ZZ <- ZZ + Z[, j]
+    p1_pj[, j] <- exp(ZZ)
+    p1_pj_inv[, j] <- 1 / p1_pj[, j]
   }
-  p1 <- 1/(rowSums(p1_pj_inv)+1)
+  p1 <- 1 / (rowSums(p1_pj_inv) + 1)
   pj <- p1_pj
-  for(j in 1:k){
-    pj[,j] <- p1/p1_pj[,j]
+  for (j in 1:k) {
+    pj[, j] <- p1 / p1_pj[, j]
   }
-  cbind(1-rowSums(pj), pj)
+  cbind(1 - rowSums(pj), pj)
 }
 
 
@@ -262,21 +270,21 @@ p_adj_cate <- function(Z){
 #' @return A vector or a matrix (nsim>1) of residuals for the adjacent categories model.
 #'
 #' @keywords internal
-generate_residuals_acat <- function(y, X, alpha, beta, nsim=1){
+generate_residuals_acat <- function(y, X, alpha, beta, nsim = 1) {
   # y = y; X = X; alpha = alphas; beta = betas; nsim=1
   # alpha <- matrix(alpha, nrow=1)
   # beta <- matrix(beta, nrow=1)
   n <- length(y)
-  z <- sapply(alpha[2:(length(alpha)-1)], function(a) a + tcrossprod(as.matrix(X), beta))
+  z <- sapply(alpha[2:(length(alpha) - 1)], function(a) a + tcrossprod(as.matrix(X), beta))
   p_acat <- p_adj_cate(z)
   F_acat <- t(apply(p_acat, 1, cumsum))
   F_acat <- cbind(0, F_acat)
-  if(min(y)==0){
-    R <- sapply(1:n, function(k) runif(nsim, F_acat[k,y[k]+1], F_acat[k,y[k]+2]))
-  }else{
-    R <- sapply(1:n, function(k) runif(nsim, F_acat[k,y[k]], F_acat[k,y[k]+1]))
+  if (min(y) == 0) {
+    R <- sapply(1:n, function(k) runif(nsim, F_acat[k, y[k] + 1], F_acat[k, y[k] + 2]))
+  } else {
+    R <- sapply(1:n, function(k) runif(nsim, F_acat[k, y[k]], F_acat[k, y[k] + 1]))
   }
-  R - 1/2
+  R - 1 / 2
 }
 
 #' This is a function to deal with the vglm object in S4.
@@ -314,8 +322,7 @@ residualsAcat <- function(object,
                           type = c("surrogate", "sign", "general", "deviance"),
                           jitter = c("latent", "uniform"),
                           jitter.uniform.scale = c("probability", "response"),
-                          nsim = 1L, ...)
-{
+                          nsim = 1L, ...) {
   # object <- fit
   # type = "surrogate"
   # jitter = "latent"
@@ -340,18 +347,18 @@ residualsAcat <- function(object,
 
   # Generate surrogate response values -------------
   coefs <- coef(object)
-  alphas <- matrix(c(-Inf, coefs[1:(ncat(object)-1)], Inf), nrow = 1)
-  betas <- matrix(coefs[-c(1:(ncat(object)-1))], nrow = 1)
+  alphas <- matrix(c(-Inf, coefs[1:(ncat(object) - 1)], Inf), nrow = 1)
+  betas <- matrix(coefs[-c(1:(ncat(object) - 1))], nrow = 1)
   # message(alphas, "  ", betas)
   y <- getResponseValues(object)
 
   # X <- as.matrix(model.frame(object)[,-1])
-  X <- as.matrix(object@x[,-1]) # This just work for the "vglm" adjacent categories model!
+  X <- as.matrix(object@x[, -1]) # This just work for the "vglm" adjacent categories model!
 
-  r <- generate_residuals_acat(y = y, X = X, alpha = alphas, beta = betas, nsim=1)
+  r <- generate_residuals_acat(y = y, X = X, alpha = alphas, beta = betas, nsim = 1)
 
   # Multiple samples -------------
-  if (nsim > 1L) {  # multiple draws
+  if (nsim > 1L) { # multiple draws
     draws_id <- matrix(seq(nobs(object)), nrow = nobs(object), ncol = nsim, byrow = F)
 
     draws <-
@@ -403,12 +410,11 @@ residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "devi
       message("Jittering uniform is an experimental feature, use at your own risk!")
     }
     gene_method <- jitter
-
   } else { # When type is "sign", "general", or "deviance", extract "method" for generate_residuals()
     gene_method <- type
   }
 
-  if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1]=="acat")) {
+  if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1] == "acat")) {
     # If object is S4 and adjacent categories regression model, need to use "residualsAcat" instead!
     r <- residualsAcat(object, ...)
 
@@ -425,23 +431,24 @@ residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "devi
   }
 
   # Multiple samples
-  if (nsim > 1L) {  # multiple draws
+  if (nsim > 1L) { # multiple draws
     draws <- draws_id <- matrix(nrow = nobs(object), ncol = nsim)
 
     # If object is S4, need to use "residualsAcat" instead!
-    if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1]=="acat")) {
-
-      for(i in seq_len(nsim)) {
+    if (isS4(object) & inherits(object, "vglm") & (attr(slot(object, "family"), "vfamily")[1] == "acat")) {
+      for (i in seq_len(nsim)) {
         # draws_id[, i] <- sample(nobs(object), replace = TRUE)
         # BUG FIXED: Above original code is not correct! Use same IDs to replicate and get many draws of residuals!
         draws_id[, i] <- seq_along(getResponseValues(object))
 
         suppressMessages(
-          draws[, i] <- residualsAcat(object = object,
-                                      type = type,
-                                      jitter = jitter,
-                                      jitter.uniform.scale = jitter.uniform.scale,
-                                      nsim = nsim,...)
+          draws[, i] <- residualsAcat(
+            object = object,
+            type = type,
+            jitter = jitter,
+            jitter.uniform.scale = jitter.uniform.scale,
+            nsim = nsim, ...
+          )
         )
 
         # Below is another way to solve the S4 issue, but redundant now.
@@ -453,21 +460,19 @@ residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "devi
         #                          jitter.uniform.scale = jitter.uniform.scale,
         #                          nsim = nsim, ...)
         # )
-
       }
-
     } else {
-
-      for(i in seq_len(nsim)) {
+      for (i in seq_len(nsim)) {
         # draws_id[, i] <- sample(nobs(object), replace = TRUE)
         # BUG FIXED: Above original code is not correct! Replicate to get many draws of residuals!
         draws_id[, i] <- seq_along(getResponseValues(object))
 
         draws[, i] <-
-          generate_residuals(object, method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
-                             draws_id = draws_id[, i, drop = TRUE])
+          generate_residuals(object,
+            method = gene_method, jitter.uniform.scale = jitter.uniform.scale,
+            draws_id = draws_id[, i, drop = TRUE]
+          )
       }
-
     }
 
     attr(r, "draws") <- draws
@@ -480,7 +485,6 @@ residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "devi
   # Return residuals
   class(r) <- c("numeric", "resid")
   r
-
 }
 
 #' ref the vglm' adjacent categories regression model to using \code{"residualsAcat"} function.
@@ -512,8 +516,9 @@ residualsVGAM <- function(object, type = c("surrogate", "sign", "general", "devi
 #' @rdname residuals
 #' @method residuals vglm
 #' @export
-setMethod("residuals",  "vglm",
-          definition = residualsVGAM)
+setMethod("residuals", "vglm",
+  definition = residualsVGAM
+)
 
 #' ref the vgam' adjacent categories regression model to using \code{"residualsAcat"} function.
 #' @param object An object of class \code{\link[VGAM]{vgam}}.
@@ -522,8 +527,9 @@ setMethod("residuals",  "vglm",
 #' @rdname residuals
 #' @method residuals vgam
 #' @export
-setMethod("residuals",  "vgam",
-          definition = residualsVGAM)
+setMethod("residuals", "vgam",
+  definition = residualsVGAM
+)
 
 
 
@@ -555,16 +561,18 @@ setMethod("residuals",  "vgam",
 #' # residuals() function can also work for PAsso object
 #' # Load data
 #' data("ANES2016")
-#' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
-#'                  adjustments = c("income.num", "age", "edu.year"),
-#'                  data = ANES2016)
+#' PAsso_1 <- PAsso(
+#'   responses = c("PreVote.num", "PID"),
+#'   adjustments = c("income.num", "age", "edu.year"),
+#'   data = ANES2016
+#' )
 #'
 #' # Extract surrogate residuals from the PAsso object
 #' res1 <- residuals(PAsso_1)
 #'
-residuals.PAsso <- function(object, draw_id=1, ...) {
-  if ((draw_id>=1) & (draw_id<=dim(object$rep_SRs)[2])) {
-    resids_PAsso <- object$rep_SRs[,draw_id,]
+residuals.PAsso <- function(object, draw_id = 1, ...) {
+  if ((draw_id >= 1) & (draw_id <= dim(object$rep_SRs)[2])) {
+    resids_PAsso <- object$rep_SRs[, draw_id, ]
     # resids_PAsso <- PAsso_1$rep_SRs[,1,]
   } else {
     stop("The draw_id is out of bound.")

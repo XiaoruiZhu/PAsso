@@ -63,8 +63,11 @@ plot.gof <- function(x, ...) {
 
 #' @keywords internal
 sim_pvals <- function(res, test, pfun) {
-  gof_test <- switch(test, "ks" = stats::ks.test, "ad" = goftest::ad.test,
-                     "cvm" = goftest::cvm.test)
+  gof_test <- switch(test,
+    "ks" = stats::ks.test,
+    "ad" = goftest::ad.test,
+    "cvm" = goftest::cvm.test
+  )
   pvals <- apply(attr(res, "draws"), MARGIN = 2, FUN = function(x) {
     gof_test(x, pfun)$p.value
   })

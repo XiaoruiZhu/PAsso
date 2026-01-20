@@ -2,7 +2,6 @@ context("autoplot(): Residual plots")
 
 
 test_that("autoplot works for \"clm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("ordinal")
@@ -11,7 +10,7 @@ test_that("autoplot works for \"clm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
+  fit <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "logit")
 
   # Construct residual plots
   p1 <- ggplot2::autoplot(fit, output = "qq")
@@ -25,12 +24,10 @@ test_that("autoplot works for \"clm\" objects", {
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
-
 })
 
 
 test_that("autoplot works for \"glm\" objects", {
-
   # Skips
   skip_on_cran()
 
@@ -38,7 +35,7 @@ test_that("autoplot works for \"glm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+  fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 
   # Construct residual plots
   p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
@@ -52,12 +49,10 @@ test_that("autoplot works for \"glm\" objects", {
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
-
 })
 
 
 test_that("autoplot works for \"lrm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
@@ -80,12 +75,10 @@ test_that("autoplot works for \"lrm\" objects", {
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
-
 })
 
 
 test_that("autoplot works for \"orm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
@@ -108,12 +101,10 @@ test_that("autoplot works for \"orm\" objects", {
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
-
 })
 
 
 test_that("autoplot works for \"polr\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("MASS")
@@ -122,7 +113,7 @@ test_that("autoplot works for \"polr\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
+  fit <- MASS::polr(y ~ x + I(x^2), data = df1, method = "logistic")
 
   # Construct residual plots
   p1 <- ggplot2::autoplot(fit, output = "qq")
@@ -136,12 +127,10 @@ test_that("autoplot works for \"polr\" objects", {
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
-
 })
 
 
 test_that("autoplot works for \"vglm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
@@ -151,9 +140,13 @@ test_that("autoplot works for \"vglm\" objects", {
 
   # Fit cumulative link model
   suppressWarnings(
-    fit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
-                      family = VGAM::cumulative(link = "logit",
-                                                parallel = TRUE))
+    fit <- VGAM::vglm(y ~ x + I(x^2),
+      data = df1,
+      family = VGAM::cumulative(
+        link = "logit",
+        parallel = TRUE
+      )
+    )
   )
 
   # Construct residual plots
@@ -166,5 +159,4 @@ test_that("autoplot works for \"vglm\" objects", {
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
-
 })

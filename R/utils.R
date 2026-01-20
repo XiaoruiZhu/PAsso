@@ -29,13 +29,13 @@
 #' @return A vector containing n random samples from the truncated distribution "spec".
 #'
 #' @keywords internal
-.rtrunc <- function (n, spec, a = -Inf, b = Inf, ...) {
+.rtrunc <- function(n, spec, a = -Inf, b = Inf, ...) {
   .qtrunc(runif(n, min = 0, max = 1), spec, a = a, b = b, ...)
 }
 
 
 #' @keywords internal
-.qtrunc <- function (p, spec, a = -Inf, b = Inf, ...) {
+.qtrunc <- function(p, spec, a = -Inf, b = Inf, ...) {
   tt <- p
   G <- get(paste("p", spec, sep = ""), mode = "function")
   Gin <- get(paste("q", spec, sep = ""), mode = "function")
@@ -48,11 +48,15 @@
 #' @keywords internal
 sim_trunc <- function(n, distribution, a, b, location = 0, scale = 1) {
   if (distribution == "norm") {
-    .rtrunc(n, spec = distribution, a = a, b = b,
-            mean = location, sd = scale)
+    .rtrunc(n,
+      spec = distribution, a = a, b = b,
+      mean = location, sd = scale
+    )
   } else {
-    .rtrunc(n, spec = distribution, a = a, b = b,
-            location = location, scale = scale)
+    .rtrunc(n,
+      spec = distribution, a = a, b = b,
+      location = location, scale = scale
+    )
   }
 }
 
@@ -77,7 +81,7 @@ qgumbel <- function(p, location = 0, scale = 1) {
 
 
 #' @keywords internal
-rgumbel <- function (n, location = 0, scale = 1) {
+rgumbel <- function(n, location = 0, scale = 1) {
   qgumbel(runif(n, min = 0, max = 1), location = location, scale = scale)
 }
 
@@ -98,7 +102,7 @@ qGumbel <- function(p, location = 0, scale = 1) {
 
 
 #' @keywords internal
-rGumbel <- function (n, location = 0, scale = 1) {
+rGumbel <- function(n, location = 0, scale = 1) {
   qGumbel(runif(n, min = 0, max = 1), location = location, scale = scale)
 }
 
@@ -118,7 +122,7 @@ getBounds <- function(object, ...) {
 getBounds.clm <- function(object, ...) {
   unname(
     c(-Inf, stats::coef(object)[seq_len(ncat(object) - 1)] -
-        stats::coef(object)[1L], Inf)
+      stats::coef(object)[1L], Inf)
   )
 }
 
@@ -179,22 +183,24 @@ getDistributionFunction <- function(object) {
 #' @keywords internal
 getDistributionFunction.clm <- function(object) {
   switch(object$link,
-         "logit" = plogis,
-         "probit" = pnorm,
-         "loglog" = pgumbel,
-         "cloglog" = pGumbel,
-         "cauchit" = pcauchy)
+    "logit" = plogis,
+    "probit" = pnorm,
+    "loglog" = pgumbel,
+    "cloglog" = pGumbel,
+    "cauchit" = pcauchy
+  )
 }
 
 
 #' @keywords internal
 getDistributionFunction.glm <- function(object) {
   switch(object$family$link,
-         "logit" = plogis,
-         "probit" = pnorm,
-         # "loglog" = pgumbel,  # glm does not support this link function
-         "cloglog" = pGumbel,
-         "cauchit" = pcauchy)
+    "logit" = plogis,
+    "probit" = pnorm,
+    # "loglog" = pgumbel,  # glm does not support this link function
+    "cloglog" = pGumbel,
+    "cauchit" = pcauchy
+  )
 }
 
 
@@ -207,39 +213,42 @@ getDistributionFunction.lrm <- function(object) {
 #' @keywords internal
 getDistributionFunction.orm <- function(object) {
   switch(object$family,
-         "logistic" = plogis,
-         "probit" = pnorm,
-         "loglog" = pgumbel,
-         "cloglog" = pGumbel,
-         "cauchit" = pcauchy)
+    "logistic" = plogis,
+    "probit" = pnorm,
+    "loglog" = pgumbel,
+    "cloglog" = pGumbel,
+    "cauchit" = pcauchy
+  )
 }
 
 
 #' @keywords internal
 getDistributionFunction.polr <- function(object) {
   switch(object$method,
-         "logistic" = plogis,
-         "probit" = pnorm,
-         "loglog" = pgumbel,
-         "cloglog" = pGumbel,
-         "cauchit" = pcauchy)
+    "logistic" = plogis,
+    "probit" = pnorm,
+    "loglog" = pgumbel,
+    "cloglog" = pGumbel,
+    "cauchit" = pcauchy
+  )
 }
 
 
 #' @keywords internal
 getDistributionFunction.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = plogis, # Old "logit" in VGAM
-         "logitlink" = plogis, # "logit" is deprecated, use "logitlink" instead
-         "probit" = pnorm,
-         "loglog" = pgumbel,
-         "cloglog" = pGumbel,
-         "cauchit" = pcauchy,
-         "loglink" = plogis,
-         "probitlink" = pnorm,
-         "logloglink" = pgumbel,
-         "clogloglink" = pGumbel,
-         "cauchitlink" = pcauchy)
+    "logit" = plogis, # Old "logit" in VGAM
+    "logitlink" = plogis, # "logit" is deprecated, use "logitlink" instead
+    "probit" = pnorm,
+    "loglog" = pgumbel,
+    "cloglog" = pGumbel,
+    "cauchit" = pcauchy,
+    "loglink" = plogis,
+    "probitlink" = pnorm,
+    "logloglink" = pgumbel,
+    "clogloglink" = pGumbel,
+    "cauchitlink" = pcauchy
+  )
 }
 
 
@@ -257,22 +266,24 @@ getDistributionName <- function(object) {
 #' @keywords internal
 getDistributionName.clm <- function(object) {
   switch(object$link,
-         "logit" = "logis",
-         "probit" = "norm",
-         "loglog" = "gumbel",
-         "cloglog" = "Gumbel",
-         "cauchit" = "cauchy")
+    "logit" = "logis",
+    "probit" = "norm",
+    "loglog" = "gumbel",
+    "cloglog" = "Gumbel",
+    "cauchit" = "cauchy"
+  )
 }
 
 
 #' @keywords internal
 getDistributionName.glm <- function(object) {
   switch(object$family$link,
-         "logit" = "logis",
-         "probit" = "norm",
-         # "loglog" = "gumbel",  # glm does not support this link function
-         "cloglog" = "Gumbel",
-         "cauchit" = "cauchy")
+    "logit" = "logis",
+    "probit" = "norm",
+    # "loglog" = "gumbel",  # glm does not support this link function
+    "cloglog" = "Gumbel",
+    "cauchit" = "cauchy"
+  )
 }
 
 
@@ -285,39 +296,42 @@ getDistributionName.lrm <- function(object) {
 #' @keywords internal
 getDistributionName.orm <- function(object) {
   switch(object$family,
-         "logistic" = "logis",
-         "probit" = "norm",
-         "loglog" = "gumbel",
-         "cloglog" = "Gumbel",
-         "cauchit" = "cauchy")
+    "logistic" = "logis",
+    "probit" = "norm",
+    "loglog" = "gumbel",
+    "cloglog" = "Gumbel",
+    "cauchit" = "cauchy"
+  )
 }
 
 
 #' @keywords internal
 getDistributionName.polr <- function(object) {
   switch(object$method,
-         "logistic" = "logis",
-         "probit" = "norm",
-         "loglog" = "gumbel",
-         "cloglog" = "Gumbel",
-         "cauchit" = "cauchy")
+    "logistic" = "logis",
+    "probit" = "norm",
+    "loglog" = "gumbel",
+    "cloglog" = "Gumbel",
+    "cauchit" = "cauchy"
+  )
 }
 
 
 #' @keywords internal
 getDistributionName.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = "logis",
-         "logitlink" = "logis",
-         "probit" = "norm",
-         "loglog" = "gumbel",
-         "cloglog" = "Gumbel",
-         "cauchit" = "cauchy",
-         "loglink" = "logis",
-         "probitlink" = "norm",
-         "logloglink" = "gumbel",
-         "clogloglink" = "Gumbel",
-         "cauchitlink" = "cauchy")
+    "logit" = "logis",
+    "logitlink" = "logis",
+    "probit" = "norm",
+    "loglog" = "gumbel",
+    "cloglog" = "Gumbel",
+    "cauchit" = "cauchy",
+    "loglink" = "logis",
+    "probitlink" = "norm",
+    "logloglink" = "gumbel",
+    "clogloglink" = "Gumbel",
+    "cauchitlink" = "cauchy"
+  )
 }
 
 
@@ -336,7 +350,7 @@ getFittedProbs <- function(object) {
 getFittedProbs.clm <- function(object) {
   newdata <- stats::model.frame(object)
   vars <- as.character(attr(object$terms, "variables"))
-  resp <- vars[1 + attr(object$terms, "response")]  # response name
+  resp <- vars[1 + attr(object$terms, "response")] # response name
   newdata <- newdata[!names(newdata) %in% resp]
   predict(object, newdata = newdata, type = "prob")$fit
 }
@@ -379,7 +393,7 @@ getFittedProbs.vglm <- function(object) {
 ################################################################################
 
 #' @keywords internal
-getMeanResponse <- function(object) {  # for j = 1
+getMeanResponse <- function(object) { # for j = 1
   UseMethod("getMeanResponse")
 }
 
@@ -392,7 +406,7 @@ getMeanResponse.clm <- function(object) {
     .checkMFClasses(cl, mf)
   }
   X <- model.matrix(object$terms, data = mf, contrasts = object$contrasts)
-  if(sum(object$aliased$beta) > 0) {
+  if (sum(object$aliased$beta) > 0) {
     X <- X[, !c(FALSE, object$aliased$beta), drop = FALSE]
   }
   # drop(X[, -1L, drop = FALSE] %*% object$beta)
@@ -424,7 +438,7 @@ getMeanResponse.orm <- function(object) {
 #' @keywords internal
 getMeanResponse.polr <- function(object) {
   # object$lp
-  object$lp - object$zeta[1L]  # Xb - a1
+  object$lp - object$zeta[1L] # Xb - a1
 }
 
 
@@ -433,7 +447,7 @@ getMeanResponse.vglm <- function(object) { # Need to check "reverse", if True, p
   if (object@misc$reverse) {
     object@predictors[, 1L, drop = TRUE]
   } else {
-    - object@predictors[, 1L, drop = TRUE]
+    -object@predictors[, 1L, drop = TRUE]
   }
 }
 
@@ -452,22 +466,24 @@ getQuantileFunction <- function(object) {
 #' @keywords internal
 getQuantileFunction.clm <- function(object) {
   switch(object$link,
-         "logit" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+    "logit" = qlogis,
+    "probit" = qnorm,
+    "loglog" = qgumbel,
+    "cloglog" = qGumbel,
+    "cauchit" = qcauchy
+  )
 }
 
 
 #' @keywords internal
 getQuantileFunction.glm <- function(object) {
   switch(object$family$link,
-         "logit" = qlogis,
-         "probit" = qnorm,
-         "log" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+    "logit" = qlogis,
+    "probit" = qnorm,
+    "log" = qgumbel,
+    "cloglog" = qGumbel,
+    "cauchit" = qcauchy
+  )
 }
 
 
@@ -480,42 +496,43 @@ getQuantileFunction.lrm <- function(object) {
 #' @keywords internal
 getQuantileFunction.orm <- function(object) {
   switch(object$family,
-         "logistic" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+    "logistic" = qlogis,
+    "probit" = qnorm,
+    "loglog" = qgumbel,
+    "cloglog" = qGumbel,
+    "cauchit" = qcauchy
+  )
 }
 
 
 #' @keywords internal
 getQuantileFunction.polr <- function(object) {
   switch(object$method,
-         "logistic" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy)
+    "logistic" = qlogis,
+    "probit" = qnorm,
+    "loglog" = qgumbel,
+    "cloglog" = qGumbel,
+    "cauchit" = qcauchy
+  )
 }
 
 
 #' @keywords internal
 getQuantileFunction.vglm <- function(object) {
   switch(object@family@infos()$link,
-         "logit" = qlogis,
-         "logitlink" = qlogis,
-         "probit" = qnorm,
-         "loglog" = qgumbel,
-         "cloglog" = qGumbel,
-         "cauchit" = qcauchy,
-         # Above are for vglm cumulative links.
-
-         "loglink" = qlogis,
-         "probitlink" = qnorm,
-         "logloglink" = qgumbel,
-         "clogloglink" = qGumbel,
-         "cauchitlink" = qcauchy
-         # Above are for the "acat" links.
+    "logit" = qlogis,
+    "logitlink" = qlogis,
+    "probit" = qnorm,
+    "loglog" = qgumbel,
+    "cloglog" = qGumbel,
+    "cauchit" = qcauchy,
+    # Above are for vglm cumulative links.
+    "loglink" = qlogis,
+    "probitlink" = qnorm,
+    "logloglink" = qgumbel,
+    "clogloglink" = qGumbel,
+    "cauchitlink" = qcauchy
+    # Above are for the "acat" links.
   )
 }
 
@@ -582,14 +599,14 @@ getCovariates <- function(object, ...) {
 
 #' @keywords internal
 getCovariates.clm <- function(object, ...) {
-  object$model[,-1]
+  object$model[, -1]
 }
 
 
 #' @keywords internal
 getCovariates.glm <- function(object) {
   # FIXME: What about binomial models with matrix response, etc.?
-  object$model[,-1]
+  object$model[, -1]
 }
 
 
@@ -605,14 +622,14 @@ getCovariates.orm <- function(object) {
 
 #' @keywords internal
 getCovariates.polr <- function(object, ...) {
-  object$model[,-1]
+  object$model[, -1]
 }
 
 
 #' @keywords internal
 getCovariates.vglm <- function(object, ...) {
   # head(fit@x)
-  object@x[,-1]
+  object@x[, -1]
 }
 
 ################################################################################
@@ -669,15 +686,14 @@ ncat.vglm <- function(object) {
 generate_surrogate <- function(object, method = c("latent", "uniform"),
                                jitter.uniform.scale = c("probability", "response"),
                                draws_id = NULL) {
-
   # Match arguments
   method <- match.arg(method)
 
   # Get distribution name (for sampling)
-  distribution <- getDistributionName(object)  # distribution name
+  distribution <- getDistributionName(object) # distribution name
 
   # Generate surrogate response values
-  s <- if (method == "latent") {  # latent variable approach
+  s <- if (method == "latent") { # latent variable approach
 
     # Simulate surrogate response values from the appropriate truncated
     # distribution
@@ -686,25 +702,28 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
       if (is.null(draws_id)) {
         draws_id <- seq_along(y)
       }
-      mean_response <- getMeanResponse(object)  # mean response values
+      mean_response <- getMeanResponse(object) # mean response values
       if (!inherits(object, what = "lrm") && inherits(object, what = "glm")) {
-        sim_trunc(n = length(y), distribution = distribution,
-                  # {0, 1} -> {1, 2}
-                  a = ifelse(y[draws_id] == 1, yes = -Inf, no = 0),
-                  b = ifelse(y[draws_id] == 2, yes =  Inf, no = 0),
-                  location = mean_response[draws_id], scale = 1)  # surrogate values
+        sim_trunc(
+          n = length(y), distribution = distribution,
+          # {0, 1} -> {1, 2}
+          a = ifelse(y[draws_id] == 1, yes = -Inf, no = 0),
+          b = ifelse(y[draws_id] == 2, yes = Inf, no = 0),
+          location = mean_response[draws_id], scale = 1
+        ) # surrogate values
       } else {
-        trunc_bounds <- getBounds(object)  # truncation bounds
-        sim_trunc(n = length(y), distribution = distribution,
-                  a = trunc_bounds[y[draws_id]],
-                  b = trunc_bounds[y[draws_id] + 1L],
-                  location = mean_response[draws_id], scale = 1)  # surrogate values
+        trunc_bounds <- getBounds(object) # truncation bounds
+        sim_trunc(
+          n = length(y), distribution = distribution,
+          a = trunc_bounds[y[draws_id]],
+          b = trunc_bounds[y[draws_id] + 1L],
+          location = mean_response[draws_id], scale = 1
+        ) # surrogate values
       }
     } else {
       stop("Distribution not supported.", call. = FALSE)
     }
-
-  } else {  # jittering approach
+  } else { # jittering approach
 
     # Determine scale for jittering
     jitter.uniform.scale <- match.arg(jitter.uniform.scale)
@@ -714,37 +733,35 @@ generate_surrogate <- function(object, method = c("latent", "uniform"),
     }
     y <- y[draws_id]
     prob <- getFittedProbs(object)[draws_id, ]
-    if (jitter.uniform.scale == "response") {  # jittering on the response scale
+    if (jitter.uniform.scale == "response") { # jittering on the response scale
       j <- seq_len(ncol(prob))
       jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
       runif(length(y), min = y, max = y + 1)
-    } else {  # jittering on the probability scale
+    } else { # jittering on the probability scale
       if (distribution == "logis") {
         # stop("Jittering on the probability scale is currently only supported",
-             # " for logit-type models.", call. = FALSE)
+        # " for logit-type models.", call. = FALSE)
         # ISSUE here (borrowed codes from sure package),
         # Seems not right, does not work when y is ordinal with more than 2 levels
-        .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y-1)
-        .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE])  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y
+        .min <- pbinom(y - 2, size = 1, prob = prob[, 1L, drop = TRUE]) # F(y-1)
+        .max <- pbinom(y - 1, size = 1, prob = prob[, 1L, drop = TRUE]) # F(y)
+        runif(length(y), min = .min, max = .max) # S|Y=y
       } else if (distribution == "norm") {
         # This is for Issue #6. Keep this in mind, this may have issues due to different settings in different packages!
-        .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y-1)
-        .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1)  # F(y)
-        runif(length(y), min = .min, max = .max)  # S|Y=y
+        .min <- pnorm(q = y - 1, mean = prob[, 1L, drop = TRUE], sd = 1) # F(y-1)
+        .max <- pnorm(q = y, mean = prob[, 1L, drop = TRUE], sd = 1) # F(y)
+        runif(length(y), min = .min, max = .max) # S|Y=y
       } else {
         stop("Jittering on the probability scale is currently only supported",
-        " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.", call. = FALSE)
+          " for logit, probit-type models. The 'cauchy', 'gumbel', 'Gumbel' are under construction.",
+          call. = FALSE
+        )
       }
-
-
     }
-
   }
 
   # Return results
   s
-
 }
 
 
@@ -754,102 +771,103 @@ generate_residuals <-
   function(object, method = c("latent", "uniform", "sign", "general", "deviance"),
            jitter.uniform.scale = c("probability", "response"),
            draws_id = NULL) {
+    # Match arguments
+    method <- match.arg(method)
 
-  # Match arguments
-  method <- match.arg(method)
+    # Pull "y" and "draws_id" for all methods
+    y <- getResponseValues(object)
+    if (is.null(draws_id)) {
+      draws_id <- seq_along(y)
+    }
 
-  # Pull "y" and "draws_id" for all methods
-  y <- getResponseValues(object)
-  if (is.null(draws_id)) {
-    draws_id <- seq_along(y)
-  }
+    # Get distribution name (for sampling)
+    distribution <- getDistributionName(object) # distribution name
 
-  # Get distribution name (for sampling)
-  distribution <- getDistributionName(object)  # distribution name
-
-  # Generate surrogate response values
-  r <- if (method == "latent") {  # latent variable approach
-
-    # 1st: Simulate surrogate response values using generate_surrogate() function directly
-    # This will make the codes cleaner and easier to maintain.
-    # When new distributions needs to support, only need to edit generate_surrogate() function
-    s <-
-      generate_surrogate(object,
-                         method,
-                         jitter.uniform.scale,
-                         draws_id)
-
-    mean_response <- getMeanResponse(object)  # mean response values
-
-    # 2nd: calculate the surrogate residuals r = S|(Y=y) - E(S|X)
-    s - mean_response[draws_id]  # surrogate residuals
-
-  } else if (method == "uniform") {  # jittering approach
-    jitter.uniform.scale <- match.arg(jitter.uniform.scale)
-
-    y <- y[draws_id]
-    prob <- getFittedProbs(object)[draws_id, ]
-    if (jitter.uniform.scale == "response") {  # jittering on the response scale
-      j <- seq_len(ncol(prob))
-      jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
-      runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
-    } else {  # jittering on the probability scale
+    # Generate surrogate response values
+    r <- if (method == "latent") { # latent variable approach
 
       # 1st: Simulate surrogate response values using generate_surrogate() function directly
       # This will make the codes cleaner and easier to maintain.
       # When new distributions needs to support, only need to edit generate_surrogate() function
       s <-
-        generate_surrogate(object,
-                           method,
-                           jitter.uniform.scale,
-                           draws_id)
+        generate_surrogate(
+          object,
+          method,
+          jitter.uniform.scale,
+          draws_id
+        )
+
+      mean_response <- getMeanResponse(object) # mean response values
 
       # 2nd: calculate the surrogate residuals r = S|(Y=y) - E(S|X)
-      # When jittering is used, the E(S|X) = 0.5
-      s - 0.5
+      s - mean_response[draws_id] # surrogate residuals
+    } else if (method == "uniform") { # jittering approach
+      jitter.uniform.scale <- match.arg(jitter.uniform.scale)
 
+      y <- y[draws_id]
+      prob <- getFittedProbs(object)[draws_id, ]
+      if (jitter.uniform.scale == "response") { # jittering on the response scale
+        j <- seq_len(ncol(prob))
+        jmat <- matrix(rep(j, times = nrow(prob)), ncol = ncol(prob), byrow = TRUE)
+        runif(length(y), min = y, max = y + 1) - rowSums((jmat + 0.5) * prob)
+      } else { # jittering on the probability scale
+
+        # 1st: Simulate surrogate response values using generate_surrogate() function directly
+        # This will make the codes cleaner and easier to maintain.
+        # When new distributions needs to support, only need to edit generate_surrogate() function
+        s <-
+          generate_surrogate(
+            object,
+            method,
+            jitter.uniform.scale,
+            draws_id
+          )
+
+        # 2nd: calculate the surrogate residuals r = S|(Y=y) - E(S|X)
+        # When jittering is used, the E(S|X) = 0.5
+        s - 0.5
+      }
+    } else if (method == "sign") { # sign-based residuals
+      n <- length(y)
+      y <- y[draws_id]
+      prob <- getFittedProbs(object)[draws_id, ]
+
+      # calculate probability based residual based on fitted value (prbabilities)
+      pyej <- prob[cbind(1:n, y)]
+      pysj <- sapply(1:n, function(x) sum(prob[x, 1:y[x]])) - pyej
+      PR <- -1 + 2 * pysj + pyej
+      PR # Return sign-based residuals
+    } else if (method == "general") { # generalized residuals
+      n <- length(y)
+      y <- y[draws_id]
+      prob <- getFittedProbs(object)[draws_id, ]
+
+      y <- as.integer(y)
+      F_acat <- t(apply(prob, 1, cumsum))
+      F_acat <- cbind(0, F_acat)
+
+      # An workaround to avoid BUG below: dnorm(qnorm(1)) return Inf
+      F_acat[, dim(F_acat)[2]] <- 0.9999999999
+
+      Pj <- sapply(1:n, function(x) prob[x, y[x]])
+      Fj <- sapply(1:n, function(x) F_acat[x, y[x] + 1])
+      Fj_1 <- sapply(1:n, function(x) F_acat[x, y[x]])
+
+      fj <- dnorm(qnorm(Fj))
+      fj_1 <- dnorm(qnorm(Fj_1))
+      (fj_1 - fj) / Pj # Return generalized residuals
+    } else { # deviance residuals (-2*loglik)
+      n <- length(y)
+      y <- y[draws_id]
+      prob <- getFittedProbs(object)[draws_id, ]
+
+      -2 * log(prob[cbind(1:n, y)]) # Return deviance residuals
     }
-  } else if (method == "sign") { # sign-based residuals
-    n <- length(y)
-    y <- y[draws_id]
-    prob <- getFittedProbs(object)[draws_id, ]
 
-    # calculate probability based residual based on fitted value (prbabilities)
-    pyej <- prob[cbind(1:n, y)]
-    pysj <- sapply(1:n, function(x) sum(prob[x,1:y[x]])) - pyej
-    PR <- -1 + 2*pysj + pyej
-    PR # Return sign-based residuals
-  } else if (method == "general") { # generalized residuals
-    n <- length(y); y <- y[draws_id]
-    prob <- getFittedProbs(object)[draws_id, ]
-
-    y <- as.integer(y)
-    F_acat <- t(apply(prob, 1, cumsum))
-    F_acat <- cbind(0, F_acat)
-
-    # An workaround to avoid BUG below: dnorm(qnorm(1)) return Inf
-    F_acat[,dim(F_acat)[2]] <- 0.9999999999
-
-    Pj <- sapply(1:n, function(x) prob[x,y[x]])
-    Fj <- sapply(1:n, function(x) F_acat[x,y[x]+1])
-    Fj_1 <- sapply(1:n, function(x) F_acat[x,y[x]])
-
-    fj <- dnorm(qnorm(Fj))
-    fj_1 <- dnorm(qnorm(Fj_1))
-    (fj_1-fj)/Pj # Return generalized residuals
-
-  } else { # deviance residuals (-2*loglik)
-    n <- length(y); y <- y[draws_id]
-    prob <- getFittedProbs(object)[draws_id, ]
-
-    -2*log(prob[cbind(1:n, y)]) # Return deviance residuals
+    # Return results
+    r
   }
 
-  # Return results
-  r
-
-}
-
-.onUnload <- function (libpath) {
+.onUnload <- function(libpath) {
   library.dynam.unload("PAsso", libpath)
 }

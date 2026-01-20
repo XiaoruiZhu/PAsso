@@ -151,10 +151,12 @@
 #' data(ANES2016)
 #'
 #' # User-friendly way of the partial association analysis
-#' PAsso_1 <- PAsso(responses = c("PreVote.num", "PID"),
-#'                 adjustments = c("income.num", "age", "edu.year"),
-#'                 data = ANES2016,
-#'                 method = c("kendall"))
+#' PAsso_1 <- PAsso(
+#'   responses = c("PreVote.num", "PID"),
+#'   adjustments = c("income.num", "age", "edu.year"),
+#'   data = ANES2016,
+#'   method = c("kendall")
+#' )
 #'
 #' print(PAsso_1, digits = 4)
 #' summary(PAsso_1, digits = 4)
@@ -163,14 +165,20 @@
 #' # Advanced way of the partial association analysis
 #' ###########################################################
 #'
-#' fit.vote<- glm(PreVote.num ~ income.num+ age + edu.year, data = ANES2016,
-#'                family = binomial(link = "probit"))
-#' fit.PID<- polr(as.factor(PID) ~ income.num+age+edu.year, data = ANES2016,
-#'                method="probit", Hess = TRUE)
+#' fit.vote <- glm(PreVote.num ~ income.num + age + edu.year,
+#'   data = ANES2016,
+#'   family = binomial(link = "probit")
+#' )
+#' fit.PID <- polr(as.factor(PID) ~ income.num + age + edu.year,
+#'   data = ANES2016,
+#'   method = "probit", Hess = TRUE
+#' )
 #'
-#' PAsso_adv1 <- PAsso(fitted.models=list(fit.vote, fit.PID),
-#'                     method = c("kendall"),
-#'                     resids.type = "surrogate")
+#' PAsso_adv1 <- PAsso(
+#'   fitted.models = list(fit.vote, fit.PID),
+#'   method = c("kendall"),
+#'   resids.type = "surrogate"
+#' )
 #'
 #' print(PAsso_adv1, digits = 4)
 #' summary(PAsso_adv1, digits = 4)
@@ -185,8 +193,7 @@ PAsso <- function(responses, adjustments, data,
                   jitter.uniform.scale = c("probability", "response"),
                   fitted.models = NULL,
                   n_draws = 20,
-                  association = "partial", ...){
-
+                  association = "partial", ...) {
   n_resp <- ifelse(missing(responses), length(fitted.models), length(responses))
 
   # Match arguments -------------------------------------------------
@@ -206,11 +213,13 @@ PAsso <- function(responses, adjustments, data,
 
   # Initialize the cor_func for different methods
   cor_func <- switch(method,
-                     # kendall = function(X) cor(X, method = "kendall"),
-                     kendall = function(X) cor.fk(X),
-                     pearson = function(X) cor(X),
-                     wolfsigma = function(X)
-                       t(wolfCOP(para = data.frame(X), as.sample = TRUE)))
+    # kendall = function(X) cor(X, method = "kendall"),
+    kendall = function(X) cor.fk(X),
+    pearson = function(X) cor(X),
+    wolfsigma = function(X) {
+      t(wolfCOP(para = data.frame(X), as.sample = TRUE))
+    }
+  )
 
 
 
@@ -219,12 +228,12 @@ PAsso <- function(responses, adjustments, data,
   # Pull out ingredients for cooking partial association --------------------------------------------
   if (!missing(fitted.models) & is.list(fitted.models)) { # If fitted.models is imported as a list, then done!
 
-    conf_temp0 <- lapply(fitted.models, function(mod) colnames(model.frame(mod)[1,]))
+    conf_temp0 <- lapply(fitted.models, function(mod) colnames(model.frame(mod)[1, ]))
 
     responses <- lapply(conf_temp0, `[[`, 1)
     n_responses <- length(responses)
 
-    mods_ys <- sapply(fitted.models, function(mod) as.numeric(model.frame(mod)[,1]))
+    mods_ys <- sapply(fitted.models, function(mod) as.numeric(model.frame(mod)[, 1]))
     colnames(mods_ys) <- c(responses)
     # Save numeric response for calculating marginal corr
 
@@ -241,7 +250,8 @@ PAsso <- function(responses, adjustments, data,
     if (length(unique.default(conf_temp)) != 1L) { # If data are not same, stop!
       stop("The imported fitted.models have different confounders!")
     } else { # If confounders are same, use them!
-      adjustments <- conf_temp[[1]]; n_adjustments <- length(adjustments)
+      adjustments <- conf_temp[[1]]
+      n_adjustments <- length(adjustments)
     }
 
     data <- data.frame(mods_ys, getCovariates(fitted.models[[1]])) # Make sure data is data.frame to avoid issue!
@@ -258,14 +268,18 @@ PAsso <- function(responses, adjustments, data,
       # Here is a test for other model objects: polr, vglm etc.
       class(fitted.models[[i]]) <- c("ord", class(fitted.models[[i]]))
     }
-    models <- sapply(X = distName,
-                     FUN = function(x) switch(x,
-                                              "logis" = "logit",
-                                              "norm" = "probit",
-                                              "gumbel" = "loglog",
-                                              "Gumbel" = "cloglog",
-                                              "cauchy" = "cauchit"))
-
+    models <- sapply(
+      X = distName,
+      FUN = function(x) {
+        switch(x,
+          "logis" = "logit",
+          "norm" = "probit",
+          "gumbel" = "loglog",
+          "Gumbel" = "cloglog",
+          "cauchy" = "cauchit"
+        )
+      }
+    )
   } else { # Start to deal with "responses" and "adjustments"
     if (length(responses) != length(models)) {
       mess_str <- "Not all models of the responses are specified.
@@ -279,15 +293,17 @@ PAsso <- function(responses, adjustments, data,
     n_adjustments <- length(adjustments)
 
     # mods_ys <- as.numeric(sapply(models, function(mod) model.frame(mod)[,1]))
-    mods_ys <- apply(X = data[,responses], MARGIN = 2, FUN = as.numeric)
+    mods_ys <- apply(X = data[, responses], MARGIN = 2, FUN = as.numeric)
     # Save numeric response for calculating marginal corr
 
     formulaAll <-
-      sapply(responses,
-             function(X) paste(X, paste(adjustments, collapse = "+"), sep = "~"))
+      sapply(
+        responses,
+        function(X) paste(X, paste(adjustments, collapse = "+"), sep = "~")
+      )
 
     for (i in responses) { # Change all response variables to factor type to avoid error!
-      data[,i] <- as.factor(data[,i])
+      data[, i] <- as.factor(data[, i])
     }
 
     # Combine Models together -------------------------------
@@ -295,34 +311,41 @@ PAsso <- function(responses, adjustments, data,
     # NEEDED FEATURE: Test for other packages.
     fitted.models <- list()
     for (i in 1:n_responses) {
-
       if (models[i] %in% "acat") { # Conduct Adjacent Categories regression model.
-        data[,responses[i]] <- as.numeric(data[,responses[i]])
-        fitted_temp <- do.call("vglm",
-                               list(formula = as.formula(formulaAll[i]),
-                                    data = quote(data),
-                                    family = quote(acat(reverse = TRUE, parallel = TRUE))))
+        data[, responses[i]] <- as.numeric(data[, responses[i]])
+        fitted_temp <- do.call(
+          "vglm",
+          list(
+            formula = as.formula(formulaAll[i]),
+            data = quote(data),
+            family = quote(acat(reverse = TRUE, parallel = TRUE))
+          )
+        )
 
         # need to change the response back to factor to avoid issue!
-        data[,responses[i]] <- as.factor(data[,responses[i]])
-
-      } else if (length(unique(data[,responses[i]])) > 2) {
+        data[, responses[i]] <- as.factor(data[, responses[i]])
+      } else if (length(unique(data[, responses[i]])) > 2) {
         # If response has more than 2 levels, use "polr" or "VGAM::acat", otherwise "glm".
 
-        temp_model <- ifelse(models[i]=="logit", "logistic", models[i])
+        temp_model <- ifelse(models[i] == "logit", "logistic", models[i])
         # Change link from "logit" to "logistic" since "polr" only accept "logistic" link
 
         if (temp_model %in% c("logit", "logistic", "probit")) {
-          fitted_temp <- do.call("polr", list(formula = as.formula(formulaAll[i]),
-                                              Hess = TRUE, # Need this to draw coefficients and t-values as output
-                                              method = temp_model, data = quote(data)))
+          fitted_temp <- do.call("polr", list(
+            formula = as.formula(formulaAll[i]),
+            Hess = TRUE, # Need this to draw coefficients and t-values as output
+            method = temp_model, data = quote(data)
+          ))
         }
-
       } else {
-        fitted_temp <- do.call("glm",
-                               list(formula = as.formula(formulaAll[i]),
-                                    family = quote(binomial(link = models[i])),
-                                    data = quote(data)))
+        fitted_temp <- do.call(
+          "glm",
+          list(
+            formula = as.formula(formulaAll[i]),
+            family = quote(binomial(link = models[i])),
+            data = quote(data)
+          )
+        )
 
         # In order to reregister residuals for the glm class, I add "ord" class as "ordinal response model"
         # Use "ord" as an extend of "glm" class object such that "residuals.ord" can recognize it
@@ -334,7 +357,7 @@ PAsso <- function(responses, adjustments, data,
     }
 
     # Transfer the data again to obtain numeric responses!!!
-    data <- data.frame(mods_ys, data[,adjustments]) # Make sure data is data.frame to avoid issue!
+    data <- data.frame(mods_ys, data[, adjustments]) # Make sure data is data.frame to avoid issue!
     colnames(data) <- c(responses, adjustments)
   }
 
@@ -349,8 +372,8 @@ PAsso <- function(responses, adjustments, data,
   # Simulate surrogate residuals for calculating the correlation -----------------------------------
   MatCorr <- matrix(1, nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses))
 
-  if (n_draws==1) { # Use just one replication of SR to calcualte partial correlation!
-    rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses)) # Keep array for consistency.
+  if (n_draws == 1) { # Use just one replication of SR to calcualte partial correlation!
+    rep_SRs <- array(data = NA, dim = c(mods_n[1], n_draws, n_responses)) # Keep array for consistency.
 
     for (i in 1:n_responses) {
       # print(class(fitted.models[[i]]))
@@ -359,13 +382,16 @@ PAsso <- function(responses, adjustments, data,
       } else {
         use_func <- "residuals"
       }
-      temp_resids <- do.call(what = use_func,
-                             args = list(object = fitted.models[[i]],
-                                         type = resids.type, jitter = jitter,
-                                         jitter.uniform.scale = jitter.uniform.scale,
-                                         nsim = n_draws)
-                             )
-      rep_SRs[,1,i] <- temp_resids
+      temp_resids <- do.call(
+        what = use_func,
+        args = list(
+          object = fitted.models[[i]],
+          type = resids.type, jitter = jitter,
+          jitter.uniform.scale = jitter.uniform.scale,
+          nsim = n_draws
+        )
+      )
+      rep_SRs[, 1, i] <- temp_resids
     }
 
     dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
@@ -373,14 +399,13 @@ PAsso <- function(responses, adjustments, data,
     dimnames(rep_SRs)[[3]] <- responses
 
     if (method == "wolfsigma") { # wolfsigma only return one value!
-      MatCorr[upper.tri(MatCorr)] <- MatCorr[lower.tri(MatCorr)] <- cor_func(rep_SRs[,1,])
+      MatCorr[upper.tri(MatCorr)] <- MatCorr[lower.tri(MatCorr)] <- cor_func(rep_SRs[, 1, ])
     } else {
-      MatCorr <- cor_func(rep_SRs[,1,])
+      MatCorr <- cor_func(rep_SRs[, 1, ])
     }
     rep_MatCorr <- MatCorr # Save Replication again!
-
   } else { # Repeat n_draws times to get SRs and calcualte average partial correlation!
-    rep_SRs <- array(data = NA, dim = c(mods_n[1],n_draws,n_responses))
+    rep_SRs <- array(data = NA, dim = c(mods_n[1], n_draws, n_responses))
     for (i in 1:n_responses) {
       # print(class(fitted.models[[i]]))
       if (isS4(fitted.models[[i]]) & inherits(fitted.models[[i]], "vglm")) {
@@ -388,13 +413,16 @@ PAsso <- function(responses, adjustments, data,
       } else {
         use_func <- "residuals"
       }
-      temp_resids <- do.call(what = use_func,
-                             args = list(object = fitted.models[[i]],
-                                         type = resids.type, jitter = jitter,
-                                         jitter.uniform.scale = jitter.uniform.scale,
-                                         nsim = n_draws)
-                             )
-      rep_SRs[,,i] <- attr(temp_resids, "draws")
+      temp_resids <- do.call(
+        what = use_func,
+        args = list(
+          object = fitted.models[[i]],
+          type = resids.type, jitter = jitter,
+          jitter.uniform.scale = jitter.uniform.scale,
+          nsim = n_draws
+        )
+      )
+      rep_SRs[, , i] <- attr(temp_resids, "draws")
     }
 
     dimnames(rep_SRs)[[1]] <- c(1:mods_n[1])
@@ -404,29 +432,35 @@ PAsso <- function(responses, adjustments, data,
     rep_MatCorr_temp <- apply(X = rep_SRs, MARGIN = 2, cor_func) # For each copy, calculate correlation
     # For "wolfsigma", below code has bug!
     MatCorr <- matrix(apply(X = rep_MatCorr_temp, MARGIN = 1, mean),
-                      nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses))
+      nrow = n_responses, ncol = n_responses, dimnames = list(responses, responses)
+    )
     # ABOVE: Take mean as the estimate of partial correlation matrix!
 
-    rep_MatCorr <- array(rep_MatCorr_temp, dim = c(n_responses, n_responses, n_draws),
-                         dimnames = list(responses, responses))
+    rep_MatCorr <- array(rep_MatCorr_temp,
+      dim = c(n_responses, n_responses, n_draws),
+      dimnames = list(responses, responses)
+    )
   }
 
   # Add marginal association!
   # Marg_corr <- cor(mods_ys, method = method)
   Marg_corr <- cor_func(mods_ys)
 
-  PartialAsso <- list(corr=MatCorr, rep_corr=rep_MatCorr, rep_SRs=rep_SRs,
-                      fitted.models=fitted.models, data=data, mods_n=mods_n,
-                      cor_func=cor_func, Marg_corr=Marg_corr)
-  attr(PartialAsso, "arguments") <- c(association, method, resids.type,
-                                      jitter, jitter.uniform.scale)
+  PartialAsso <- list(
+    corr = MatCorr, rep_corr = rep_MatCorr, rep_SRs = rep_SRs,
+    fitted.models = fitted.models, data = data, mods_n = mods_n,
+    cor_func = cor_func, Marg_corr = Marg_corr
+  )
+  attr(PartialAsso, "arguments") <- c(
+    association, method, resids.type,
+    jitter, jitter.uniform.scale
+  )
   attr(PartialAsso, "responses") <- responses
   attr(PartialAsso, "adjustments") <- adjustments
   attr(PartialAsso, "models") <- models
 
   class(PartialAsso) <- c("PAsso", class(PartialAsso))
   return(PartialAsso)
-
 } ## end of function
 
 
@@ -446,23 +480,25 @@ PAsso <- function(responses, adjustments, data,
 #' @examples
 #' # See PAsso for the example.
 #'
-print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
+print.PAsso <- function(x, digits = max(2, getOption("digits") - 2), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n")
 
   # x$corr[lower.tri(x$corr)] <- NA
 
   # print.default(format(x$corr, digits = max(2, (digits))),
-                # print.gap = 2, na.print = "",
-                # quote = FALSE, ...)
+  # print.gap = 2, na.print = "",
+  # quote = FALSE, ...)
 
-  temp <- format(round(x$corr, digits=max(2, (digits))),
-                 digits = max(2, (digits)), ...)
+  temp <- format(round(x$corr, digits = max(2, (digits))),
+    digits = max(2, (digits)), ...
+  )
   temp[lower.tri(temp)] <- NA
 
   print.default(temp,
-                print.gap = 2, na.print = "",
-                quote = FALSE, ...)
+    print.gap = 2, na.print = "",
+    quote = FALSE, ...
+  )
 }
 
 #' @title Summary of partial association analysis
@@ -489,28 +525,32 @@ print.PAsso <- function(x, digits = max(2, getOption("digits")-2), ...) {
 #' @examples
 #' # See PAsso for the example.
 #'
-summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...) {
+summary.PAsso <- function(object, digits = max(3L, getOption("digits") - 2L), ...) {
   cat("-------------------------------------------- \n")
   cat("The partial correlation coefficient matrix: \n\n")
   # print(signif(object$corr, ...))
 
-  temp <- format(round(object$corr, digits=max(2, (digits))),
-                 digits = max(2, (digits)), ...)
+  temp <- format(round(object$corr, digits = max(2, (digits))),
+    digits = max(2, (digits)), ...
+  )
   temp[lower.tri(temp)] <- NA
 
   print.default(temp,
-                print.gap = 2, na.print = "",
-                quote = FALSE, ...)
+    print.gap = 2, na.print = "",
+    quote = FALSE, ...
+  )
 
   cat("-------------------------------------------- \n")
   cat("The marginal correlation coefficient matrix: \n\n")
-  Marg_temp <- format(round(object$Marg_corr, digits=max(2, (digits))),
-                      digits = max(2, (digits)), ...)
+  Marg_temp <- format(round(object$Marg_corr, digits = max(2, (digits))),
+    digits = max(2, (digits)), ...
+  )
   Marg_temp[lower.tri(Marg_temp)] <- NA
 
   print.default(Marg_temp,
-                print.gap = 2, na.print = "",
-                quote = FALSE, ...)
+    print.gap = 2, na.print = "",
+    quote = FALSE, ...
+  )
 
   cat("\n--------------------------------------------\n")
   cat("--------------------------------------------\n")
@@ -525,12 +565,12 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
   n_adju <- length(adjustments)
   n_samp <- nobs(object$fitted.models[[1]])
 
-  coefs_table <- matrix(NA, nrow = n_adju*3, ncol = n_resp)
+  coefs_table <- matrix(NA, nrow = n_adju * 3, ncol = n_resp)
   colnames(coefs_table) <- responses
-  rownames_coefs_table <- rep(NA, n_adju*2)
-  rownames_coefs_table[seq(1, n_adju*3, by = 3)] <- adjustments
-  rownames_coefs_table[seq(2, n_adju*3, by = 3)] <- rep("Std. Error", n_adju)
-  rownames_coefs_table[seq(3, n_adju*3, by = 3)] <- rep("---", n_adju)
+  rownames_coefs_table <- rep(NA, n_adju * 2)
+  rownames_coefs_table[seq(1, n_adju * 3, by = 3)] <- adjustments
+  rownames_coefs_table[seq(2, n_adju * 3, by = 3)] <- rep("Std. Error", n_adju)
+  rownames_coefs_table[seq(3, n_adju * 3, by = 3)] <- rep("---", n_adju)
 
   rownames(coefs_table) <- rownames_coefs_table
 
@@ -544,56 +584,65 @@ summary.PAsso <- function(object, digits = max(3L, getOption("digits")-2L), ...)
       # Obtain coefficients and standard error
       coefs_se <- sumry[1:(n_adju), ]
       # Obtain p-value
-      temp_p <- 2*pt(-abs(coefs_se[,3]), df = n_samp-1)
-      `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
-                  eps = .Machine$double.eps, ...)
+      temp_p <- 2 * pt(-abs(coefs_se[, 3]), df = n_samp - 1)
+      `Pr` <- format.pval(temp_p,
+        digits = max(1L, min(5L, digits - 1L)),
+        eps = .Machine$double.eps, ...
+      )
     } else if (inherits(object$fitted.models[[i]], "glm")) {
       # Obtain results from the summary output
       sumry <- summary(object$fitted.models[[i]])$coefficients
 
       # Obtain coefficients and standard error
-      coefs_se <- sumry[-1,1:3]
+      coefs_se <- sumry[-1, 1:3]
       # Obtain p-value
-      temp_p <- sumry[-1,4]
-      `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
-                             eps = .Machine$double.eps, ...)
+      temp_p <- sumry[-1, 4]
+      `Pr` <- format.pval(temp_p,
+        digits = max(1L, min(5L, digits - 1L)),
+        eps = .Machine$double.eps, ...
+      )
     } else if (inherits(object$fitted.models[[i]], "vglm")) {
       # Obtain results from the summary output of "vglm"
 
       sumry_temp <- summary(object$fitted.models[[i]])
-      sumry <- slot(sumry_temp,"coef3")
+      sumry <- slot(sumry_temp, "coef3")
 
       ncat_model <- ncat(object$fitted.models[[i]])
       # Obtain coefficients and standard error
-      coefs_se <- sumry[-c(1:(ncat_model-1)),1:3]
+      coefs_se <- sumry[-c(1:(ncat_model - 1)), 1:3]
       # Obtain p-value
-      temp_p <- sumry[-c(1:(ncat_model-1)),4]
-      `Pr` <- format.pval(temp_p, digits = max(1L, min(5L, digits - 1L)),
-                          eps = .Machine$double.eps, ...)
+      temp_p <- sumry[-c(1:(ncat_model - 1)), 4]
+      `Pr` <- format.pval(temp_p,
+        digits = max(1L, min(5L, digits - 1L)),
+        eps = .Machine$double.eps, ...
+      )
     }
-    Signif <- symnum(temp_p, corr = FALSE, na = FALSE,
-                     cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
-                     symbols = c("***", "**", "*", ".", " "))
+    Signif <- symnum(temp_p,
+      corr = FALSE, na = FALSE,
+      cutpoints = c(0, 0.001, 0.01, 0.05, 0.1, 1),
+      symbols = c("***", "**", "*", ".", " ")
+    )
 
     coefs_se <- format(round(coefs_se, digits = max(2, (digits))),
-                       digits = max(2, (digits)), ...)
+      digits = max(2, (digits)), ...
+    )
     coefs_se <- cbind(coefs_se, `Pr`, Signif)
 
-    coefs_table[seq(1, n_adju*3, by = 3),i] <- paste(coefs_se[,1], coefs_se[,5], sep = "")
-    coefs_table[seq(2, n_adju*3, by = 3),i] <- coefs_se[,2]
+    coefs_table[seq(1, n_adju * 3, by = 3), i] <- paste(coefs_se[, 1], coefs_se[, 5], sep = "")
+    coefs_table[seq(2, n_adju * 3, by = 3), i] <- coefs_se[, 2]
   }
   print.default(coefs_table,
-                print.gap = 2, na.print = "",
-                quote = FALSE)
+    print.gap = 2, na.print = "",
+    quote = FALSE
+  )
 
   # Add stars of significance level --------------------------------------------------
   if ((w <- getOption("width")) <
-      nchar(sleg <- attr(Signif, "legend"))) {
+    nchar(sleg <- attr(Signif, "legend"))) {
     sleg <- strwrap(sleg, width = w - 2, prefix = "  ")
   }
-  cat("Signif. codes:  ", sleg, sep = "",
-      fill = w + 4 + max(nchar(sleg, "bytes") - nchar(sleg)))
+  cat("Signif. codes:  ", sleg,
+    sep = "",
+    fill = w + 4 + max(nchar(sleg, "bytes") - nchar(sleg))
+  )
 }
-
-
-

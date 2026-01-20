@@ -41,10 +41,12 @@ plot3D <- function(object, y1, y2, ...) {
 #' @rdname plot3D
 #' @method plot3D default
 #' @export
-plot3D.default <- function(object, y1, y2, ...){
-  warning(paste("plot3D does not know how to handle object of class ",
-                class(object),
-                "and can only be used on classes PAsso"))
+plot3D.default <- function(object, y1, y2, ...) {
+  warning(paste(
+    "plot3D does not know how to handle object of class ",
+    class(object),
+    "and can only be used on classes PAsso"
+  ))
 }
 
 #' @title plot3D_one
@@ -61,19 +63,18 @@ plot3D.default <- function(object, y1, y2, ...){
 #' This is an internal function to draw one plotly (3D surface or contour plot).
 #'
 plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles, type = c("surface3D", "contour")) {
-
   type <- match.arg(type)
 
-  resi <- cbind(rep_SRs[,1,m], rep_SRs[,1,n])
+  resi <- cbind(rep_SRs[, 1, m], rep_SRs[, 1, n])
   empC <- C.n(pobs(resi), resi)
-  empFG1 <- pobs(resi)[,1]*pobs(resi)[,2]
+  empFG1 <- pobs(resi)[, 1] * pobs(resi)[, 2]
 
   ## 3-D copula plot
   u <- v <- seq(0, 1, length.out = 100)
   aa <- matrix(0, length(u), length(u))
-  for(i in 1:length(u)){
-    for(j in 1:length(u)){
-      aa[i,j] <- C.n(t(as.matrix(c(u[i], v[j]))), resi)-u[i]*v[j]
+  for (i in 1:length(u)) {
+    for (j in 1:length(u)) {
+      aa[i, j] <- C.n(t(as.matrix(c(u[i], v[j]))), resi) - u[i] * v[j]
     }
   }
 
@@ -81,32 +82,38 @@ plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles, type = c("surface3
   # name <- paste("", i_plot, sep = "_")
   plot_list[[plot_titles]] <-
     if (type == "surface3D") {
-      plotly_build(plot_ly(x = u, y = v, z = 12*aa) %>%
-                     add_surface() %>%
-                     layout(scene = list(xaxis= list(title= "u"),
-                                         yaxis= list(title= "v"),
-                                         zaxis= list(title= "12(C(u,v)-uv)")),
-                            title = paste("3-D P-P Plot: ", plot_titles, sep = "")))
+      plotly_build(plot_ly(x = u, y = v, z = 12 * aa) %>%
+        add_surface() %>%
+        layout(
+          scene = list(
+            xaxis = list(title = "u"),
+            yaxis = list(title = "v"),
+            zaxis = list(title = "12(C(u,v)-uv)")
+          ),
+          title = paste("3-D P-P Plot: ", plot_titles, sep = "")
+        ))
     } else if (type == "contour") {
-      plotly_build(plot_ly(x = u,
-                           y = v,
-                           z = 12*aa,
-                           type = "contour") %>%
-                     layout(xaxis = list(title= "u"),
-                            yaxis = list(title= "v")) %>%
-                     add_annotations(
-                       text = paste("Contour Plot: ", plot_titles, sep = ""),
-                       x = 0.5,
-                       y = 1,
-                       yref = "paper",
-                       xref = "paper",
-                       xanchor = "middle",
-                       yanchor = "top",
-                       showarrow = FALSE,
-                       font = list(size = 15))
-        )
-
-
+      plotly_build(plot_ly(
+        x = u,
+        y = v,
+        z = 12 * aa,
+        type = "contour"
+      ) %>%
+        layout(
+          xaxis = list(title = "u"),
+          yaxis = list(title = "v")
+        ) %>%
+        add_annotations(
+          text = paste("Contour Plot: ", plot_titles, sep = ""),
+          x = 0.5,
+          y = 1,
+          yref = "paper",
+          xref = "paper",
+          xanchor = "middle",
+          yanchor = "top",
+          showarrow = FALSE,
+          font = list(size = 15)
+        ))
     }
 
   return(plot_list)
@@ -125,11 +132,10 @@ plot3D_one <- function(plot_list, rep_SRs, m, n, plot_titles, type = c("surface3
 #' @method plot3D PAsso
 #' @export
 plot3D.PAsso <- function(
-  object,
-  y1, y2,
-  type = c("surface3D", "contour"),
-  ...
-) {
+    object,
+    y1, y2,
+    type = c("surface3D", "contour"),
+    ...) {
   # object = PAsso_2; y1 = "selfLR"; y2 = "PID"
 
   if (!inherits(object, "PAsso")) stop("Input object must be 'PAsso' class.")
@@ -141,32 +147,42 @@ plot3D.PAsso <- function(
   n_resp <- length(resp_name)
 
   if (missing(y1) | missing(y2)) { # If no input for the responses pair, draw all.
-    all_pairs <- apply(expand.grid(resp_name, resp_name), 1, paste, collapse=" v.s. ")
+    all_pairs <- apply(expand.grid(resp_name, resp_name), 1, paste, collapse = " v.s. ")
     mat_pairs <- matrix(all_pairs, nrow = n_resp, byrow = F)
     plot_titles <- mat_pairs[upper.tri(mat_pairs)]
 
     plot_list <- list()
-    m <- 1; n <- 2
+    m <- 1
+    n <- 2
 
-    for (i_plot in 1:(n_resp*(n_resp-1)/2)) {
-      plot_list <- plot3D_one(plot_list = plot_list, rep_SRs = rep_SRs,
-                              m = m, n = n,
-                              plot_titles = plot_titles[i_plot],
-                              type = type)
+    for (i_plot in 1:(n_resp * (n_resp - 1) / 2)) {
+      plot_list <- plot3D_one(
+        plot_list = plot_list, rep_SRs = rep_SRs,
+        m = m, n = n,
+        plot_titles = plot_titles[i_plot],
+        type = type
+      )
       # Update response ---------------------------------------------------------
-      if (n == n_resp) { m <- m + 1; n <- m + 1 } else n <- n + 1
+      if (n == n_resp) {
+        m <- m + 1
+        n <- m + 1
+      } else {
+        n <- n + 1
+      }
     }
   } else {
     m <- which(y1 == resp_name)
     n <- which(y2 == resp_name)
 
-    i_plot <- plot_titles <- apply(expand.grid(y1, y2), 1, paste, collapse=" v.s. ")
+    i_plot <- plot_titles <- apply(expand.grid(y1, y2), 1, paste, collapse = " v.s. ")
     plot_list <- list()
 
-    plot_list <- plot3D_one(plot_list = plot_list, rep_SRs = rep_SRs,
-                            m = m, n = n,
-                            plot_titles = plot_titles,
-                            type = type)
+    plot_list <- plot3D_one(
+      plot_list = plot_list, rep_SRs = rep_SRs,
+      m = m, n = n,
+      plot_titles = plot_titles,
+      type = type
+    )
     plot_list <- plot_list[[1]]
   }
 

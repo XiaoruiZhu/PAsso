@@ -7,7 +7,8 @@
 [![](https://cranlogs.r-pkg.org/badges/grand-total/PAsso?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/PAsso)
 [![](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)](https://cranlogs.r-pkg.org/badges/last-month/PAsso?color=green)
 [![](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)](https://cranlogs.r-pkg.org/badges/last-week/PAsso?color=yellow)
-
+[![R-CMD-check](https://github.com/XiaoruiZhu/PAsso/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/XiaoruiZhu/PAsso/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/XiaoruiZhu/PAsso/graph/badge.svg)](https://app.codecov.io/gh/XiaoruiZhu/PAsso)
 <!-- badges: end -->
 
 Overview

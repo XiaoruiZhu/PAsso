@@ -6,9 +6,11 @@ summary(wine$bottle)
 wine.clm <- clm(rating ~ temp + contact, data = wine, link = "probit")
 
 library(parasol)
-test1 <- corr(responses = c("rating", "temp"),
-              adjustments = c("contact", "judge"),
-              data = wine, association = "partial")
+test1 <- corr(
+  responses = c("rating", "temp"),
+  adjustments = c("contact", "judge"),
+  data = wine, association = "partial"
+)
 test1
 summary(test1)
 

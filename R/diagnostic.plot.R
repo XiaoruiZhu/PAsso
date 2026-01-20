@@ -29,11 +29,13 @@
 #' data("ANES2016")
 #' ANES2016$PreVote.num <- as.factor(ANES2016$PreVote.num)
 #'
-#' PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
-#'                   adjustments = c("income.num", "age", "edu.year"),
-#'                   data = ANES2016, uni.model = "probit",
-#'                   method = c("kendall"),
-#'                   resids.type = "surrogate", jitter = "latent")
+#' PAsso_3v <- PAsso(
+#'   responses = c("PreVote.num", "PID", "selfLR"),
+#'   adjustments = c("income.num", "age", "edu.year"),
+#'   data = ANES2016, uni.model = "probit",
+#'   method = c("kendall"),
+#'   resids.type = "surrogate", jitter = "latent"
+#' )
 #'
 #' diag_p1 <- diagnostic.plot(object = PAsso_3v, output = "qq")
 #' diag_p2 <- diagnostic.plot(object = PAsso_3v, output = "fitted")
@@ -58,11 +60,12 @@ diagnostic.plot <- function(object, ...) {
 #' @rdname diagnostic.plot
 #' @export
 diagnostic.plot.default <- function(
-  object, ...
-){
-  warn_str <- paste("diagnostic.plot does not know how to handle object of class ",
-                    class(object),
-                    "and can only be used on classes PAsso, PAsso.test, resid, clm, glm, lrm, orm, polr.")
+    object, ...) {
+  warn_str <- paste(
+    "diagnostic.plot does not know how to handle object of class ",
+    class(object),
+    "and can only be used on classes PAsso, PAsso.test, resid, clm, glm, lrm, orm, polr."
+  )
   warning(paste(strwrap(warn_str), collapse = "\n"))
 }
 
@@ -73,11 +76,10 @@ diagnostic.plot.default <- function(
 #' @rdname diagnostic.plot
 #' @export
 diagnostic.plot.resid <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  ...
-) {
-  autoplot.resid(object=object, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    ...) {
+  autoplot.resid(object = object, ...)
 }
 
 
@@ -101,12 +103,11 @@ diagnostic.plot.resid <- function(
 #'
 #' @export
 diagnostic.plot.PAsso <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  model_id = NULL,
-  x_name = NULL,
-  ...
-) {
+    object,
+    output = c("qq", "fitted", "covariate"),
+    model_id = NULL,
+    x_name = NULL,
+    ...) {
   # object = PAsso_1; output = "covariate"; x_name = "income.num"; model_id = 2
 
   # What type of output plot to produce
@@ -132,54 +133,56 @@ diagnostic.plot.PAsso <- function(
       for (i in 1:n_resp) {
         plot_list[[i]] <-
           # autoplot(rep_SRs[,1,i], output = output,
-          autoplot(object$fitted.models[[i]], output = output,
-                   resp_name = resp_name[i], ...)
+          autoplot(object$fitted.models[[i]],
+            output = output,
+            resp_name = resp_name[i], ...
+          )
       }
       # Save the combined plot
-      return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
-
+      return(do.call("grid.arrange", c(plot_list, ncol = nCol)))
     } else if (output == "fitted") {
-
       for (i in 1:n_resp) {
         plot_list[[i]] <-
           autoplot(object$fitted.models[[i]], output = output, resp_name = resp_name[i], ...)
       }
       # Save the combined plot
-      return(do.call("grid.arrange", c(plot_list, ncol=nCol)))
-
+      return(do.call("grid.arrange", c(plot_list, ncol = nCol)))
     } else { # output == "covariate"
       adjust_name <- attr(object, "adjustments")
       n_adjust <- length(adjust_name)
-      t_lenght <- n_resp*n_adjust
-      adjust_id <- rep(1:n_adjust, times=n_resp) # make index for covariate name in the for loop
-      resp_id <- rep(1:n_resp, each=n_adjust) # make index for response name in the for loop
+      t_lenght <- n_resp * n_adjust
+      adjust_id <- rep(1:n_adjust, times = n_resp) # make index for covariate name in the for loop
+      resp_id <- rep(1:n_resp, each = n_adjust) # make index for response name in the for loop
 
       for (i in 1:(t_lenght)) {
         plot_list[[i]] <-
-          autoplot(object$fitted.models[[resp_id[i]]], output = "covariate",
-                   x = object$data[,adjust_name[adjust_id[i]]],
-                   xlab = adjust_name[adjust_id[i]],
-                   # resp_name = resp_name[resp_id[i]], ...)
-                   resp_name = resp_name[resp_id[i]])
+          autoplot(object$fitted.models[[resp_id[i]]],
+            output = "covariate",
+            x = object$data[, adjust_name[adjust_id[i]]],
+            xlab = adjust_name[adjust_id[i]],
+            # resp_name = resp_name[resp_id[i]], ...)
+            resp_name = resp_name[resp_id[i]]
+          )
 
         if (i %% n_adjust != 1) { # First plot of each response, draw ylab, otherwise, no ylab
           plot_list[[i]] <- plot_list[[i]] + ylab("")
         }
-        if ((i-1) %/% n_adjust != (n_resp-1)) { # last row of plot(last response), draw xlab, otherwise, no xlab
+        if ((i - 1) %/% n_adjust != (n_resp - 1)) { # last row of plot(last response), draw xlab, otherwise, no xlab
           plot_list[[i]] <- plot_list[[i]] + xlab("")
         }
       }
       # Save the combined plot
-      return(do.call("grid.arrange", c(plot_list, ncol=n_adjust)))
+      return(do.call("grid.arrange", c(plot_list, ncol = n_adjust)))
     }
   } else if ((model_id > n_resp) | (model_id <= 0)) {
     stop("'model_id' needs to be between ", 1, " and number of responses ", n_resp, "!")
   } else { # If the diagnostic model IS specified, return corresponding plot.
-    return(autoplot(object$fitted.models[[model_id]], output = output,
-             resp_name = resp_name[model_id], x = object$data[,x_name],
-             xlab = eval(x_name), ...))
+    return(autoplot(object$fitted.models[[model_id]],
+      output = output,
+      resp_name = resp_name[model_id], x = object$data[, x_name],
+      xlab = eval(x_name), ...
+    ))
   }
-
 }
 
 
@@ -191,53 +194,54 @@ diagnostic.plot.PAsso <- function(
 #' @method diagnostic.plot glm
 #' @export
 diagnostic.plot.glm <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  x = NULL,
-  fit = NULL,
-  distribution = qnorm,
-  ncol = NULL,
-  alpha = 1,
-  xlab = NULL,
-  color = "#444444",
-  shape = 19,
-  size = 2,
-  qqpoint.color = "#444444",
-  qqpoint.shape = 19,
-  qqpoint.size = 2,
-  qqline.color = "#888888",
-  qqline.linetype = "dashed",
-  qqline.size = 1,
-  smooth = TRUE,
-  smooth.color = "red",
-  smooth.linetype = 1,
-  smooth.size = 1,
-  fill = NULL,
-  resp_name = NULL,
-  ...
-) {
-  autoplot.glm(object=object, output= output,
-               x = x,
-               fit = fit,
-               distribution = distribution,
-               ncol = ncol,
-               alpha = alpha,
-               xlab = xlab,
-               color = color,
-               shape = shape,
-               size = size,
-               qqpoint.color = qqpoint.color,
-               qqpoint.shape = qqpoint.shape,
-               qqpoint.size = qqpoint.size,
-               qqline.color = qqline.color,
-               qqline.linetype = qqline.linetype,
-               qqline.size = qqline.size,
-               smooth = smooth,
-               smooth.color = smooth.color,
-               smooth.linetype = smooth.linetype,
-               smooth.size = smooth.size,
-               fill = fill,
-               resp_name = resp_name, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    x = NULL,
+    fit = NULL,
+    distribution = qnorm,
+    ncol = NULL,
+    alpha = 1,
+    xlab = NULL,
+    color = "#444444",
+    shape = 19,
+    size = 2,
+    qqpoint.color = "#444444",
+    qqpoint.shape = 19,
+    qqpoint.size = 2,
+    qqline.color = "#888888",
+    qqline.linetype = "dashed",
+    qqline.size = 1,
+    smooth = TRUE,
+    smooth.color = "red",
+    smooth.linetype = 1,
+    smooth.size = 1,
+    fill = NULL,
+    resp_name = NULL,
+    ...) {
+  autoplot.glm(
+    object = object, output = output,
+    x = x,
+    fit = fit,
+    distribution = distribution,
+    ncol = ncol,
+    alpha = alpha,
+    xlab = xlab,
+    color = color,
+    shape = shape,
+    size = size,
+    qqpoint.color = qqpoint.color,
+    qqpoint.shape = qqpoint.shape,
+    qqpoint.size = qqpoint.size,
+    qqline.color = qqline.color,
+    qqline.linetype = qqline.linetype,
+    qqline.size = qqline.size,
+    smooth = smooth,
+    smooth.color = smooth.color,
+    smooth.linetype = smooth.linetype,
+    smooth.size = smooth.size,
+    fill = fill,
+    resp_name = resp_name, ...
+  )
 }
 
 #' @return A "ggplot" object based on the residuals generated from clm object.
@@ -248,11 +252,10 @@ diagnostic.plot.glm <- function(
 #' @method diagnostic.plot clm
 #' @export
 diagnostic.plot.clm <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  ...
-) {
-  autoplot.clm(object=object, output= output, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    ...) {
+  autoplot.clm(object = object, output = output, ...)
 }
 
 
@@ -264,11 +267,10 @@ diagnostic.plot.clm <- function(
 #' @method diagnostic.plot lrm
 #' @export
 diagnostic.plot.lrm <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  ...
-) {
-  autoplot.lrm(object=object, output= output, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    ...) {
+  autoplot.lrm(object = object, output = output, ...)
 }
 
 #' @return A "ggplot" object based on the residuals generated from orm object.
@@ -279,11 +281,10 @@ diagnostic.plot.lrm <- function(
 #' @method diagnostic.plot orm
 #' @export
 diagnostic.plot.orm <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  ...
-) {
-  autoplot.orm(object=object, output= output, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    ...) {
+  autoplot.orm(object = object, output = output, ...)
 }
 
 #' @return A "ggplot" object based on the residuals generated from polr object.
@@ -294,9 +295,8 @@ diagnostic.plot.orm <- function(
 #' @method diagnostic.plot polr
 #' @export
 diagnostic.plot.polr <- function(
-  object,
-  output = c("qq", "fitted", "covariate"),
-  ...
-) {
-  autoplot.polr(object=object, output= output, ...)
+    object,
+    output = c("qq", "fitted", "covariate"),
+    ...) {
+  autoplot.polr(object = object, output = output, ...)
 }

@@ -37,12 +37,16 @@
 #'
 #' data("df_AdjCat")
 #' summary(df_AdjCat$data)
-#' fit_clm1 <- VGAM::vglm(Y1 ~ X, family =
-#'                       VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
-#'                       data = df_AdjCat$data)
-#' fit_clm2 <- VGAM::vglm(Y2 ~ X, family =
-#'                        VGAM::cumulative(link = "logit",reverse=TRUE,parallel = TRUE),
-#'                        data = df_AdjCat$data)
+#' fit_clm1 <- VGAM::vglm(Y1 ~ X,
+#'   family =
+#'     VGAM::cumulative(link = "logit", reverse = TRUE, parallel = TRUE),
+#'   data = df_AdjCat$data
+#' )
+#' fit_clm2 <- VGAM::vglm(Y2 ~ X,
+#'   family =
+#'     VGAM::cumulative(link = "logit", reverse = TRUE, parallel = TRUE),
+#'   data = df_AdjCat$data
+#' )
 #' SR1 <- residuals(object = fit_clm1, type = "surrogate", surr.method = "latent", boot_id = NULL)
 #' SR2 <- residuals(fit_clm2, type = "surrogate", surr.method = "latent", boot_id = NULL)
 #'
@@ -59,23 +63,31 @@
 #' DR2 <- residuals(fit_clm2, type = "deviance", boot_id = NULL)
 #'
 #' ## visualize residual vs. residual
-#' par(mfrow=c(2,2))
-#' par(mar=c(4, 4.8, 2.5, 1.5))
+#' par(mfrow = c(2, 2))
+#' par(mar = c(4, 4.8, 2.5, 1.5))
 #'
-#' plot(PR1, PR2, pch=".", main = "sign-based Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(GR1, GR2, pch=".", main = "generalized Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")), xlim = c(-4,4), ylim=c(-4,4))
-#' plot(DR1, DR2, pch='.', main = "deviance Residuals",
-#'      xlab = expression(paste(R[1]^"ALT")),
-#'      ylab = expression(paste(R[2]^"ALT")))
-#' plot(SR1, SR2, pch=".", main = "Surrogate Residuals", xaxt="n", yaxt="n",
-#'      xlab = expression(R[1]), ylab = expression(R[2]),
-#'      xlim = c(-1/2,1/2), ylim=c(-1/2,1/2))
-#' axis(1, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
-#' axis(2, at=seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+#' plot(PR1, PR2,
+#'   pch = ".", main = "sign-based Residuals",
+#'   xlab = expression(paste(R[1]^"ALT")),
+#'   ylab = expression(paste(R[2]^"ALT"))
+#' )
+#' plot(GR1, GR2,
+#'   pch = ".", main = "generalized Residuals",
+#'   xlab = expression(paste(R[1]^"ALT")),
+#'   ylab = expression(paste(R[2]^"ALT")), xlim = c(-4, 4), ylim = c(-4, 4)
+#' )
+#' plot(DR1, DR2,
+#'   pch = ".", main = "deviance Residuals",
+#'   xlab = expression(paste(R[1]^"ALT")),
+#'   ylab = expression(paste(R[2]^"ALT"))
+#' )
+#' plot(SR1, SR2,
+#'   pch = ".", main = "Surrogate Residuals", xaxt = "n", yaxt = "n",
+#'   xlab = expression(R[1]), ylab = expression(R[2]),
+#'   xlim = c(-1 / 2, 1 / 2), ylim = c(-1 / 2, 1 / 2)
+#' )
+#' axis(1, at = seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
+#' axis(2, at = seq(-0.5, 0.5, 0.25), labels = seq(-0.5, 0.5, 0.25))
 #'
 NULL
 

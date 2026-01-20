@@ -1,4 +1,3 @@
-
 # Test "residuals" generic function -----------------------------------------------
 # Generate data from a quadratic probit model
 
@@ -16,17 +15,20 @@ par(mfrow = c(1, 2))
 
 # Misspecified mean structure
 fm1 <- glm(y ~ x, family = binomial(link = "probit"))
-scatter.smooth(x, y = residuals_glm(fm1),
-               main = "Misspecified model",
-               ylab = "Surrogate residual",
-               lpars = list(lwd = 3, col = "red2"))
+scatter.smooth(x,
+  y = residuals_glm(fm1),
+  main = "Misspecified model",
+  ylab = "Surrogate residual",
+  lpars = list(lwd = 3, col = "red2")
+)
 abline(h = 0, lty = 2, col = "blue2")
 
 # Correctly specified mean structure
-fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
-scatter.smooth(x, y = residuals_glm(fm2),
-               main = "Correctly specified model",
-               ylab = "Surrogate residual",
-               lpars = list(lwd = 3, col = "red2"))
+fm2 <- glm(y ~ x + I(x^2), family = binomial(link = "probit"))
+scatter.smooth(x,
+  y = residuals_glm(fm2),
+  main = "Correctly specified model",
+  ylab = "Surrogate residual",
+  lpars = list(lwd = 3, col = "red2")
+)
 abline(h = 0, lty = 2, col = "blue2")
-

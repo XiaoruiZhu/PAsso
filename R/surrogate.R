@@ -60,7 +60,7 @@
 #' set.seed(101)
 #' n <- 2000
 #' x <- runif(n, min = -3, max = 6)
-#' z <- 10 + 3*x - 1*x^2 + rnorm(n)
+#' z <- 10 + 3 * x - 1 * x^2 + rnorm(n)
 #' y <- ifelse(z <= 0, yes = 0, no = 1)
 #'
 #' # Scatterplot matrix
@@ -73,18 +73,20 @@
 #' fm1 <- glm(y ~ x, family = binomial(link = "probit"))
 #' s1 <- surrogate(fm1)
 #' scatter.smooth(x, s1 - fm1$linear.predictors,
-#'                main = "Misspecified model",
-#'                ylab = "Surrogate residual",
-#'                lpars = list(lwd = 3, col = "red2"))
+#'   main = "Misspecified model",
+#'   ylab = "Surrogate residual",
+#'   lpars = list(lwd = 3, col = "red2")
+#' )
 #' abline(h = 0, lty = 2, col = "blue2")
 #'
 #' # Correctly specified mean structure
-#' fm2 <- glm(y ~ x + I(x ^ 2), family = binomial(link = "probit"))
+#' fm2 <- glm(y ~ x + I(x^2), family = binomial(link = "probit"))
 #' s2 <- surrogate(fm2)
 #' scatter.smooth(x, s2 - fm2$linear.predictors,
-#'                main = "Correctly specified model",
-#'                ylab = "Surrogate residual",
-#'                lpars = list(lwd = 3, col = "red2"))
+#'   main = "Correctly specified model",
+#'   ylab = "Surrogate residual",
+#'   lpars = list(lwd = 3, col = "red2")
+#' )
 #' abline(h = 0, lty = 2, col = "blue2")
 #'
 #'
@@ -93,10 +95,9 @@
 surrogate <- function(object, method = c("latent", "uniform"),
                       jitter.uniform.scale = c("probability", "response"),
                       nsim = 1L, ...) {
-
   # Match arguments
   method <- match.arg(method)
-  jitter.uniform.scale = match.arg(jitter.uniform.scale)
+  jitter.uniform.scale <- match.arg(jitter.uniform.scale)
 
   # Issue warning for jittering method
   if (method == "uniform") {
@@ -107,13 +108,15 @@ surrogate <- function(object, method = c("latent", "uniform"),
   s <- generate_surrogate(object, method = method, jitter.uniform.scale = jitter.uniform.scale)
 
   # Multiple (re)samples
-  if (nsim > 1L) {  # bootstrap
+  if (nsim > 1L) { # bootstrap
     boot_reps <- boot_id <- matrix(nrow = nobs(object), ncol = nsim)
-    for(i in seq_len(nsim)) {
+    for (i in seq_len(nsim)) {
       boot_id[, i] <- sample(nobs(object), replace = TRUE)
       boot_reps[, i] <-
-        generate_surrogate(object, method = method, jitter.uniform.scale = jitter.uniform.scale,
-                           draws_id = boot_id[, i, drop = TRUE])
+        generate_surrogate(object,
+          method = method, jitter.uniform.scale = jitter.uniform.scale,
+          draws_id = boot_id[, i, drop = TRUE]
+        )
     }
     attr(s, "boot_reps") <- boot_reps
     attr(s, "boot_id") <- boot_id
@@ -122,5 +125,4 @@ surrogate <- function(object, method = c("latent", "uniform"),
   # Return residuals
   class(s) <- c("numeric", "surrogate")
   s
-
 }

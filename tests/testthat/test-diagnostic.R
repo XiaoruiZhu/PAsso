@@ -2,42 +2,43 @@ context("diagnostic.plot(): Residual-based diagnostic plots")
 
 
 test_that("Test the fix of the Github Issue #5", {
-
   # Skips
   skip_on_cran()
 
   # Load data
   data("ANES2016")
 
-  phi2 <- PAsso(responses = c("PID", "selfLR", "TrumpLR", "ClinLR"),
-                adjustments = c("age", "edu.year", "income.num"),
-                data = ANES2016, method = "kendall",
-                model = c("acat", "acat", "acat", "acat"),
-                resids.type = "surrogate", jitter = "latent")
+  phi2 <- PAsso(
+    responses = c("PID", "selfLR", "TrumpLR", "ClinLR"),
+    adjustments = c("age", "edu.year", "income.num"),
+    data = ANES2016, method = "kendall",
+    model = c("acat", "acat", "acat", "acat"),
+    resids.type = "surrogate", jitter = "latent"
+  )
 
   diag_fit <- diagnostic.plot(phi2, output = "fitted")
 
   # Expectations
-  expect_true(max(phi2$rep_SRs[,1,1])<=0.5)
-  expect_true(min(phi2$rep_SRs[,1,1])>= -0.5)
+  expect_true(max(phi2$rep_SRs[, 1, 1]) <= 0.5)
+  expect_true(min(phi2$rep_SRs[, 1, 1]) >= -0.5)
 
   expect_s3_class(diag_fit, "gtable")
-
 })
 
 test_that("diagnostic.plot works for \"PAsso\" objects", {
-
   # Skips
   skip_on_cran()
 
   # Load data
   data("ANES2016")
 
-  PAsso_3v <- PAsso(responses = c("PreVote.num", "PID", "selfLR"),
-                   adjustments = c("income.num", "age", "edu.year"),
-                   data = ANES2016, uni.model = "probit",
-                   method = c("kendall"),
-                   resids.type = "surrogate", jitter = "latent")
+  PAsso_3v <- PAsso(
+    responses = c("PreVote.num", "PID", "selfLR"),
+    adjustments = c("income.num", "age", "edu.year"),
+    data = ANES2016, uni.model = "probit",
+    method = c("kendall"),
+    resids.type = "surrogate", jitter = "latent"
+  )
 
   diag_p1 <- diagnostic.plot(object = PAsso_3v, output = "qq")
   diag_p2 <- diagnostic.plot(object = PAsso_3v, output = "fitted")
@@ -61,30 +62,28 @@ test_that("diagnostic.plot works for \"PAsso\" objects", {
 
   # expect_s3_class(diag_p2, "ggmatrix")
   # expect_s3_class(diag_p3, "ggmatrix")
-
 })
 
 test_that("diagnostic.plot works for \"PAsso\" objects with 5 responses", {
-
   # Skips
   skip_on_cran()
 
   # multivariate analysis (5 variables) --------------------------------------------------------------------
-  PAsso_5v <- PAsso(responses = c("PreVote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
-                    adjustments = c("income.num", "age", "edu.year"),
-                    data = ANES2016, uni.model = "logit",
-                    method = c("kendall"),
-                    resids.type = "surrogate", jitter = "latent")
+  PAsso_5v <- PAsso(
+    responses = c("PreVote.num", "PID", "selfLR", "ClinLR", "TrumpLR"),
+    adjustments = c("income.num", "age", "edu.year"),
+    data = ANES2016, uni.model = "logit",
+    method = c("kendall"),
+    resids.type = "surrogate", jitter = "latent"
+  )
 
   diag_p1 <- diagnostic.plot(object = PAsso_5v, output = "qq")
 
   # Expectations
   expect_s3_class(diag_p1, "gtable")
-
 })
 
 test_that("diagnostic.plot work for \"clm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("ordinal")
@@ -93,7 +92,7 @@ test_that("diagnostic.plot work for \"clm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
+  fit <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "logit")
 
   # diagnostic.plot
   plot_qq <- diagnostic.plot(object = fit, output = "qq")
@@ -104,11 +103,9 @@ test_that("diagnostic.plot work for \"clm\" objects", {
   expect_is(plot_qq, "ggplot")
   expect_is(plot_fit, "ggplot")
   expect_is(plot_cov, "ggplot")
-
 })
 
 test_that("diagnostic.plot work for \"glm\" objects", {
-
   # Skips
   skip_on_cran()
 
@@ -116,7 +113,7 @@ test_that("diagnostic.plot work for \"glm\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- glm(y ~ x + I(x ^ 2), data = df1, family = binomial)
+  fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 
   # diagnostic.plot
   plot_qq <- diagnostic.plot(object = fit, output = "qq")
@@ -131,8 +128,10 @@ test_that("diagnostic.plot work for \"glm\" objects", {
 
   data("ANES2016")
 
-  fit1 <- ordinal::clm(formula = as.factor(PreVote.num) ~ income.num + age + edu.year,
-                       data = ANES2016, link = "logit")
+  fit1 <- ordinal::clm(
+    formula = as.factor(PreVote.num) ~ income.num + age + edu.year,
+    data = ANES2016, link = "logit"
+  )
 
   # diagnostic.plot
   plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")
@@ -142,11 +141,9 @@ test_that("diagnostic.plot work for \"glm\" objects", {
   expect_is(plot_qq_1, "ggplot")
   expect_is(plot_qq_1, "ggplot")
   expect_is(plot_qq_1, "ggplot")
-
 })
 
 test_that("diagnostic.plot work for \"lrm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
@@ -169,7 +166,6 @@ test_that("diagnostic.plot work for \"lrm\" objects", {
 })
 
 test_that("diagnostic.plot work for \"orm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("rms")
@@ -192,7 +188,6 @@ test_that("diagnostic.plot work for \"orm\" objects", {
 })
 
 test_that("diagnostic.plot work for \"polr\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("MASS")
@@ -201,7 +196,7 @@ test_that("diagnostic.plot work for \"polr\" objects", {
   data(df1)
 
   # Fit cumulative link model
-  fit <- MASS::polr(y ~ x + I(x ^ 2), data = df1, method = "logistic")
+  fit <- MASS::polr(y ~ x + I(x^2), data = df1, method = "logistic")
 
   # diagnostic.plot
   plot_qq <- diagnostic.plot(object = fit, output = "qq")
@@ -215,7 +210,6 @@ test_that("diagnostic.plot work for \"polr\" objects", {
 })
 
 test_that("diagnostic.plot work for \"vglm\" objects", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("VGAM")
@@ -225,20 +219,22 @@ test_that("diagnostic.plot work for \"vglm\" objects", {
 
   # Fit cumulative link model
   suppressWarnings(
-    fit <- VGAM::vglm(y ~ x + I(x ^ 2), data = df1,
-                      family = VGAM::cumulative(link = "logit",
-                                                parallel = TRUE))
+    fit <- VGAM::vglm(y ~ x + I(x^2),
+      data = df1,
+      family = VGAM::cumulative(
+        link = "logit",
+        parallel = TRUE
+      )
+    )
   )
 
   # Expectations
   expect_warning(p1 <- diagnostic.plot(object = fit, output = "qq"), "does not know")
   expect_warning(p2 <- diagnostic.plot(object = fit, output = "fitted"), "does not know")
   expect_warning(p3 <- diagnostic.plot(object = fit, output = "covariate"), "does not know")
-
 })
 
 test_that("diagnostic.plot work for \"clm\" objects with different link functions", {
-
   # Skips
   skip_on_cran()
   skip_if_not_installed("ordinal")
@@ -247,11 +243,11 @@ test_that("diagnostic.plot work for \"clm\" objects with different link function
   data(df1)
 
   # Fit cumulative link models
-  fit1 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "logit")
-  fit2 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "probit")
-  fit3 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "loglog")
-  fit4 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cloglog")
-  fit5 <- ordinal::clm(y ~ x + I(x ^ 2), data = df1, link = "cauchit")
+  fit1 <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "logit")
+  fit2 <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "probit")
+  fit3 <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "loglog")
+  fit4 <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "cloglog")
+  fit5 <- ordinal::clm(y ~ x + I(x^2), data = df1, link = "cauchit")
 
   # diagnostic.plot
   plot_qq_1 <- diagnostic.plot(object = fit1, output = "qq")

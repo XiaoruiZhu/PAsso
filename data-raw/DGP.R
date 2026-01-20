@@ -3,7 +3,7 @@ ordinalize <- function(z, threshold) {
   sapply(z, FUN = function(x) {
     ordinal.value <- 1
     index <- 1
-    while(index <= length(threshold) && x > threshold[index]) {
+    while (index <= length(threshold) && x > threshold[index]) {
       ordinal.value <- ordinal.value + 1
       index <- index + 1
     }
@@ -16,11 +16,11 @@ ordinalize <- function(z, threshold) {
 simQuadraticData <- function(n = 2000) {
   threshold <- c(0, 4, 8)
   x <- runif(n, min = 1, max = 7)
-  z <- 16 - 8 * x + 1 * x ^ 2 + rnorm(n)  # rlnorm(n)
+  z <- 16 - 8 * x + 1 * x^2 + rnorm(n) # rlnorm(n)
   y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
-    while(index <= length(threshold) && zz > threshold[index]) {
+    while (index <= length(threshold) && zz > threshold[index]) {
       ordinal.value <- ordinal.value + 1
       index <- index + 1
     }
@@ -39,10 +39,10 @@ table(df1$y)
 simHeteroscedasticData <- function(n = 2000) {
   threshold <- c(0, 30, 70, 100)
   x <- runif(n, min = 2, max = 7)
-  y <-   sapply(36 + 4 * x + rnorm(n, sd = x ^ 2), FUN = function(zz) {
+  y <- sapply(36 + 4 * x + rnorm(n, sd = x^2), FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
-    while(index <= length(threshold) && zz > threshold[index]) {
+    while (index <= length(threshold) && zz > threshold[index]) {
       ordinal.value <- ordinal.value + 1
       index <- index + 1
     }
@@ -60,7 +60,7 @@ table(df2$y)
 # Function to simulate data with Gumbel errors on the linear predictor scale
 simGumbelData <- function(n = 2000) {
   x <- runif(n, min = 1, max = 7)
-  z <- 16 - 8 * x + 1 * x ^ 2 + sure:::rgumbel(n)
+  z <- 16 - 8 * x + 1 * x^2 + sure:::rgumbel(n)
   y <- ordinalize(z, threshold = c(0, 4, 8))
   data.frame("y" = as.ordered(y), "x" = x)
 }
@@ -97,7 +97,7 @@ simInteractionData <- function(n = 2000) {
   y <- sapply(z, FUN = function(zz) {
     ordinal.value <- 1
     index <- 1
-    while(index <= length(threshold) && zz > threshold[index]) {
+    while (index <= length(threshold) && zz > threshold[index]) {
       ordinal.value <- ordinal.value + 1
       index <- index + 1
     }
@@ -112,11 +112,11 @@ df5 <- simInteractionData(n = 2000)
 pairs(df5)
 
 # Save data sets
-save(df1, file = "data/df1.rda", compress='xz')
-save(df2, file = "data/df2.rda", compress='xz')
-save(df3, file = "data/df3.rda", compress='xz')
-save(df4, file = "data/df4.rda", compress='xz')
-save(df5, file = "data/df5.rda", compress='xz')
+save(df1, file = "data/df1.rda", compress = "xz")
+save(df2, file = "data/df2.rda", compress = "xz")
+save(df3, file = "data/df3.rda", compress = "xz")
+save(df4, file = "data/df4.rda", compress = "xz")
+save(df5, file = "data/df5.rda", compress = "xz")
 
 # Data Generating Process for Partial Association --------------------------
 library(multinomRob)
@@ -129,39 +129,40 @@ alpha1 <- c(-Inf, -3, -2, 0, 2, 3, Inf)
 alpha2 <- c(-Inf, -2, 0, 2, Inf)
 X <- rnorm(n)
 
-Z1 <- sapply(alpha1[2:6], function(alpha) alpha+beta1*X)
-Z2 <- sapply(alpha2[2:4], function(alpha) alpha+beta2*X)
+Z1 <- sapply(alpha1[2:6], function(alpha) alpha + beta1 * X)
+Z2 <- sapply(alpha2[2:4], function(alpha) alpha + beta2 * X)
 
 ## function to obtain probability matrix of adjacent-categorical model
-p_adj_cate <- function(Z){
-  k<- ncol(Z)
-  p1_pj<- p1_pj_inv<- Z
-  ZZ<- 0
-  for(j in 1:k){
-    ZZ<- ZZ+Z[,j]
-    p1_pj[,j]<- exp(ZZ)
-    p1_pj_inv[,j]<- 1/p1_pj[,j]
+p_adj_cate <- function(Z) {
+  k <- ncol(Z)
+  p1_pj <- p1_pj_inv <- Z
+  ZZ <- 0
+  for (j in 1:k) {
+    ZZ <- ZZ + Z[, j]
+    p1_pj[, j] <- exp(ZZ)
+    p1_pj_inv[, j] <- 1 / p1_pj[, j]
   }
-  p1<- 1/(rowSums(p1_pj_inv)+1)
-  pj<- p1_pj
-  for(j in 1:k){
-    pj[,j]<- p1/p1_pj[,j]
+  p1 <- 1 / (rowSums(p1_pj_inv) + 1)
+  pj <- p1_pj
+  for (j in 1:k) {
+    pj[, j] <- p1 / p1_pj[, j]
   }
-  cbind(1-rowSums(pj), pj)
+  cbind(1 - rowSums(pj), pj)
 }
 ############################
 
 p1.mat <- p_adj_cate(Z1)
 p2.mat <- p_adj_cate(Z2)
-Y1 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p1.mat[x,])==1)))
-Y2 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p2.mat[x,])==1)))
-df_AdjCat <- list(data=data.frame(Y1=Y1, Y2=Y2, X=X, Z1=Z1, Z2=Z2),
-                alpha1=alpha1, alpha2=alpha2, beta1=beta1, beta2=beta2)
+Y1 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p1.mat[x, ]) == 1)))
+Y2 <- as.ordered(sapply(1:n, function(x) which(rmultinom(1, 1, p2.mat[x, ]) == 1)))
+df_AdjCat <- list(
+  data = data.frame(Y1 = Y1, Y2 = Y2, X = X, Z1 = Z1, Z2 = Z2),
+  alpha1 = alpha1, alpha2 = alpha2, beta1 = beta1, beta2 = beta2
+)
 
-save(df_AdjCat, file = "data/df_AdjCat.rda", compress='xz')
+save(df_AdjCat, file = "data/df_AdjCat.rda", compress = "xz")
 
 library(VGAM)
-fit.adj1<- vglm(Y1~X, family=acat(reverse=TRUE, parallel=TRUE))
-fit.adj2<- vglm(Y2~X, family=acat(reverse=TRUE, parallel=TRUE))
+fit.adj1 <- vglm(Y1 ~ X, family = acat(reverse = TRUE, parallel = TRUE))
+fit.adj2 <- vglm(Y2 ~ X, family = acat(reverse = TRUE, parallel = TRUE))
 summary(fit.adj1)
-
