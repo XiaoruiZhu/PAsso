@@ -126,7 +126,7 @@ PAsso(
 
   A character string specifying the scale on which to perform the
   jittering whenever `jitter = "uniform"`. More details:
-  [`PAsso::residuals`](https://xiaoruizhu.github.io/PAsso/reference/residuals.md).
+  [`PAsso::residuals`](http://xiaorui.site/PAsso/reference/residuals.md).
 
 - fitted.models:
 
