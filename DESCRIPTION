@@ -10,18 +10,22 @@ Description: An implementation of the unified framework for assessing partial as
             H_0: phi=0 or H_0: phi <= delta.
 Version: 0.1.11
 Authors@R: 
-  c(person(given = "Xiaorui (Jeremy)", family = "Zhu",
-           role = c("aut", "cre", "cph"),
-           email = "zhuxiaorui1989@gmail.com"),
-    person(given = "Shaobo", family = "Li", 
-           role = c("aut"), 
-           email = "shaobo.li@ku.edu"),
-    person(given = "Dungang", family = "Liu",
-           role = c("ctb", "aut"),
-           email = "dungang.liu@uc.edu"),
-    person(given = "Yuejie ", family = "Chen", 
-           role = c("ctb"), 
-           email = "chen4y9@mail.uc.edu"))
+    c(person(given = "Xiaorui (Jeremy)", 
+             family = "Zhu",
+             role = c("aut", "cre", "cph"),
+             email = "zhuxiaorui1989@gmail.com"),
+      person(given = "Shaobo", 
+             family = "Li", 
+             role = "aut", 
+             email = "shaobo.li@ku.edu"),
+      person(given = "Dungang", 
+             family = "Liu",
+             role = c("ctb", "aut"),
+             email = "dungang.liu@uc.edu"),
+      person(given = "Yuejie", 
+             family = "Chen", 
+             role = "ctb", 
+             email = "chen4y9@mail.uc.edu"))
 Maintainer: Xiaorui (Jeremy) Zhu <zhuxiaorui1989@gmail.com>
 URL: https://xiaorui.site/PAsso/
 BugReports: https://github.com/XiaoruiZhu/PAsso/issues
