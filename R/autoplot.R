@@ -20,9 +20,13 @@
 #'
 #' @param distribution Function that computes the quantiles for the reference
 #' distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-#' which is only appropriate for models using a probit link function. When
-#' \code{jitter.scale = "probability"}, the reference distribution is always
-#' U(-0.5, 0.5). (Only
+#' which is only appropriate for models using a probit link function.
+#' When \code{type = "surrogate"}, \code{jitter = "latent"}, search the reference
+#' distribution using getQuantileFunction(object) to find distribution. When
+#' \code{jitter = "uniform"} and \code{jitter.uniform.scale = "probability"},
+#' the reference distribution is always U(-0.5, 0.5). When
+#' \code{jitter = "uniform"} and \code{jitter.uniform.scale = "response"},
+#' cannot draw the QQ plot. (Only
 #' required if \code{object} inherits from class \code{"resid"}.)
 #'
 #' @param ncol Integer specifying the number of columns to use for the plot
@@ -102,7 +106,7 @@
 #' # Fit cumulative link model
 #' fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 #' # Construct residual plots
-#' p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
+#' p1 <- ggplot2::autoplot(fit, jitter.uniform.scale = "probability", output = "qq")
 #' p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
 #' p3 <- ggplot2::autoplot(fit, output = "fitted")
 #'
@@ -197,10 +201,8 @@ autoplot.resid <- function(
 
   # Quantile-quantile
   p1 <- if ("qq" %in% output) {
-    if (!is.null(attr(object, "jitter.scale"))) {
-      if (attr(object, "jitter.scale") == "response") {
-        stop("Q-Q plots are not available for jittering on the response scale.")
-      }
+    if ( "response" %in% attr(object, "arguments")) {
+      stop("Q-Q plots are not available for jittering on the response scale.")
     }
     distribution <- match.fun(distribution)
     xvals <- distribution(ppoints(length(res.med)))[order(order(res.med))]
@@ -211,7 +213,7 @@ autoplot.resid <- function(
     qqline.x <- distribution(c(0.25, 0.75))
     slope <- diff(qqline.y) / diff(qqline.x)
     int <- qqline.y[1L] - slope * qqline.x[1L]
-    ggplot(data.frame(x = xvals, y = res.med), aes(x = "x", y = "y")) +
+    ggplot(data.frame(x = xvals, y = res.med), aes(x = x, y = y)) +
       geom_point(
         color = qqpoint.color, shape = qqpoint.shape,
         size = qqpoint.size
@@ -237,7 +239,7 @@ autoplot.resid <- function(
 
     # resp_name <- paste("Residual (", resp_name , ")", sep = "")
 
-    p <- ggplot(data.frame("x" = mr, "y" = res), aes(x = "x", y = "y")) +
+    p <- ggplot(data.frame(x = mr, y = res), aes(x = x, y = y)) +
       geom_point(color = color, shape = shape, size = size, alpha = alpha) +
       labs(x = "Fitted value", y = resp_name, ...) # Add availability for title, and revise ylab to show response
     if (smooth) {
@@ -254,7 +256,7 @@ autoplot.resid <- function(
 
   # Residual vs covariate
   p3 <- if ("covariate" %in% output) {
-    p <- ggplot(data.frame("x" = x, "y" = res), aes(x = "x", y = "y"))
+    p <- ggplot(data.frame(x = x, y = res), aes(x = x, y = y))
     if (is.factor(x)) {
       if (is.null(fill)) {
         p <- p + geom_boxplot(aes_string(fill = "x"), alpha = alpha) +
@@ -346,20 +348,27 @@ autoplot.glm <- function(
     fill = NULL,
     resp_name = NULL,
     ...) {
-  # Compute residuals
+  # Compute residuals using default
   res <- residuals(object, ...)
 
   # Quantile function to use for Q-Q plots
-  qfun <- if (is.null(attr(res, "jitter.scale"))) {
+  # Search probability distribution of the latent approach
+  # qfun <- if (is.null(attr(res, "jitter.scale"))) { # jitter.scale is retired
+  # If surrogate and latent approach is used, find the quantile function/dist of the error
+  qfun <- if (all(c("surrogate", "latent") %in% attr(res, "arguments"))) {
     getQuantileFunction(object)
-  } else {
-    if (output == "qq" && attr(res, "jitter.scale") == "response") {
-      stop(
-        "Quantile-quantile plots are not appropriate for residuals ",
-        "obtained by jittering on the response scale."
-      )
-    }
+  } else if ( all(c("surrogate", "uniform", "probability") %in% attr(res, "arguments")) ) {
     function(p) qunif(p, min = -0.5, max = 0.5)
+  } else if ( all(c("surrogate", "uniform", "response") %in% attr(res, "arguments")) ) {
+    stop(
+      "Quantile-quantile plots are not appropriate for residuals ",
+      "obtained by jittering on the response scale."
+    )
+  } else { # Quantile function is not applicable to other residuals: "sign", "general", "deviance"
+    stop(
+      "Quantile-quantile plots are not appropriate for residuals: ",
+      "'sign', 'general', 'deviance'."
+    )
   }
 
   # Default x-axis label

@@ -218,9 +218,13 @@ required if \code{output = "fitted"} and \code{object} inherits from class
 
 \item{distribution}{Function that computes the quantiles for the reference
 distribution to use in the quantile-quantile plot. Default is \code{qnorm}
-which is only appropriate for models using a probit link function. When
-\code{jitter.scale = "probability"}, the reference distribution is always
-U(-0.5, 0.5). (Only
+which is only appropriate for models using a probit link function.
+When \code{type = "surrogate"}, \code{jitter = "latent"}, search the reference
+distribution using getQuantileFunction(object) to find distribution. When
+\code{jitter = "uniform"} and \code{jitter.uniform.scale = "probability"},
+the reference distribution is always U(-0.5, 0.5). When
+\code{jitter = "uniform"} and \code{jitter.uniform.scale = "response"},
+cannot draw the QQ plot. (Only
 required if \code{object} inherits from class \code{"resid"}.)}
 
 \item{ncol}{Integer specifying the number of columns to use for the plot
@@ -298,7 +302,7 @@ data(df1)
 # Fit cumulative link model
 fit <- glm(y ~ x + I(x^2), data = df1, family = binomial)
 # Construct residual plots
-p1 <- ggplot2::autoplot(fit, jitter.scale = "probability", output = "qq")
+p1 <- ggplot2::autoplot(fit, jitter.uniform.scale = "probability", output = "qq")
 p2 <- ggplot2::autoplot(fit, output = "covariate", x = df1$x)
 p3 <- ggplot2::autoplot(fit, output = "fitted")
 
