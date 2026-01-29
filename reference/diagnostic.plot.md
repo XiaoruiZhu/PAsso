@@ -120,8 +120,12 @@ diagnostic.plot(object, output = c("qq", "fitted", "covariate"), ...)
   Function that computes the quantiles for the reference distribution to
   use in the quantile-quantile plot. Default is `qnorm` which is only
   appropriate for models using a probit link function. When
-  `jitter.scale = "probability"`, the reference distribution is always
-  U(-0.5, 0.5). (Only required if `object` inherits from class
+  `type = "surrogate"`, `jitter = "latent"`, search the reference
+  distribution using getQuantileFunction(object) to find distribution.
+  When `jitter = "uniform"` and `jitter.uniform.scale = "probability"`,
+  the reference distribution is always U(-0.5, 0.5). When
+  `jitter = "uniform"` and `jitter.uniform.scale = "response"`, cannot
+  draw the QQ plot. (Only required if `object` inherits from class
   `"resid"`.)
 
 - ncol:
@@ -256,92 +260,20 @@ PAsso_3v <- PAsso(
 )
 
 diag_p1 <- diagnostic.plot(object = PAsso_3v, output = "qq")
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
 
 diag_p2 <- diagnostic.plot(object = PAsso_3v, output = "fitted")
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
 
 diag_p3 <- diagnostic.plot(object = PAsso_3v, output = "covariate")
 #> No covariate is specified, the first covariate(adjustment) is being used.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
-#> Warning: All aesthetics have length 1, but the data has 2188 rows.
-#> ℹ Please consider using `annotate()` or provide this layer with data containing
-#>   a single row.
+#> Warning: Failed to fit group -1.
+#> Caused by error in `smooth.construct.cr.smooth.spec()`:
+#> ! x has insufficient unique values to support 10 knots: reduce k.
+#> Warning: Failed to fit group -1.
+#> Caused by error in `smooth.construct.cr.smooth.spec()`:
+#> ! x has insufficient unique values to support 10 knots: reduce k.
+#> Warning: Failed to fit group -1.
+#> Caused by error in `smooth.construct.cr.smooth.spec()`:
+#> ! x has insufficient unique values to support 10 knots: reduce k.
 
 
 # Simply diagnose a model

@@ -275,9 +275,13 @@ required if <code>output = "fitted"</code> and <code>object</code> inherits from
 <dt id="arg-distribution">distribution<a class="anchor" aria-label="anchor" href="#arg-distribution"></a></dt>
 <dd><p>Function that computes the quantiles for the reference
 distribution to use in the quantile-quantile plot. Default is <code>qnorm</code>
-which is only appropriate for models using a probit link function. When
-<code>jitter.scale = "probability"</code>, the reference distribution is always
-U(-0.5, 0.5). (Only
+which is only appropriate for models using a probit link function.
+When <code>type = "surrogate"</code>, <code>jitter = "latent"</code>, search the reference
+distribution using getQuantileFunction(object) to find distribution. When
+<code>jitter = "uniform"</code> and <code>jitter.uniform.scale = "probability"</code>,
+the reference distribution is always U(-0.5, 0.5). When
+<code>jitter = "uniform"</code> and <code>jitter.uniform.scale = "response"</code>,
+cannot draw the QQ plot. (Only
 required if <code>object</code> inherits from class <code>"resid"</code>.)</p></dd>
 
 
@@ -392,7 +396,7 @@ displayed in the figure.</p></dd>
 <span class="r-in"><span><span class="co"># Fit cumulative link model</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">df1</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Construct residual plots</span></span></span>
-<span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fit</span>, jitter.scale <span class="op">=</span> <span class="st">"probability"</span>, output <span class="op">=</span> <span class="st">"qq"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fit</span>, jitter.uniform.scale <span class="op">=</span> <span class="st">"probability"</span>, output <span class="op">=</span> <span class="st">"qq"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fit</span>, output <span class="op">=</span> <span class="st">"covariate"</span>, x <span class="op">=</span> <span class="va">df1</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fit</span>, output <span class="op">=</span> <span class="st">"fitted"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
